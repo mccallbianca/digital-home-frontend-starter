@@ -1,0 +1,326 @@
+/* ========================================
+   Article Page — Digital Home
+   ======================================== */
+
+/* ── Hero ── */
+.heroSection {
+  width: 100%;
+  background-color: #020202;
+  padding: 10rem clamp(1.5rem, 5vw, 5rem) 5rem;
+}
+
+.heroInner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.backLink {
+  font-family: var(--font-mono), 'Courier New', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+  transition: color 0.2s ease;
+}
+
+.backLink:hover {
+  color: #BBDCEF;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.contentType {
+  font-family: var(--font-mono), 'Courier New', monospace;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #020202;
+  background-color: #BBDCEF;
+  padding: 0.25rem 0.75rem;
+}
+
+.metaItem {
+  font-family: var(--font-mono), 'Courier New', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.heroTitle {
+  font-family: 'TXC Pearl', system-ui, sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 2rem;
+}
+
+.heroExcerpt {
+  font-size: clamp(1.1rem, 1.3vw, 1.3rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.55);
+  max-width: 60ch;
+}
+
+/* ── Featured Image ── */
+.imageSection {
+  width: 100%;
+  background-color: #020202;
+  padding: 0 clamp(1.5rem, 5vw, 5rem) 4rem;
+}
+
+.imageWrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  aspect-ratio: 21 / 9;
+  background-color: #0e0e0e;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageWrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(187, 220, 239, 0.04) 0%, transparent 50%);
+}
+
+.articleImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Article Body ── */
+.bodySection {
+  width: 100%;
+  background-color: #f8f8f8;
+  padding: 6rem clamp(1.5rem, 5vw, 5rem);
+}
+
+.bodyInner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.bodyInner h2 {
+  font-family: 'TXC Pearl', system-ui, sans-serif;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #000;
+  margin: 3rem 0 1.5rem;
+}
+
+.bodyInner h2:first-child {
+  margin-top: 0;
+}
+
+.bodyInner h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: #000;
+  margin: 2.5rem 0 1rem;
+}
+
+.bodyInner p {
+  font-size: clamp(1.05rem, 1.1vw, 1.15rem);
+  line-height: 1.8;
+  color: rgba(0, 0, 0, 0.7);
+  margin-bottom: 1.5rem;
+}
+
+.bodyInner blockquote {
+  border-left: 3px solid #BBDCEF;
+  padding-left: 1.5rem;
+  margin: 2.5rem 0;
+}
+
+.bodyInner blockquote p {
+  font-size: clamp(1.15rem, 1.3vw, 1.3rem);
+  font-weight: 500;
+  line-height: 1.5;
+  color: #000;
+  font-style: italic;
+}
+
+.bodyInner ul {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bodyInner ul li {
+  font-size: clamp(1rem, 1.1vw, 1.1rem);
+  line-height: 1.6;
+  color: rgba(0, 0, 0, 0.7);
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.bodyInner ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #BBDCEF;
+}
+
+.bodyInner strong {
+  color: #000;
+  font-weight: 700;
+}
+
+.bodyInner em {
+  font-style: italic;
+}
+
+/* ── Divider ── */
+.divider {
+  width: 60px;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.15);
+  margin: 3rem 0;
+}
+
+/* ── Tags / Footer ── */
+.articleFooter {
+  max-width: 720px;
+  margin: 0 auto;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.footerLabel {
+  font-family: var(--font-mono), 'Courier New', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(0, 0, 0, 0.4);
+  margin-bottom: 1rem;
+}
+
+.footerTags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.footerTag {
+  font-family: var(--font-mono), 'Courier New', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* ── CTA Banner ── */
+.ctaSection {
+  width: 100%;
+  background-color: #020202;
+  padding: 6rem clamp(1.5rem, 5vw, 5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ctaInner {
+  text-align: center;
+  max-width: 600px;
+}
+
+.ctaEyebrow {
+  font-family: var(--font-mono), 'Courier New', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #BBDCEF;
+  margin-bottom: 1.5rem;
+}
+
+.ctaHeadline {
+  font-family: 'TXC Pearl', system-ui, sans-serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 400;
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  color: #fff;
+  margin-bottom: 2rem;
+}
+
+.ctaButton {
+  background-color: #020202;
+  color: #BBDCEF;
+  border: 1px solid #BBDCEF;
+  padding: 1.25rem 3rem;
+  font-family: var(--font-mono), 'Courier New', monospace;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 0 30px rgba(187, 220, 239, 0.2);
+  transition: all 0.2s ease;
+}
+
+.ctaButton:hover {
+  background-color: #111;
+  box-shadow: 0 0 40px rgba(187, 220, 239, 0.4);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .heroSection {
+    padding: 8rem 1.5rem 3rem;
+  }
+
+  .imageSection {
+    padding: 0 1.5rem 3rem;
+  }
+
+  .bodySection {
+    padding: 4rem 1.5rem;
+  }
+
+  .ctaSection {
+    padding: 4rem 1.5rem;
+  }
+
+  .ctaButton {
+    padding: 1rem 2rem;
+    font-size: 0.85rem;
+  }
+}

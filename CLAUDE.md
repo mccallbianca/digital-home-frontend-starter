@@ -1,0 +1,204 @@
+# Digital Home Starter
+
+## First Time Setup
+
+If you just cloned this repo, follow these steps in order. You need both this repo (Frontend) and the [Digital Home Backend](https://github.com/lukesbrave/digital-home-backend) repo.
+
+### Step 1: Create a Supabase Project
+1. Go to [supabase.com](https://supabase.com) and create a free project
+2. Save these values from Settings > API:
+   - **Project URL** (e.g., `https://abcdefg.supabase.co`)
+   - **anon public key** (starts with `eyJ...`)
+   - **service_role secret key** (starts with `eyJ...` — keep this secret)
+
+### Step 2: Run Database Migrations
+1. In your Supabase dashboard, go to **SQL Editor**
+2. Run each migration file from `supabase/migrations/` in order (001 through 010)
+3. Then run the Backend tables:
+```sql
+CREATE TABLE IF NOT EXISTS brand_context (
+  key TEXT PRIMARY KEY,
+  category TEXT NOT NULL,
+  content TEXT NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS backend_settings (
+  key TEXT PRIMARY KEY,
+  value JSONB NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE brand_context ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Service role full access" ON brand_context FOR ALL USING (true);
+
+ALTER TABLE backend_settings ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Service role full access" ON backend_settings FOR ALL USING (true);
+```
+
+### Step 3: Create an Admin User
+1. In Supabase dashboard, go to **Authentication > Users > Add user**
+2. Set an email and password — this is your login for the Backend dashboard
+3. There is no public signup. All admin users are created here.
+
+### Step 4: Set Up Environment Variables
+```bash
+cp .env.local.example .env.local
+```
+Fill in your Supabase URL, anon key, service role key, and site name. See the "Environment Variables" section below for the full list.
+
+### Step 5: Set Up Your Content Corpus
+```bash
+cp -r content-corpus-examples/ content-corpus/
+```
+Edit each file in `content-corpus/` with your brand's voice, positioning, offers, testimonials, and keywords. **This is the most important step** — it's what makes the AI write like you instead of generic slop.
+
+### Step 6: Install and Run
+```bash
+npm install
+npm run dev
+```
+
+### Step 7: Customize Your Pages
+Every page has placeholder content marked with `[YOUR BRAND]`, `[Your Headline]`, etc. Open each page in `src/app/` and replace the placeholders with your actual content. Claude Code can help — say "help me customize the homepage."
+
+### Step 8: Deploy to Cloudflare
+```bash
+npm run build
+npx wrangler deploy
+```
+Then set server-side secrets via `wrangler secret put` (see Environment Variables section below).
+
+### Step 9: Set Up the Backend
+Clone and set up the [Digital Home Backend](https://github.com/lukesbrave/digital-home-backend) repo — follow its CLAUDE.md for instructions. The Backend manages your content pipeline, and both repos share the same Supabase database.
+
+### Need Help?
+The Digital Home is built and maintained by BraveBrand. If you want help with:
+- The brand intelligence process (content corpus, voice guide, positioning)
+- The AI writing skills and content strategy workflow
+- Design guidance and implementation support
+- A community of founders building their own Digital Homes
+
+Join the [BraveBrand community on Skool](https://www.skool.com/bravebrand/about).
+
+---
+
+## Project Overview
+This is a Next.js 15 website starter deployed on Cloudflare Workers with Supabase as the data layer. The site is designed to speak to three audiences simultaneously: human visitors (personalized UX), AI agents (REST API), and search engines/LLMs (structured data + llms.txt).
+
+**This is the Frontend** — the client-facing public website. Behind it sits the **Digital Home Backend** (separate repo), which is the backend operating system — content pipeline, lead management, email sequences, analytics, and agent oversight. Both share the same Supabase database.
+
+## Tech Stack
+- **Framework:** Next.js 15 (App Router, TypeScript, RSC by default)
+- **Styling:** Tailwind CSS v4
+- **Hosting:** Cloudflare Workers via `@opennextjs/cloudflare` (OpenNext)
+- **Database:** Supabase (PostgreSQL) — schema in `/supabase/migrations/`
+- **Email:** Resend
+- **Auth:** Supabase Auth (admin dashboard only)
+
+## Project Structure
+```
+/digital-home-starter/
+  CLAUDE.md              <- You are here
+  /content-corpus-examples  <- Template brand files (copy to content-corpus/)
+  /supabase/migrations      <- Database schema (run in order)
+  /src
+    /app
+      layout.tsx         <- Root layout, metadata, fonts
+      page.tsx           <- Homepage (skeleton)
+      /blog              <- Blog index + article pages (functional)
+      /services          <- Services page (skeleton)
+      /about             <- About page (skeleton)
+      /contact           <- Contact page (skeleton)
+      /api               <- API routes (content, leads, email, analytics, etc.)
+      /robots.txt        <- Dynamic robots.txt (AI-crawler friendly)
+      /sitemap.ts        <- Dynamic sitemap from published content
+      /llms.txt          <- llms.txt for AI agents
+    /components
+      /layout            <- NavBar (customize with your logo)
+      /seo               <- SchemaMarkup (dynamic from entities)
+    /lib
+      /supabase          <- Supabase client (browser + server)
+      /attribution       <- UTM, referrer, AI traffic detection
+      /analytics         <- Event tracking
+      /schema            <- JSON-LD generators, llms.txt generator
+      /email             <- Resend client
+    /types/database.ts   <- Shared database types (keep in sync with Backend)
+    /middleware.ts       <- Visitor tracking, AI detection, personalization
+```
+
+## Environment Variables
+
+### Build-time public variables
+These go in the Cloudflare dashboard AND in `wrangler.jsonc` under `vars`:
+```
+NEXT_PUBLIC_SUPABASE_URL      — Supabase project URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY — Supabase anon key
+NEXT_PUBLIC_SITE_URL          — Your live site URL (e.g., https://yourdomain.com)
+NEXT_PUBLIC_SITE_NAME         — Your brand name
+SUPABASE_URL                  — Runtime duplicate for server-side access
+SUPABASE_ANON_KEY             — Runtime duplicate for server-side access
+```
+
+### Server-side secrets
+Set via `wrangler secret put` from the terminal:
+```
+SUPABASE_SERVICE_ROLE_KEY     — Service role key, bypasses RLS
+API_SECRET_KEY                — Shared secret between Frontend and Backend (must match both)
+RESEND_API_KEY                — Resend email API key
+```
+
+## Cloudflare / OpenNext Rules
+
+This project runs on Cloudflare Workers via `@opennextjs/cloudflare` (OpenNext). These rules prevent build and runtime failures:
+
+### NEVER add edge runtime exports
+Do **not** add `export const runtime = 'edge'` to any route file. OpenNext handles runtime assignment itself and rejects manual edge runtime exports.
+
+### NEXT_PUBLIC_ vars don't exist at runtime on Workers
+Cloudflare Workers can only read `NEXT_PUBLIC_` variables at build time (baked into the JS bundle). At runtime on the server, they're `undefined`. This is why:
+- `wrangler.jsonc` has both `SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_URL`
+- `src/lib/supabase/server.ts` uses the fallback pattern: `process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL`
+- When creating new server-side code that reads env vars, always use this fallback pattern
+
+### Secrets must be set via Wrangler CLI
+Server-side secrets must be set using `wrangler secret put`. The Cloudflare dashboard UI only works for Pages projects, not Workers.
+
+### Always run `npm run build` before pushing
+`next dev` does not catch all TypeScript errors. `next build` does.
+
+## Key Architecture Decisions
+- **Cloudflare, not Vercel** — zero egress fees, predictable pricing
+- **Native email (Resend), not a third-party platform** — unified data, agent-managed, no platform lock-in
+- **Content as structured objects** — every piece of content is a row in `content_objects` with metadata, semantic tags, associated offers, and performance data
+- **Personalization via rules engine** — JSON rules stored in `personalization_rules` table, evaluated per visitor on each page load
+- **Knowledge graph in the database** — `entities` and `entity_relationships` tables, JSON-LD generated dynamically
+- **Schema markup on every page** — dynamically generated from `entities` table, never hardcoded
+
+## Important Conventions
+- **Server Components by default.** Only use `'use client'` when interactivity requires it.
+- All API routes support API key auth for agents AND session auth for admin dashboard.
+- Every page should include dynamic JSON-LD from the `entities` table.
+- Visitor tracking is anonymous until opt-in. No PII before email capture.
+- **CRITICAL — Shared database types:** When you modify `src/types/database.ts`, you MUST also update the same file in the Backend project. These two files must always be identical.
+
+## Customization Guide
+
+### Pages to customize (in order of importance)
+1. **`src/app/page.tsx`** — Homepage: headline, description, services preview, CTA
+2. **`src/app/about/page.tsx`** — Your story, beliefs, team members
+3. **`src/app/services/page.tsx`** — Your service offerings
+4. **`src/app/contact/page.tsx`** — Contact methods and email
+5. **`src/app/layout.tsx`** — Site title and metadata
+6. **`src/components/layout/NavBar.tsx`** — Your logo/brand name
+
+### Design customization
+- **Colors:** Edit CSS variables in `src/app/globals.css` (the `:root` block)
+- **Fonts:** Replace the Google Fonts imports in `src/app/layout.tsx` or add your own @font-face
+- **Logo:** Replace `[YOUR BRAND]` text in NavBar.tsx with an `<img>` tag pointing to your logo in `/public/`
+
+### Content that auto-populates from the database
+- Blog articles (written by the Backend's AI content pipeline)
+- JSON-LD schema (from the `entities` table)
+- llms.txt (from entities, content, and offers)
+- Sitemap (from published content)

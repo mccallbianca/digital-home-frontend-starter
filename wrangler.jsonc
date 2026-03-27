@@ -1,0 +1,16 @@
+{
+  "name": "digital-home-frontend",
+  "compatibility_date": "2025-12-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": ".open-next/worker.js",
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".open-next/assets"
+  },
+  // Runtime duplicates of NEXT_PUBLIC_ vars — Workers can't read NEXT_PUBLIC_ at runtime
+  // Replace these with your own Supabase credentials
+  "vars": {
+    "SUPABASE_URL": "https://your-project.supabase.co",
+    "SUPABASE_ANON_KEY": "your-anon-key"
+  }
+}
