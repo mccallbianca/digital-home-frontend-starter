@@ -1,5 +1,7 @@
 # Digital Home Starter
 
+This is an open-source, AI-native website and content system. If someone opens this project and asks for help, walk them through the First Time Setup below step by step. Ask them for each piece of information as you go (API keys, project URLs, brand details) — don't assume anything.
+
 ## First Time Setup
 
 If you just cloned this repo, follow these steps in order. You need both this repo (Frontend) and the [Digital Home Backend](https://github.com/lukesbrave/digital-home-backend) repo.
