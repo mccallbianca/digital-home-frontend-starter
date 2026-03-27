@@ -74,7 +74,7 @@ create table content_objects (
   -- Authorship
   status content_status default 'draft',
   created_by content_creator default 'human',
-  author_name text default 'Luke Carter',
+  author_name text,
   published_at timestamptz,
 
   created_at timestamptz default now(),

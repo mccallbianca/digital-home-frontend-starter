@@ -19,7 +19,7 @@ create table entities (
 
   -- Schema.org mapping
   schema_type text not null,        -- Organization, Person, Service, Article, Thing, etc.
-  schema_id text,                   -- @id value, e.g. "https://www.bravebrand.com/#org"
+  schema_id text,                   -- @id value, e.g. "https://www.yourdomain.com/#org"
 
   -- Core data
   description text,
@@ -60,8 +60,8 @@ create trigger entities_updated_at
 
 -- Entity Relationships
 -- Connects entities to each other with typed relationships.
--- e.g. Luke Carter --[founder_of]--> BraveBrand
---      BTC --[client_of]--> BraveBrand
+-- e.g. [Your Name] --[founder_of]--> [Your Brand]
+--      [Client] --[client_of]--> [Your Brand]
 
 create table entity_relationships (
   id uuid primary key default uuid_generate_v4(),

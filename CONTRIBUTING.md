@@ -23,6 +23,14 @@ Thanks for your interest in contributing. This project is designed to be set up 
 - Make sure the build passes: `npm run build`
 - Don't commit `.env` files, secrets, or your `content-corpus/` directory
 
+## What NOT to Contribute
+
+- Brand-specific content (your voice guide, positioning, client data)
+- Hardcoded URLs pointing to a specific domain
+- API keys, secrets, or credentials
+- Your `content-corpus/` directory (it's gitignored for a reason)
+- Design opinions that override the starter's neutral skeleton
+
 ## Questions?
 
 Open an issue. The `CLAUDE.md` file answers most technical questions — read it first.

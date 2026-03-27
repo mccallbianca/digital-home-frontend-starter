@@ -1,45 +1,24 @@
 -- Seed: Entity Relationships
 -- Connects entities in the knowledge graph.
 -- These power the dynamic JSON-LD generation.
+-- Update the slugs below to match the entities you created in 001_entities.sql.
 
--- Luke Carter → founded → BraveBrand
+-- [YOUR NAME] → founded → [YOUR BRAND]
 insert into entity_relationships (subject_id, predicate, object_id)
 select s.id, 'founder_of', o.id
 from entities s, entities o
-where s.slug = 'luke-carter' and o.slug = 'bravebrand';
+where s.slug = 'your-name' and o.slug = 'your-brand';
 
--- BraveBrand → provides → Skool Community
+-- [YOUR BRAND] → provides → [YOUR SERVICE]
 insert into entity_relationships (subject_id, predicate, object_id)
 select s.id, 'provides', o.id
 from entities s, entities o
-where s.slug = 'bravebrand' and o.slug = 'skool-community';
+where s.slug = 'your-brand' and o.slug = 'your-service';
 
--- BraveBrand → provides → BraveBrand Strategy
-insert into entity_relationships (subject_id, predicate, object_id)
-select s.id, 'provides', o.id
-from entities s, entities o
-where s.slug = 'bravebrand' and o.slug = 'bravebrand-strategy';
-
--- BraveBrand → provides → BraveBrand ICON
-insert into entity_relationships (subject_id, predicate, object_id)
-select s.id, 'provides', o.id
-from entities s, entities o
-where s.slug = 'bravebrand' and o.slug = 'bravebrand-icon';
-
--- Bali Time Chamber → client_of → BraveBrand
-insert into entity_relationships (subject_id, predicate, object_id)
-select s.id, 'client_of', o.id
-from entities s, entities o
-where s.slug = 'bali-time-chamber' and o.slug = 'bravebrand';
-
--- Platform Studios → client_of → BraveBrand
-insert into entity_relationships (subject_id, predicate, object_id)
-select s.id, 'client_of', o.id
-from entities s, entities o
-where s.slug = 'platform-studios' and o.slug = 'bravebrand';
-
--- Virgin Active → client_of → BraveBrand
-insert into entity_relationships (subject_id, predicate, object_id)
-select s.id, 'client_of', o.id
-from entities s, entities o
-where s.slug = 'virgin-active-bangkok' and o.slug = 'bravebrand';
+-- Add more relationships as you add entities:
+--
+-- Client relationships:
+-- insert into entity_relationships (subject_id, predicate, object_id)
+-- select s.id, 'client_of', o.id
+-- from entities s, entities o
+-- where s.slug = 'example-client' and o.slug = 'your-brand';
