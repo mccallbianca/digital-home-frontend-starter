@@ -27,6 +27,9 @@ const VALID_TRANSITIONS: Record<string, string[]> = {
 };
 
 export async function GET(_request: NextRequest, context: RouteContext) {
+  const auth = await authenticateRequest(_request);
+  if (!auth.authenticated) return unauthorizedResponse(auth.error);
+
   const { id } = await context.params;
 
   const supabase = createAdminClient();

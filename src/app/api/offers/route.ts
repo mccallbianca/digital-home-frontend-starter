@@ -14,6 +14,8 @@ import { jsonResponse, errorResponse } from "@/lib/api/response";
 import type { Enums } from "@/types/database";
 
 export async function GET(request: NextRequest) {
+  const auth = await authenticateRequest(request);
+  const isAuthenticated = auth.authenticated;
   const { searchParams } = request.nextUrl;
   const supabase = createAdminClient();
 
@@ -23,8 +25,11 @@ export async function GET(request: NextRequest) {
     .order("position_in_ladder", { ascending: true });
 
   const status = searchParams.get("status");
-  if (status) query = query.eq("status", status as Enums<"offer_status">);
-  else query = query.eq("status", "active");
+  if (status && isAuthenticated) {
+    query = query.eq("status", status as Enums<"offer_status">);
+  } else {
+    query = query.eq("status", "active");
+  }
 
   const segment = searchParams.get("segment");
   if (segment) query = query.contains("target_segments", [segment]);

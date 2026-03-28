@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { createAdminClient } from '@/lib/supabase/server';
-import styles from './blog.module.css';
 
 export const dynamic = 'force-dynamic';
 
@@ -103,7 +103,7 @@ export default async function BlogPage() {
       {/* ── Featured Article ── */}
       <section className="px-6 pb-16">
         <div className="max-w-4xl mx-auto">
-          <a href={`/blog/${featured.slug}`} className="block border border-neutral-800 overflow-hidden hover:border-neutral-600 transition-colors">
+          <Link href={`/blog/${featured.slug}`} className="block border border-neutral-800 overflow-hidden hover:border-neutral-600 transition-colors">
             {featured.image && (
               <Image
                 src={featured.image}
@@ -123,7 +123,7 @@ export default async function BlogPage() {
                 <span>{featured.reading_time} min read</span>
               </div>
             </div>
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -136,7 +136,7 @@ export default async function BlogPage() {
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               {rest.map((article) => (
-                <a
+                <Link
                   key={article.slug}
                   href={`/blog/${article.slug}`}
                   className="block border border-neutral-800 overflow-hidden hover:border-neutral-600 transition-colors"
@@ -158,7 +158,7 @@ export default async function BlogPage() {
                       <span>{article.reading_time} min read</span>
                     </div>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           </div>

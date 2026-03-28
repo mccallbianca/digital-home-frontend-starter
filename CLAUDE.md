@@ -15,28 +15,12 @@ If you just cloned this repo, follow these steps in order. You need both this re
 
 ### Step 2: Run Database Migrations
 1. In your Supabase dashboard, go to **SQL Editor**
-2. Run each migration file from `supabase/migrations/` in order (001 through 010)
-3. Then run the Backend tables:
-```sql
-CREATE TABLE IF NOT EXISTS brand_context (
-  key TEXT PRIMARY KEY,
-  category TEXT NOT NULL,
-  content TEXT NOT NULL,
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE TABLE IF NOT EXISTS backend_settings (
-  key TEXT PRIMARY KEY,
-  value JSONB NOT NULL,
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-ALTER TABLE brand_context ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Service role full access" ON brand_context FOR ALL USING (true);
-
-ALTER TABLE backend_settings ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Service role full access" ON backend_settings FOR ALL USING (true);
-```
+2. Run each migration file from `supabase/migrations/` in order (001 through 011)
+3. Then run the Backend migration from the Backend repo:
+   - `digital-home-backend/supabase/migrations/001_backend_core.sql`
+4. The shared database is now ready for both repos:
+   - public read access is limited to published content and active offers
+   - admin and agent operations happen through protected API routes
 
 ### Step 3: Create an Admin User
 1. In Supabase dashboard, go to **Authentication > Users > Add user**
@@ -201,6 +185,7 @@ Set via `wrangler secret put` from the terminal:
 SUPABASE_SERVICE_ROLE_KEY     — Service role key, bypasses RLS
 API_SECRET_KEY                — Shared secret between Frontend and Backend (must match both)
 RESEND_API_KEY                — Resend email API key
+RESEND_WEBHOOK_SECRET         — Resend webhook signing secret (required in production)
 ```
 
 ## Cloudflare / OpenNext Rules
@@ -232,7 +217,10 @@ Server-side secrets must be set using `wrangler secret put`. The Cloudflare dash
 
 ## Important Conventions
 - **Server Components by default.** Only use `'use client'` when interactivity requires it.
-- All API routes support API key auth for agents AND session auth for admin dashboard.
+- Public API surface is intentionally small:
+  - public: content reads, active offers, analytics event posting, lead capture
+  - admin/session-only: visitors, leads queries, analytics queries, content calendar, entities, agent logs
+  - agent-capable: selected write routes using `x-api-key`
 - Every page should include dynamic JSON-LD from the `entities` table.
 - Visitor tracking is anonymous until opt-in. No PII before email capture.
 - **CRITICAL — Shared database types:** When you modify `src/types/database.ts`, you MUST also update the same file in the Backend project. These two files must always be identical.

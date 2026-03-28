@@ -8,9 +8,8 @@
 import { NextRequest } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 import { jsonResponse, errorResponse } from "@/lib/api/response";
-
-// Resend webhook event types we care about
-const VALID_EVENTS = ["email.delivered", "email.opened", "email.clicked", "email.bounced", "email.complained"] as const;
+import { verifyResendWebhookSignature } from "@/lib/email/verify-resend-webhook";
+import type { Json } from "@/types/database";
 
 // Map Resend event types to our enum
 const EVENT_MAP: Record<string, "delivered" | "opened" | "clicked" | "bounced" | "complained" | "unsubscribed"> = {
@@ -22,8 +21,12 @@ const EVENT_MAP: Record<string, "delivered" | "opened" | "clicked" | "bounced" |
 };
 
 export async function POST(request: NextRequest) {
-  // Verify webhook signature (Resend uses svix)
   const webhookSecret = process.env.RESEND_WEBHOOK_SECRET;
+  if (process.env.NODE_ENV === "production" && !webhookSecret) {
+    return errorResponse("Webhook secret not configured", 500);
+  }
+
+  const rawBody = await request.text();
   if (webhookSecret) {
     const svixId = request.headers.get("svix-id");
     const svixTimestamp = request.headers.get("svix-timestamp");
@@ -33,20 +36,36 @@ export async function POST(request: NextRequest) {
       return errorResponse("Missing webhook signature headers", 401);
     }
 
-    // TODO: Implement full svix signature verification
-    // For now, we accept all webhooks if the secret is configured
-    // In production, use the @svix/webhooks package
+    const valid = await verifyResendWebhookSignature({
+      secret: webhookSecret,
+      body: rawBody,
+      id: svixId,
+      timestamp: svixTimestamp,
+      signatureHeader: svixSignature,
+    });
+
+    if (!valid) {
+      return errorResponse("Invalid webhook signature", 401);
+    }
   }
 
-  const body = await request.json();
-  const eventType = body.type;
+  let body: Record<string, unknown>;
+  try {
+    body = JSON.parse(rawBody);
+  } catch {
+    return errorResponse("Invalid JSON payload", 400);
+  }
+
+  const eventType = typeof body.type === "string" ? body.type : null;
 
   if (!eventType || !(eventType in EVENT_MAP)) {
     // Acknowledge but ignore unknown events
     return jsonResponse({ ok: true, ignored: true });
   }
 
-  const resendId = body.data?.email_id;
+  const resendId = typeof body.data === "object" && body.data !== null
+    ? (body.data as { email_id?: string }).email_id
+    : undefined;
   if (!resendId) return errorResponse("Missing email_id in webhook data");
 
   const supabase = createAdminClient();
@@ -68,7 +87,8 @@ export async function POST(request: NextRequest) {
     send_id: send.id,
     lead_id: send.lead_id,
     event_type: EVENT_MAP[eventType],
-    event_data: body.data || {},
+    event_data:
+      (typeof body.data === "object" && body.data !== null ? body.data : {}) as Json,
   });
 
   // Update send status for bounces

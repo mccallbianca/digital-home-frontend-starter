@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const NAV_LINKS = [
@@ -29,14 +30,14 @@ export default function NavBar() {
     >
       <div className="max-w-[1400px] mx-auto flex items-center justify-between h-[72px]">
         {/* Brand — replace with your logo */}
-        <a href="/" className="text-white font-bold text-lg tracking-tight">
+        <Link href="/" className="text-white font-bold text-lg tracking-tight">
           [YOUR BRAND]
-        </a>
+        </Link>
 
         {/* Links */}
         <div className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className={`font-mono text-[0.7rem] uppercase tracking-widest transition-colors ${
@@ -46,14 +47,14 @@ export default function NavBar() {
               }`}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <a
+          <Link
             href="/contact"
             className="text-[0.65rem] font-semibold uppercase tracking-wider bg-white text-black px-6 py-2.5 hover:bg-transparent hover:text-white border border-white transition-all"
           >
             Get In Touch
-          </a>
+          </Link>
         </div>
       </div>
     </nav>

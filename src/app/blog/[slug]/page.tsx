@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createAdminClient } from '@/lib/supabase/server';
 
@@ -67,9 +68,9 @@ export default async function ArticlePage({
       {/* ── Hero ── */}
       <section className="pt-32 pb-8 px-6">
         <div className="max-w-3xl mx-auto">
-          <a href="/blog" className="inline-flex items-center gap-2 text-sm text-neutral-400 hover:text-white mb-8">
+          <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-neutral-400 hover:text-white mb-8">
             ← Back to Articles
-          </a>
+          </Link>
 
           <div className="flex gap-4 text-xs text-neutral-500 mb-4">
             <span className="uppercase tracking-wider">{article.content_type}</span>
@@ -127,12 +128,12 @@ export default async function ArticlePage({
           <h2 className="text-3xl font-bold text-white mb-6">
             [Your CTA Headline]
           </h2>
-          <a
+          <Link
             href="/contact"
             className="inline-block text-sm font-semibold uppercase tracking-wider bg-white text-black px-8 py-3 hover:bg-transparent hover:text-white border border-white transition-all"
           >
             [Your CTA]
-          </a>
+          </Link>
         </div>
       </section>
     </main>

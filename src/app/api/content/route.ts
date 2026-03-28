@@ -17,6 +17,8 @@ import { jsonResponse, errorResponse, paginatedResponse, parsePagination } from 
 import type { Enums } from "@/types/database";
 
 export async function GET(request: NextRequest) {
+  const auth = await authenticateRequest(request);
+  const isAuthenticated = auth.authenticated;
   const { searchParams } = request.nextUrl;
   const { page, limit, offset } = parsePagination(searchParams);
 
@@ -30,8 +32,11 @@ export async function GET(request: NextRequest) {
   if (type) query = query.eq("content_type", type as Enums<"content_type">);
 
   const status = searchParams.get("status");
-  if (status) query = query.eq("status", status as Enums<"content_status">);
-  else query = query.eq("status", "published"); // Default to published
+  if (status && isAuthenticated) {
+    query = query.eq("status", status as Enums<"content_status">);
+  } else {
+    query = query.eq("status", "published");
+  }
 
   const tag = searchParams.get("tag");
   if (tag) query = query.contains("semantic_tags", [tag]);

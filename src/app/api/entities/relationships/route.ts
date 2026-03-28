@@ -9,6 +9,9 @@ import { authenticateRequest, unauthorizedResponse } from "@/lib/api/auth";
 import { jsonResponse, errorResponse } from "@/lib/api/response";
 
 export async function GET(request: NextRequest) {
+  const auth = await authenticateRequest(request);
+  if (!auth.authenticated) return unauthorizedResponse(auth.error);
+
   const { searchParams } = request.nextUrl;
   const supabase = createAdminClient();
 

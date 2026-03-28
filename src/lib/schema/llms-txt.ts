@@ -83,10 +83,9 @@ export function generateLlmsTxt(
   lines.push("");
   lines.push(`- Content: GET ${SITE_URL}/api/content`);
   lines.push(`- Offers: GET ${SITE_URL}/api/offers`);
-  lines.push(`- Entities: GET ${SITE_URL}/api/entities`);
   lines.push(`- Analytics: POST ${SITE_URL}/api/analytics`);
   lines.push("");
-  lines.push("API authentication via x-api-key header for agent access.");
+  lines.push("Administrative and agent-only routes require session auth or x-api-key access.");
   lines.push("");
 
   // Contact

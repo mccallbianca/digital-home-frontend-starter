@@ -13,14 +13,20 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  const auth = await authenticateRequest(request);
   const { slug } = await params;
   const supabase = createAdminClient();
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("content_objects")
     .select("*, seo_meta(*)")
-    .eq("slug", slug)
-    .single();
+    .eq("slug", slug);
+
+  if (!auth.authenticated) {
+    query = query.eq("status", "published");
+  }
+
+  const { data, error } = await query.single();
 
   if (error || !data) return notFoundResponse("Content");
 

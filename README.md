@@ -49,9 +49,9 @@ This is the **Frontend starter** — a skeleton website with the full architectu
    npm install
    ```
 
-2. **Set up Supabase** — create a project at [supabase.com](https://supabase.com) and run the migrations in `supabase/migrations/`
+2. **Set up Supabase** — create a project at [supabase.com](https://supabase.com) and run the migrations in `supabase/migrations/` (`001` through `011`), then run the Backend migration in `digital-home-backend/supabase/migrations/001_backend_core.sql`
 
-3. **Set up environment** — `cp .env.local.example .env.local` and fill in your credentials
+3. **Set up environment** — `cp .env.local.example .env.local` and fill in your credentials, including `RESEND_WEBHOOK_SECRET` for production webhook verification
 
 4. **Set up your content corpus** — `cp -r content-corpus-examples/ content-corpus/` and fill in your brand data
 
