@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { createAdminClient } from '@/lib/supabase/server';
+import StarterNotice from '@/components/layout/StarterNotice';
 
 export const dynamic = 'force-dynamic';
 
@@ -132,6 +133,8 @@ export default async function BlogPage() {
               This starter ships with a clean editorial archive for articles, essays, and guides. Keep the
               structure, then tailor the visuals, categories, and voice to match your brand.
             </p>
+
+            <StarterNotice compact />
           </div>
         </div>
       </section>

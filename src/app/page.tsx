@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import StarterNotice from '@/components/layout/StarterNotice';
 
 export default function HomePage() {
   return (
@@ -26,6 +27,8 @@ export default function HomePage() {
               website, blog, and AI-ready content system. Start with this base, then tailor the design,
               copy, and brand direction to fit your business.
             </p>
+
+            <StarterNotice />
 
             <div className="flex flex-col sm:flex-row gap-4 mt-10">
               <Link

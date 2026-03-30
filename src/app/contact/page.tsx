@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import StarterNotice from '@/components/layout/StarterNotice';
 
 export const metadata: Metadata = {
   title: 'Contact — Digital Home Starter',
@@ -30,6 +31,8 @@ export default function ContactPage() {
                 This page works best when it feels direct, clear, and reassuring. Add the contact paths you
                 actually want people to use, then remove anything that creates hesitation.
               </p>
+
+              <StarterNotice compact />
             </div>
 
             <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-3">

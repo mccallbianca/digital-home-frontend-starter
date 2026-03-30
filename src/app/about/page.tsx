@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import StarterNotice from '@/components/layout/StarterNotice';
 
 export const metadata: Metadata = {
   title: 'About — Digital Home Starter',
@@ -31,6 +32,8 @@ export default function AboutPage() {
                 should trust your perspective. The structure is already here. Your story is what makes it
                 specific.
               </p>
+
+              <StarterNotice compact />
             </div>
 
             <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-3">

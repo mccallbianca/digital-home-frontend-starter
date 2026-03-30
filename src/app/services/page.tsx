@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import StarterNotice from '@/components/layout/StarterNotice';
 
 export const metadata: Metadata = {
   title: 'Services — Digital Home Starter',
@@ -30,6 +31,8 @@ export default function ServicesPage() {
                 This page is designed to help visitors grasp what you do, who it is for, and where to go
                 next. Replace the starter copy with your actual offers, outcomes, and call to action.
               </p>
+
+              <StarterNotice compact />
             </div>
 
             <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-3">
