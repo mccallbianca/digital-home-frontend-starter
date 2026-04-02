@@ -1,5 +1,5 @@
 {
-  "name": "digital-home-frontend",
+  "name": "herr-frontend",
   "compatibility_date": "2025-12-01",
   "compatibility_flags": ["nodejs_compat"],
   "main": ".open-next/worker.js",
@@ -7,10 +7,15 @@
     "binding": "ASSETS",
     "directory": ".open-next/assets"
   },
+  "routes": [
+    {
+      "pattern": "www.h3rr.com/*",
+      "zone_name": "h3rr.com"
+    }
+  ],
   // Runtime duplicates of NEXT_PUBLIC_ vars — Workers can't read NEXT_PUBLIC_ at runtime
-  // Replace these with your own Supabase credentials
   "vars": {
-    "SUPABASE_URL": "https://your-project.supabase.co",
-    "SUPABASE_ANON_KEY": "your-anon-key"
+    "SUPABASE_URL": "https://uyhfdtrvlhdhrhniysvw.supabase.co",
+    "SUPABASE_ANON_KEY": "sb_publishable_ySPxpoXjn_myxUWfd-D37w_wgPhbdhm"
   }
 }
