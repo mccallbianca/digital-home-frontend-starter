@@ -70,7 +70,7 @@ export function generateLlmsTxt(
     lines.push("## Content");
     lines.push("");
     for (const item of published) {
-      const url = `${SITE_URL}/blog/${item.slug}`;
+      const url = `${SITE_URL}/journal/${item.slug}`;
       lines.push(`- [${item.title}](${url}): ${item.excerpt || item.subtitle || ""}`);
     }
     lines.push("");

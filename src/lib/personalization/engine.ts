@@ -91,7 +91,7 @@ export function evaluateRules(
 
 /**
  * Check if a page path matches any of the rule's page patterns.
- * Supports wildcards: "/blog/*" matches "/blog/anything"
+ * Supports wildcards: "/journal/*" matches "/journal/anything"
  */
 function matchesPage(patterns: string[], path: string): boolean {
   // Empty patterns = applies to all pages

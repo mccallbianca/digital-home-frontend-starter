@@ -11,11 +11,22 @@
     {
       "pattern": "www.h3rr.com/*",
       "zone_name": "h3rr.com"
+    },
+    {
+      "pattern": "h3rr.com/*",
+      "zone_name": "h3rr.com"
     }
   ],
-  // Runtime duplicates of NEXT_PUBLIC_ vars — Workers can't read NEXT_PUBLIC_ at runtime
+  // Public vars only — secrets are set via `npx wrangler secret put`
   "vars": {
     "SUPABASE_URL": "https://uyhfdtrvlhdhrhniysvw.supabase.co",
-    "SUPABASE_ANON_KEY": "sb_publishable_ySPxpoXjn_myxUWfd-D37w_wgPhbdhm"
+    "SUPABASE_ANON_KEY": "sb_publishable_ySPxpoXjn_myxUWfd-D37w_wgPhbdhm",
+    "STRIPE_PUBLISHABLE_KEY": "pk_live_51HfyPeHZB88bXQVDMbdKPqLdawj1tiA6fCyQJTN6iWcPUzQkFKKRG9alAPLuCtPNEbo8Xaf1o7r5Yp5ydyhuufIz00j4Ta5sMS",
+    "STRIPE_PRICE_COLLECTIVE": "price_1TI1pIHZB88bXQVDuOTDGEIW",
+    "STRIPE_PRICE_PERSONALIZED": "price_1TI1sFHZB88bXQVDegbM7bJk",
+    "STRIPE_PRICE_ELITE": "price_1TI1t8HZB88bXQVDJPOX9vzb",
+    "STRIPE_PRICE_FREE": "none",
+    "STRIPE_PORTAL_URL": "https://billing.stripe.com/p/login/9B628rgXfca98nX8Uc1VK00",
+    "RESEND_FROM_EMAIL": "noreply@h3rr.com"
   }
 }

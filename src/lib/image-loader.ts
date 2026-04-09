@@ -1,12 +1,11 @@
 export default function cloudflareLoader({
   src,
-  width,
-  quality,
 }: {
   src: string;
   width: number;
   quality?: number;
 }) {
-  const params = [`width=${width}`, `quality=${quality || 75}`, "format=auto"];
-  return `/cdn-cgi/image/${params.join(",")}/${src}`;
+  // Serve images directly — Cloudflare Image Resizing (/cdn-cgi/image/) requires
+  // a paid add-on. Return the raw src so all images load without transformation.
+  return src;
 }

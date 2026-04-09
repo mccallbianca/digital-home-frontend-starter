@@ -888,6 +888,168 @@ export type Database = {
         };
         Relationships: [];
       };
+      profiles: {
+        Row: {
+          id: string;
+          email: string | null;
+          first_name: string | null;
+          last_name: string | null;
+          preferred_name: string | null;
+          pronouns: string | null;
+          timezone: string | null;
+          plan: "personalized" | "elite" | null;
+          onboarding_complete: boolean;
+          stripe_customer_id: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id: string;
+          email?: string | null;
+          first_name?: string | null;
+          last_name?: string | null;
+          preferred_name?: string | null;
+          pronouns?: string | null;
+          timezone?: string | null;
+          plan?: "personalized" | "elite" | null;
+          onboarding_complete?: boolean;
+          stripe_customer_id?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string | null;
+          first_name?: string | null;
+          last_name?: string | null;
+          preferred_name?: string | null;
+          pronouns?: string | null;
+          timezone?: string | null;
+          plan?: "personalized" | "elite" | null;
+          onboarding_complete?: boolean;
+          stripe_customer_id?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      existential_responses: {
+        Row: {
+          id: string;
+          user_id: string;
+          question_index: number;
+          response: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          question_index: number;
+          response: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          question_index?: number;
+          response?: number;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      user_preferences: {
+        Row: {
+          id: string;
+          user_id: string;
+          activity_modes: string[];
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          activity_modes?: string[];
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          activity_modes?: string[];
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      voice_consents: {
+        Row: {
+          id: string;
+          user_id: string;
+          consented_at: string | null;
+          file_path: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          consented_at?: string | null;
+          file_path?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          consented_at?: string | null;
+          file_path?: string | null;
+        };
+        Relationships: [];
+      };
+      members: {
+        Row: {
+          id: string;
+          stripe_customer_id: string;
+          stripe_subscription_id: string | null;
+          email: string;
+          name: string | null;
+          tier: string;
+          status: string;
+          source: string | null;
+          subscribed_at: string | null;
+          period_end: string | null;
+          voice_clone_consent: boolean;
+          voice_clone_consent_at: string | null;
+          onboarded: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          stripe_customer_id: string;
+          stripe_subscription_id?: string | null;
+          email: string;
+          name?: string | null;
+          tier: string;
+          status?: string;
+          source?: string | null;
+          subscribed_at?: string | null;
+          period_end?: string | null;
+          voice_clone_consent?: boolean;
+          voice_clone_consent_at?: string | null;
+          onboarded?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          stripe_customer_id?: string;
+          stripe_subscription_id?: string | null;
+          email?: string;
+          name?: string | null;
+          tier?: string;
+          status?: string;
+          source?: string | null;
+          subscribed_at?: string | null;
+          period_end?: string | null;
+          voice_clone_consent?: boolean;
+          voice_clone_consent_at?: string | null;
+          onboarded?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       agent_logs: {
         Row: {
           id: string;
@@ -933,6 +1095,180 @@ export type Database = {
           duration_ms?: number | null;
           tokens_used?: number | null;
           created_at?: string;
+        };
+        Relationships: [];
+      };
+      producer_applications: {
+        Row: {
+          id: string;
+          first_name: string;
+          last_name: string;
+          stage_name: string;
+          email: string;
+          genre_specialties: string[];
+          portfolio_url: string;
+          sample_track_url: string | null;
+          statement: string;
+          originality_confirmed: boolean;
+          status: string;
+          admin_notes: string | null;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          first_name: string;
+          last_name: string;
+          stage_name: string;
+          email: string;
+          genre_specialties?: string[];
+          portfolio_url: string;
+          sample_track_url?: string | null;
+          statement: string;
+          originality_confirmed?: boolean;
+          status?: string;
+          admin_notes?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          first_name?: string;
+          last_name?: string;
+          stage_name?: string;
+          email?: string;
+          genre_specialties?: string[];
+          portfolio_url?: string;
+          sample_track_url?: string | null;
+          statement?: string;
+          originality_confirmed?: boolean;
+          status?: string;
+          admin_notes?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      moment_for_music: {
+        Row: {
+          id: string;
+          producer_name: string;
+          track_name: string;
+          genre: string;
+          activity_mode: string;
+          caption: string;
+          video_url: string | null;
+          thumbnail_url: string | null;
+          is_published: boolean;
+          display_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          producer_name: string;
+          track_name: string;
+          genre: string;
+          activity_mode: string;
+          caption: string;
+          video_url?: string | null;
+          thumbnail_url?: string | null;
+          is_published?: boolean;
+          display_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          producer_name?: string;
+          track_name?: string;
+          genre?: string;
+          activity_mode?: string;
+          caption?: string;
+          video_url?: string | null;
+          thumbnail_url?: string | null;
+          is_published?: boolean;
+          display_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      blist_waitlist: {
+        Row: {
+          id: string;
+          first_name: string;
+          email: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          first_name: string;
+          email: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          first_name?: string;
+          email?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      track_catalog: {
+        Row: {
+          id: string;
+          genre: string;
+          activity_mode: string;
+          clinical_level: number;
+          clinical_label: string;
+          title: string | null;
+          producer_id: string | null;
+          audio_url: string | null;
+          stem_url: string | null;
+          bpm: number | null;
+          duration_seconds: number | null;
+          is_published: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          genre: string;
+          activity_mode: string;
+          clinical_level?: number;
+          clinical_label?: string;
+          title?: string | null;
+          producer_id?: string | null;
+          audio_url?: string | null;
+          stem_url?: string | null;
+          bpm?: number | null;
+          duration_seconds?: number | null;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          genre?: string;
+          activity_mode?: string;
+          clinical_level?: number;
+          clinical_label?: string;
+          title?: string | null;
+          producer_id?: string | null;
+          audio_url?: string | null;
+          stem_url?: string | null;
+          bpm?: number | null;
+          duration_seconds?: number | null;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
         };
         Relationships: [];
       };

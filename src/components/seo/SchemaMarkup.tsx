@@ -5,7 +5,7 @@
  *
  * Usage:
  *   <SchemaMarkup pageSlug="/" entitySlugs={["your-brand", "your-name"]} />
- *   <SchemaMarkup pageSlug="/blog/my-article" contentSlug="my-article" />
+ *   <SchemaMarkup pageSlug="/journal/my-article" contentSlug="my-article" />
  */
 
 import { createAdminClient } from "@/lib/supabase/server";
