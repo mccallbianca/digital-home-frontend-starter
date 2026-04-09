@@ -2,8 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import HERRImageSlot, { HERR_GRADIENTS } from '@/components/ui/HERRImageSlot';
 import ECQOSoundSection from '@/components/ecqo-sound/ECQOSoundSection';
-import MomentForMusic from '@/components/ecqo-sound/MomentForMusic';
-import BListSection from '@/components/ecqo-sound/BListSection';
 
 export const metadata: Metadata = {
   title: 'HERR — Human Existential Response and Reprogramming',
@@ -246,10 +244,8 @@ export default function HomePage() {
       <ECQOSoundSection />
 
       {/* ── ECQO Sound Studio Presents ───────────────────────────── */}
-      <MomentForMusic />
 
       {/* ── The B-LIST ────────────────────────────────────────────── */}
-      <BListSection />
 
       {/* ── Clinical Authority ────────────────────────────────────── */}
       <section className="px-6 py-24 border-t border-[var(--herr-border)] bg-[var(--herr-surface)]">
