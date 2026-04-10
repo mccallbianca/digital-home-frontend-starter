@@ -10,8 +10,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, getRateLimitKey, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { TRAUMA_MESSAGES } from '@/lib/security/trauma-messages';
 
-const SUPABASE_URL = 'https://uyhfdtrvlhdhrhniysvw.supabase.co';
-const SITE_URL = 'https://www.h3rr.com';
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.h3rr.com';
 
 export async function POST(req: NextRequest) {
   try {

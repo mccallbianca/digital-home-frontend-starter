@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
-import { createAdminClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,9 +11,9 @@ export const metadata: Metadata = {
 };
 
 function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: 'short',
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
     year: 'numeric',
   });
 }
@@ -25,71 +24,37 @@ function estimateReadingTime(body: string | null): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
-const FEATURED_PLACEHOLDERS = [
-  {
-    label: 'Featured essay',
-    note: 'Use this space for a hero image, illustration, or branded editorial visual.',
-  },
-  {
-    label: 'Publishing system',
-    note: 'The blog is already structured so new posts can slot cleanly into the site.',
-  },
-  {
-    label: 'On-brand later',
-    note: 'Swap in your own imagery and voice once the starter becomes your site.',
-  },
-];
+export default async function JournalPage() {
+  const supabase = await createClient();
 
-const CARD_PLACEHOLDERS = [
-  'Add a branded article image or abstract visual.',
-  'Use a product detail, workspace shot, or custom illustration.',
-  'Keep it simple with a neutral texture or editorial graphic.',
-];
+  const { data: articles, error } = await supabase
+    .from('content_objects')
+    .select('slug, title, excerpt, content_type, semantic_tags, published_at, featured_image_url, body, author_name')
+    .eq('status', 'published')
+    .eq('content_type', 'article')
+    .order('published_at', { ascending: false, nullsFirst: false });
 
-export default async function BlogPage() {
-  let allArticles: Array<{
-    slug: string;
-    title: string;
-    excerpt: string;
-    semantic_tags: string[];
-    content_type: string;
-    published_at: string;
-    reading_time: number;
-    image: string;
-  }> = [];
-
-  try {
-    const supabase = createAdminClient();
-    const { data: articles, error } = await supabase
-      .from('content_objects')
-      .select('id, slug, title, content_type, excerpt, semantic_tags, published_at, featured_image_url, body')
-      .eq('status', 'published')
-      .in('content_type', ['article', 'guide'])
-      .order('published_at', { ascending: false, nullsFirst: false });
-
-    if (error) {
-      console.error('Supabase query error:', error.message);
-    }
-
-    allArticles = (articles || []).map((a) => ({
-      slug: a.slug,
-      title: a.title,
-      excerpt: a.excerpt || '',
-      semantic_tags: a.semantic_tags || [],
-      content_type: a.content_type,
-      published_at: a.published_at || a.slug,
-      reading_time: estimateReadingTime(a.body),
-      image: a.featured_image_url || '',
-    }));
-  } catch (err) {
-    console.error('Blog page error:', err);
+  if (error) {
+    console.error('[journal] Query error:', error.message);
   }
 
-  // Empty state
+  const allArticles = (articles || []).map((a) => ({
+    slug: a.slug,
+    title: a.title,
+    excerpt: a.excerpt || '',
+    semantic_tags: a.semantic_tags || [],
+    content_type: a.content_type,
+    published_at: a.published_at || '',
+    reading_time: estimateReadingTime(a.body),
+    image: a.featured_image_url || '',
+    author: a.author_name || 'Bianca D. McCall, LMFT',
+  }));
+
+  // Empty state — only shown when zero published articles exist
   if (allArticles.length === 0) {
     return (
-      <main>
-        <section className="min-h-screen flex items-center justify-center px-6 pt-24">
+      <main className="min-h-screen">
+        <section className="flex items-center justify-center px-6 pt-32 pb-24">
           <div className="max-w-2xl border border-[var(--herr-border)] bg-[var(--herr-surface)] p-12 text-center">
             <p className="herr-label text-[var(--herr-muted)] mb-6">The Journal</p>
             <h1 className="font-display text-4xl md:text-5xl font-light text-[var(--herr-white)] mb-6 leading-tight">
@@ -98,9 +63,9 @@ export default async function BlogPage() {
             <p className="text-[var(--herr-muted)] leading-relaxed mb-8">
               The HERR journal publishes thought leadership on existential psychology, the inner voice, elite performance, and behavioral wellness. Written by Bianca D. McCall, LMFT.
             </p>
-            <a href="/subscribe" className="btn-herr-primary inline-flex">
+            <Link href="/subscribe" className="btn-herr-primary inline-flex">
               Begin Your Reprogramming
-            </a>
+            </Link>
           </div>
         </section>
       </main>
@@ -111,160 +76,91 @@ export default async function BlogPage() {
   const rest = allArticles.slice(1);
 
   return (
-    <main>
+    <main className="min-h-screen">
+      {/* Header */}
       <section className="pt-32 pb-14 px-6">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="flex items-center justify-between gap-6 pb-6 mb-8 border-b border-[var(--herr-border)] herr-label text-[var(--herr-faint)]">
-            <span>HERR Journal</span>
-            <span>{allArticles.length} article{allArticles.length === 1 ? '' : 's'}</span>
+        <div className="max-w-[1200px] mx-auto">
+          <div className="flex items-center justify-between gap-6 pb-6 mb-8 border-b border-[var(--herr-border)]">
+            <span className="herr-label text-[var(--herr-faint)]">HERR Journal</span>
+            <span className="herr-label text-[var(--herr-faint)]">{allArticles.length} article{allArticles.length === 1 ? '' : 's'}</span>
           </div>
 
-          <div className="max-w-4xl">
-            <p className="herr-label text-[var(--herr-muted)] mb-6">
-              Bianca D. McCall, LMFT — Founder of HERR and ECQO Holdings
-            </p>
-            <h1 className="font-display text-5xl md:text-7xl xl:text-8xl font-light text-[var(--herr-white)] leading-[0.9] mb-6">
-              The Journal
-            </h1>
-            <p className="text-lg md:text-xl text-[var(--herr-muted)] max-w-2xl leading-relaxed">
-              Clinical insight on existential psychology, the inner voice, identity transition, and elite performance.
-            </p>
-          </div>
+          <p className="herr-label text-[var(--herr-muted)] mb-6">
+            Bianca D. McCall, LMFT — Founder of HERR and ECQO Holdings
+          </p>
+          <h1 className="font-display text-5xl md:text-7xl font-light text-[var(--herr-white)] leading-[0.9] mb-6">
+            The Journal
+          </h1>
+          <p className="text-lg text-[var(--herr-muted)] max-w-2xl leading-relaxed">
+            Clinical insight on existential psychology, the inner voice, identity transition, and elite performance.
+          </p>
         </div>
       </section>
 
+      {/* Featured Article */}
       <section className="px-6 pb-16">
-        <div className="max-w-[1400px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <Link
             href={`/journal/${featured.slug}`}
-            className="grid overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] transition-all duration-300 hover:border-white/20 hover:bg-white/[0.05] lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]"
+            className="block border border-[var(--herr-border)] bg-[var(--herr-surface)] hover:border-[var(--herr-pink)] transition-colors"
           >
-            <div className="border-b border-white/10 lg:border-b-0 lg:border-r lg:border-white/10">
-              {featured.image ? (
-                <Image
-                  src={featured.image}
-                  alt={featured.title}
-                  width={1792}
-                  height={1024}
-                  className="h-full min-h-[320px] w-full object-cover"
-                  priority
-                />
-              ) : (
-                <div className="grid h-full min-h-[320px] grid-cols-1 gap-px bg-white/10 p-px sm:grid-cols-3">
-                  {FEATURED_PLACEHOLDERS.map((item, index) => (
-                    <div
-                      key={item.label}
-                      className={`flex flex-col justify-between rounded-[1.5rem] px-6 py-6 ${
-                        index === 0 ? 'bg-[linear-gradient(180deg,rgba(255,255,255,0.09),rgba(255,255,255,0.04))]' :
-                        index === 1 ? 'bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.025))]' :
-                        'bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.018))]'
-                      }`}
-                    >
-                      <span className="inline-flex w-fit rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[0.68rem] font-medium text-white/45">
-                        {item.label}
-                      </span>
-                      <p className="max-w-[18ch] text-sm leading-relaxed text-neutral-300">
-                        {item.note}
-                      </p>
-                    </div>
+            <div className="p-8 md:p-12">
+              <p className="herr-label text-[var(--herr-pink)] mb-4">Featured</p>
+              <h2 className="font-display text-3xl md:text-5xl font-light text-[var(--herr-white)] mb-6 leading-tight">
+                {featured.title}
+              </h2>
+              {featured.excerpt && (
+                <p className="text-lg text-[var(--herr-muted)] max-w-2xl leading-relaxed mb-6">
+                  {featured.excerpt}
+                </p>
+              )}
+              <div className="flex flex-wrap items-center gap-4">
+                <span className="text-[0.78rem] text-[var(--herr-faint)]">{featured.author}</span>
+                <span className="text-[var(--herr-faint)]">&middot;</span>
+                <span className="text-[0.78rem] text-[var(--herr-faint)]">{formatDate(featured.published_at)}</span>
+                <span className="text-[var(--herr-faint)]">&middot;</span>
+                <span className="text-[0.78rem] text-[var(--herr-faint)]">{featured.reading_time} min read</span>
+              </div>
+              {featured.semantic_tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-6">
+                  {featured.semantic_tags.slice(0, 4).map((tag) => (
+                    <span key={tag} className="herr-label text-[var(--herr-faint)] border border-[var(--herr-border)] px-3 py-1">
+                      {tag}
+                    </span>
                   ))}
                 </div>
               )}
-            </div>
-
-            <div className="flex flex-col justify-center p-8 md:p-10">
-              <span className="inline-flex w-fit rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[0.72rem] font-medium text-white/55">
-                Featured article
-              </span>
-              <h2 className="mt-5 text-3xl md:text-4xl font-semibold tracking-[-0.05em] text-white">
-                {featured.title}
-              </h2>
-              <p className="mt-4 text-lg text-neutral-400 leading-relaxed">
-                {featured.excerpt || 'Open this post to see how a published article sits inside the starter’s editorial structure.'}
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3 text-[0.75rem] font-medium text-white/45">
-                <span className="rounded-full border border-white/10 px-3 py-1.5">
-                  {formatDate(featured.published_at)}
-                </span>
-                <span className="rounded-full border border-white/10 px-3 py-1.5">
-                  {featured.reading_time} min read
-                </span>
-                <span className="rounded-full border border-white/10 px-3 py-1.5 capitalize">
-                  {featured.content_type}
-                </span>
-              </div>
             </div>
           </Link>
         </div>
       </section>
 
+      {/* Remaining Articles */}
       {rest.length > 0 && (
         <section className="px-6 pb-24">
-          <div className="max-w-[1400px] mx-auto">
-            <div className="flex items-end justify-between gap-6 mb-8">
-              <div>
-                <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-white/45 mb-4">
-                  More from the archive
-                </p>
-                <h2 className="text-3xl md:text-5xl font-semibold tracking-[-0.05em] text-white">
-                  The rest of the journal.
-                </h2>
-              </div>
-              <span className="hidden md:inline-flex rounded-full border border-white/10 px-4 py-2 text-sm text-white/45">
-                {allArticles.length} published entries
-              </span>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {rest.map((article, index) => (
+          <div className="max-w-[1200px] mx-auto">
+            <p className="herr-label text-[var(--herr-muted)] mb-8">More from the archive</p>
+            <div className="grid gap-px bg-[var(--herr-border)] md:grid-cols-2 lg:grid-cols-3">
+              {rest.map((article) => (
                 <Link
                   key={article.slug}
                   href={`/journal/${article.slug}`}
-                  className="group block overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.03] transition-all duration-300 hover:border-white/20 hover:bg-white/[0.05]"
+                  className="block bg-[var(--herr-black)] hover:bg-[var(--herr-surface)] transition-colors p-8"
                 >
-                  {article.image ? (
-                    <Image
-                      src={article.image}
-                      alt={article.title}
-                      width={896}
-                      height={512}
-                      className="h-52 w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                    />
-                  ) : (
-                    <div className="flex h-52 items-end border-b border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.025))] p-6">
-                      <p className="max-w-[20ch] text-sm leading-relaxed text-neutral-300">
-                        {CARD_PLACEHOLDERS[index % CARD_PLACEHOLDERS.length]}
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="p-6">
-                    <div className="flex flex-wrap gap-2 text-[0.72rem] font-medium text-white/45">
-                      <span className="rounded-full border border-white/10 px-3 py-1">
-                        {formatDate(article.published_at)}
-                      </span>
-                      <span className="rounded-full border border-white/10 px-3 py-1">
-                        {article.reading_time} min read
-                      </span>
-                    </div>
-
-                    <h3 className="mt-4 text-2xl font-semibold tracking-[-0.04em] text-white">
-                      {article.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-neutral-400">
-                      {article.excerpt || 'Use this card style for publishing ideas, essays, updates, and evergreen content.'}
+                  <h3 className="font-display text-xl font-light text-[var(--herr-white)] mb-3 leading-snug">
+                    {article.title}
+                  </h3>
+                  {article.excerpt && (
+                    <p className="text-[0.85rem] text-[var(--herr-muted)] leading-relaxed mb-4 line-clamp-3">
+                      {article.excerpt}
                     </p>
-
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      {article.semantic_tags.slice(0, 2).map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[0.72rem] text-white/50"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                  )}
+                  <div className="flex flex-wrap items-center gap-3 text-[0.75rem] text-[var(--herr-faint)]">
+                    <span>{article.author}</span>
+                    <span>&middot;</span>
+                    <span>{formatDate(article.published_at)}</span>
+                    <span>&middot;</span>
+                    <span>{article.reading_time} min read</span>
                   </div>
                 </Link>
               ))}

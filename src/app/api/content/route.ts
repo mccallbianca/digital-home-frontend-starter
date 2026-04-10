@@ -56,6 +56,34 @@ export async function GET(request: NextRequest) {
   return paginatedResponse(data || [], count || 0, page, limit);
 }
 
+export async function PUT(request: NextRequest) {
+  const auth = await authenticateRequest(request);
+  if (!auth.authenticated) return unauthorizedResponse(auth.error);
+
+  const body = await request.json();
+  if (!body.id) return errorResponse("id is required");
+
+  const supabase = createAdminClient();
+
+  const updateFields: Record<string, unknown> = {};
+  if (body.status !== undefined) updateFields.status = body.status;
+  if (body.title !== undefined) updateFields.title = body.title;
+  if (body.body !== undefined) updateFields.body = body.body;
+  if (body.excerpt !== undefined) updateFields.excerpt = body.excerpt;
+  if (body.published_at !== undefined) updateFields.published_at = body.published_at;
+  if (body.semantic_tags !== undefined) updateFields.semantic_tags = body.semantic_tags;
+
+  const { data, error } = await supabase
+    .from("content_objects")
+    .update(updateFields)
+    .eq("id", body.id)
+    .select("*")
+    .single();
+
+  if (error) return errorResponse(error.message, 500);
+  return jsonResponse(data);
+}
+
 export async function POST(request: NextRequest) {
   const auth = await authenticateRequest(request);
   if (!auth.authenticated) return unauthorizedResponse(auth.error);

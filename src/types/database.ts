@@ -959,18 +959,21 @@ export type Database = {
           id: string;
           user_id: string;
           activity_modes: string[];
+          genre_preference: string | null;
           updated_at: string;
         };
         Insert: {
           id?: string;
           user_id: string;
           activity_modes?: string[];
+          genre_preference?: string | null;
           updated_at?: string;
         };
         Update: {
           id?: string;
           user_id?: string;
           activity_modes?: string[];
+          genre_preference?: string | null;
           updated_at?: string;
         };
         Relationships: [];
@@ -1269,6 +1272,93 @@ export type Database = {
           is_published?: boolean;
           created_at?: string;
           updated_at?: string;
+        };
+        Relationships: [];
+      };
+      affirmation_scripts: {
+        Row: {
+          id: string;
+          member_id: string;
+          script: string;
+          activity_mode: string;
+          audio_url: string | null;
+          delivered: boolean;
+          generated_at: string;
+        };
+        Insert: {
+          id?: string;
+          member_id: string;
+          script: string;
+          activity_mode: string;
+          audio_url?: string | null;
+          delivered?: boolean;
+          generated_at?: string;
+        };
+        Update: {
+          id?: string;
+          member_id?: string;
+          script?: string;
+          activity_mode?: string;
+          audio_url?: string | null;
+          delivered?: boolean;
+          generated_at?: string;
+        };
+        Relationships: [];
+      };
+      login_attempts: {
+        Row: {
+          id: string;
+          email: string;
+          ip_address: string | null;
+          success: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          ip_address?: string | null;
+          success?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          ip_address?: string | null;
+          success?: boolean;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      security_events: {
+        Row: {
+          id: string;
+          event_type: string;
+          user_id: string | null;
+          email: string | null;
+          ip_address: string | null;
+          detail: string | null;
+          metadata: Json;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          event_type: string;
+          user_id?: string | null;
+          email?: string | null;
+          ip_address?: string | null;
+          detail?: string | null;
+          metadata?: Json;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          event_type?: string;
+          user_id?: string | null;
+          email?: string | null;
+          ip_address?: string | null;
+          detail?: string | null;
+          metadata?: Json;
+          created_at?: string;
         };
         Relationships: [];
       };

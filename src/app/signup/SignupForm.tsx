@@ -109,9 +109,9 @@ export default function SignupForm() {
       />
       {errors.confirmPassword && <p className="text-[0.75rem] text-[var(--herr-pink)] mb-3">{errors.confirmPassword}</p>}
 
-      {/* hCaptcha */}
-      <div className="mt-6 flex justify-center">
-        {siteKey ? (
+      {/* hCaptcha — only rendered when siteKey is configured */}
+      {siteKey && (
+        <div className="mt-6 flex justify-center">
           <HCaptcha
             sitekey={siteKey}
             onVerify={setCaptchaToken}
@@ -119,10 +119,8 @@ export default function SignupForm() {
             theme="dark"
             ref={captchaRef}
           />
-        ) : (
-          <p className="text-[0.75rem] text-[var(--herr-faint)]">Captcha not configured</p>
-        )}
-      </div>
+        </div>
+      )}
       {errors.captcha && <p className="text-[0.75rem] text-[var(--herr-pink)] text-center mt-1">{errors.captcha}</p>}
 
       <button

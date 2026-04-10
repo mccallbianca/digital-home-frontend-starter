@@ -1,12 +1,10 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { createClient } from '@/lib/supabase/browser';
 
 export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: string }) {
-  const router = useRouter();
   const captchaRef = useRef<HCaptcha>(null);
 
   const [email, setEmail] = useState('');
@@ -73,7 +71,10 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
         });
       }
 
-      router.push(redirectTo);
+      // Full page navigation ensures cookies propagate before server components run.
+      // router.push does a soft navigation which can race with cookie writes,
+      // causing server-side auth checks (e.g. admin layout) to fail.
+      window.location.href = redirectTo;
     } catch {
       setErrors({ form: 'Something didn\'t work as expected. Let\'s try again.' });
       setLoading(false);
@@ -92,17 +93,26 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
     setResetLoading(true);
     setResetError('');
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
-      redirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
-    });
+    try {
+      // Route through our custom send-link endpoint (branded Resend email)
+      // Redirect to /update-password after callback so user can set new password
+      const res = await fetch('/api/auth/send-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: resetEmail,
+          next: '/update-password',
+        }),
+      });
 
-    // Always show success message to prevent email enumeration
-    // even if the email doesn't exist in our system
-    if (error) {
-      console.error('[reset-password]', error.message);
+      if (!res.ok) {
+        console.error('[reset-password] send-link failed');
+      }
+    } catch (err) {
+      console.error('[reset-password]', err);
     }
 
+    // Always show success to prevent email enumeration
     setResetSent(true);
     setResetLoading(false);
   }
@@ -216,9 +226,9 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
         </button>
       </div>
 
-      {/* hCaptcha */}
-      <div className="mt-6 flex justify-center">
-        {siteKey ? (
+      {/* hCaptcha — only rendered when siteKey is configured */}
+      {siteKey && (
+        <div className="mt-6 flex justify-center">
           <HCaptcha
             sitekey={siteKey}
             onVerify={setCaptchaToken}
@@ -226,10 +236,8 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
             theme="dark"
             ref={captchaRef}
           />
-        ) : (
-          <p className="text-[0.75rem] text-[var(--herr-faint)]">Captcha not configured</p>
-        )}
-      </div>
+        </div>
+      )}
       {errors.captcha && <p className="text-[0.75rem] text-[var(--herr-pink)] text-center mt-1">{errors.captcha}</p>}
 
       <button

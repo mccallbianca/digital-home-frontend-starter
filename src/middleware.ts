@@ -27,6 +27,7 @@ const PROTECTED_ROUTES = [
   '/dashboard',
   '/onboarding',
   '/admin',
+  '/update-password',
 ];
 
 // API routes that require auth (session cookie OR API_SECRET_KEY)

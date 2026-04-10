@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { createAdminClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
 function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: 'short',
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
     year: 'numeric',
   });
 }
@@ -26,7 +26,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const supabase = createAdminClient();
+  const supabase = await createClient();
   const { data } = await supabase
     .from('content_objects')
     .select('title, excerpt, seo_meta(title, description, og_image_url)')
@@ -34,12 +34,12 @@ export async function generateMetadata({
     .eq('status', 'published')
     .single();
 
-  if (!data) return { title: 'Article Not Found' };
+  if (!data) return { title: 'Article Not Found — HERR' };
 
   const seo = Array.isArray(data.seo_meta) ? data.seo_meta[0] : data.seo_meta;
 
   return {
-    title: seo?.title || data.title,
+    title: seo?.title || `${data.title} — HERR Journal`,
     description: seo?.description || data.excerpt || '',
     openGraph: seo?.og_image_url ? { images: [seo.og_image_url] } : undefined,
   };
@@ -51,7 +51,7 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const supabase = createAdminClient();
+  const supabase = await createClient();
   const { data: article } = await supabase
     .from('content_objects')
     .select('*')
@@ -64,48 +64,54 @@ export default async function ArticlePage({
   const readingTime = estimateReadingTime(article.body);
   const publishedAt = article.published_at || article.created_at;
   const articleTags = (article.semantic_tags || []).slice(0, 4);
+  const authorName = article.author_name || 'Bianca D. McCall, LMFT';
 
   return (
-    <main>
+    <main className="min-h-screen">
+      {/* Article Header */}
       <section className="pt-32 pb-10 px-6">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-[900px] mx-auto">
           <Link
             href="/journal"
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-neutral-300 transition-colors hover:text-white"
+            className="herr-label text-[var(--herr-muted)] hover:text-[var(--herr-white)] transition-colors mb-8 inline-block"
           >
-            <span aria-hidden="true">←</span>
-            Back to journal
+            &larr; Back to Journal
           </Link>
 
-          <div className="mt-8 flex flex-wrap gap-3 text-[0.75rem] font-medium text-white/45">
-            <span className="rounded-full border border-white/10 px-3 py-1.5 capitalize">
+          <div className="flex flex-wrap items-center gap-3 text-[0.75rem] text-[var(--herr-faint)] mb-6">
+            <span className="herr-label border border-[var(--herr-border)] px-3 py-1 capitalize">
               {article.content_type}
             </span>
-            <span className="rounded-full border border-white/10 px-3 py-1.5">
-              {formatDate(publishedAt)}
-            </span>
-            <span className="rounded-full border border-white/10 px-3 py-1.5">
-              {readingTime} min read
-            </span>
+            <span>{formatDate(publishedAt)}</span>
+            <span>&middot;</span>
+            <span>{readingTime} min read</span>
           </div>
 
-          <div className="mt-6 max-w-4xl">
-            <h1 className="text-4xl md:text-6xl xl:text-[5.6rem] font-semibold tracking-[-0.07em] text-white leading-[0.96]">
-              {article.title}
-            </h1>
-            {article.excerpt && (
-              <p className="mt-6 max-w-3xl text-lg md:text-2xl text-neutral-300 leading-relaxed">
-                {article.excerpt}
-              </p>
-            )}
-          </div>
+          <h1 className="font-display text-4xl md:text-6xl font-light text-[var(--herr-white)] leading-[0.95] mb-6">
+            {article.title}
+          </h1>
+
+          {article.subtitle && (
+            <p className="font-display text-xl text-[var(--herr-muted)] italic mb-6">
+              {article.subtitle}
+            </p>
+          )}
+
+          {article.excerpt && (
+            <p className="text-lg text-[var(--herr-muted)] max-w-2xl leading-relaxed mb-8">
+              {article.excerpt}
+            </p>
+          )}
+
+          <p className="herr-label text-[var(--herr-pink)]">{authorName}</p>
         </div>
       </section>
 
-      <section className="px-6 pb-10">
-        <div className="max-w-5xl mx-auto">
-          {article.featured_image_url ? (
-            <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03]">
+      {/* Featured Image */}
+      {article.featured_image_url && (
+        <section className="px-6 pb-10">
+          <div className="max-w-[900px] mx-auto">
+            <div className="border border-[var(--herr-border)] overflow-hidden">
               <Image
                 src={article.featured_image_url}
                 alt={article.title}
@@ -115,71 +121,50 @@ export default async function ArticlePage({
                 priority
               />
             </div>
-          ) : (
-            <div className="grid gap-px rounded-[2rem] border border-white/10 bg-white/10 p-px md:grid-cols-[1.15fr_0.85fr]">
-              <div className="min-h-[260px] rounded-[1.85rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] px-8 py-8 flex flex-col justify-between">
-                <span className="inline-flex w-fit rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[0.68rem] font-medium text-white/45">
-                  Editorial visual
-                </span>
-                <p className="max-w-[18ch] text-base leading-relaxed text-neutral-300">
-                  Add a hero image, abstract texture, illustration, or brand visual here.
-                </p>
-              </div>
-              <div className="min-h-[260px] rounded-[1.85rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.018))] px-8 py-8 flex flex-col justify-between">
-                <span className="inline-flex w-fit rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[0.68rem] font-medium text-white/45">
-                  Starter article
-                </span>
-                <p className="max-w-[18ch] text-base leading-relaxed text-neutral-300">
-                  This layout is intentionally clean so your actual content and voice can carry the page.
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
+      {/* Article Body */}
       <section className="px-6 pb-16">
-        <div className="max-w-5xl mx-auto grid gap-10 xl:grid-cols-[minmax(0,1fr)_260px]">
-          <article className="rounded-[2rem] border border-white/10 bg-white/[0.03] px-6 py-8 md:px-10 md:py-10">
+        <div className="max-w-[900px] mx-auto grid gap-10 lg:grid-cols-[minmax(0,1fr)_220px]">
+          <article className="border border-[var(--herr-border)] bg-[var(--herr-surface)] px-6 py-8 md:px-10 md:py-10">
             {article.body && (
               <div
-                className="prose prose-invert prose-lg max-w-none prose-headings:tracking-[-0.04em] prose-headings:font-semibold prose-p:text-neutral-300 prose-p:leading-8 prose-strong:text-white prose-a:text-white prose-li:text-neutral-300"
+                className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-headings:font-light prose-headings:text-[var(--herr-white)] prose-p:text-[var(--herr-muted)] prose-p:leading-8 prose-strong:text-[var(--herr-white)] prose-a:text-[var(--herr-pink)] prose-li:text-[var(--herr-muted)] prose-ul:text-[var(--herr-muted)]"
                 dangerouslySetInnerHTML={{ __html: article.body }}
               />
             )}
           </article>
 
+          {/* Sidebar */}
           <aside className="space-y-4">
-            <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6">
-              <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-white/45 mb-4">
-                Article details
-              </p>
-              <div className="space-y-3 text-sm text-neutral-300">
-                <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
-                  <span className="text-white/45">Published</span>
-                  <span>{formatDate(publishedAt)}</span>
+            <div className="border border-[var(--herr-border)] bg-[var(--herr-surface)] p-6">
+              <p className="herr-label text-[var(--herr-muted)] mb-4">Details</p>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center justify-between gap-4 border-b border-[var(--herr-border)] pb-3">
+                  <span className="text-[var(--herr-faint)]">Published</span>
+                  <span className="text-[var(--herr-muted)]">{formatDate(publishedAt)}</span>
                 </div>
-                <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
-                  <span className="text-white/45">Reading time</span>
-                  <span>{readingTime} min</span>
+                <div className="flex items-center justify-between gap-4 border-b border-[var(--herr-border)] pb-3">
+                  <span className="text-[var(--herr-faint)]">Reading time</span>
+                  <span className="text-[var(--herr-muted)]">{readingTime} min</span>
                 </div>
                 <div className="flex items-center justify-between gap-4">
-                  <span className="text-white/45">Type</span>
-                  <span className="capitalize">{article.content_type}</span>
+                  <span className="text-[var(--herr-faint)]">Author</span>
+                  <span className="text-[var(--herr-muted)] text-right text-[0.8rem]">{authorName}</span>
                 </div>
               </div>
             </div>
 
             {articleTags.length > 0 && (
-              <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6">
-                <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-white/45 mb-4">
-                  Topics
-                </p>
+              <div className="border border-[var(--herr-border)] bg-[var(--herr-surface)] p-6">
+                <p className="herr-label text-[var(--herr-muted)] mb-4">Topics</p>
                 <div className="flex flex-wrap gap-2">
                   {articleTags.map((tag: string) => (
                     <span
                       key={tag}
-                      className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[0.72rem] text-white/55"
+                      className="herr-label text-[var(--herr-faint)] border border-[var(--herr-border)] px-3 py-1"
                     >
                       {tag}
                     </span>
@@ -191,30 +176,20 @@ export default async function ArticlePage({
         </div>
       </section>
 
-      <section className="py-24 px-6 text-center border-t border-white/10">
-        <div className="max-w-3xl mx-auto">
-          <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-white/45 mb-6">
-            Keep shaping the starter
-          </p>
-          <h2 className="text-3xl md:text-5xl font-semibold tracking-[-0.05em] text-white mb-6">
-            Publish with the structure, then make it unmistakably yours.
+      {/* CTA */}
+      <section className="px-6 py-24 border-t border-[var(--herr-border)] text-center">
+        <div className="max-w-[800px] mx-auto">
+          <p className="herr-label text-[var(--herr-muted)] mb-6">Continue the journey</p>
+          <h2 className="font-display text-4xl md:text-5xl font-light text-[var(--herr-white)] mb-8 leading-tight">
+            The inner voice can be<br />
+            <span className="text-[var(--herr-pink)]">reprogrammed.</span>
           </h2>
-          <p className="text-lg text-neutral-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            This article layout is meant to be a premium baseline. Swap in your visuals, voice, and calls
-            to action once the starter becomes your real publishing system.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/journal"
-              className="inline-flex items-center justify-center rounded-full text-base font-medium bg-white text-black px-8 py-3.5 hover:bg-transparent hover:text-white border border-white transition-all"
-            >
-              View the journal
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link href="/journal" className="btn-herr-ghost">
+              More Articles
             </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-full text-base font-medium bg-transparent text-white px-8 py-3.5 hover:bg-white hover:text-black border border-white/20 transition-all"
-            >
-              Customize the starter
+            <Link href="/subscribe" className="btn-herr-primary">
+              Begin Your Reprogramming
             </Link>
           </div>
         </div>
