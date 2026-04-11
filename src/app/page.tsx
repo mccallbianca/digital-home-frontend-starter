@@ -15,12 +15,12 @@ const MODES = [
 ];
 
 const CAMPAIGN = [
-  { phrase: "I'M HERR",          gradient: HERR_GRADIENTS.campaignPink,   file: '/images/campaign-im-herr-01.jpg',    alt: 'A Black woman in cinematic stillness, lit in magenta-violet, embodying the universal declaration I\'M HERR — the sovereign inner voice that HERR is designed to reprogram.' },
-  { phrase: "I'M HIM WITH HERR", gradient: HERR_GRADIENTS.campaignCobalt, file: '/images/campaign-im-herr-02.jpg',    alt: 'A Latino man in his early thirties looking directly at camera in quiet determination under cobalt light, representing I\'M HIM WITH HERR — men reclaiming wellness.' },
+  { phrase: "SEEN & HERRD",      gradient: HERR_GRADIENTS.campaignPink,   file: '/images/campaign-im-herr-01.jpg',    alt: 'A Black woman in cinematic stillness, lit in magenta-violet, embodying the universal declaration SEEN & HERRD — the sovereign inner voice that HERR is designed to reprogram.' },
+  { phrase: "I'M WITH HERR",    gradient: HERR_GRADIENTS.campaignCobalt, file: '/images/campaign-im-herr-02.jpg',    alt: 'A Latino man in his early thirties looking directly at camera in quiet determination under cobalt light, representing I\'M WITH HERR — men reclaiming wellness.' },
   { phrase: "THEY'RE HERR",      gradient: HERR_GRADIENTS.campaignViolet, file: '/images/campaign-im-herr-03.jpg',    alt: 'A non-binary person with a knowing expression under violet-mid light, representing THEY\'RE HERR — the inner voice has no gender.' },
-  { phrase: "I'M HERR MAN",      gradient: HERR_GRADIENTS.campaignGold,   file: '/images/campaign-im-herr-04.jpg',    alt: 'A White man in his fifties with executive presence, hand on chest, eyes closed, in gold light against near-black, representing I\'M HERR MAN — a direct masculine identity claim.' },
-  { phrase: "COACH IS HERR",     gradient: HERR_GRADIENTS.campaignPink,   file: '/images/campaign-im-herr-05.jpg',    alt: 'An Asian woman with an athlete\'s build, mid-breath, eyes beginning to open in magenta-violet light, representing COACH IS HERR — the athletic and performance market.' },
-  { phrase: "WE'RE HERR",        gradient: HERR_GRADIENTS.campaignCobalt, file: '/images/campaign-im-herr-06.jpg',    alt: 'An Indigenous-presenting person in sovereign stillness with a direct gaze in cobalt and gold light, representing WE\'RE HERR — community and movement language.' },
+  { phrase: "HERR MAN",           gradient: HERR_GRADIENTS.campaignGold,   file: '/images/campaign-im-herr-04.jpg',    alt: 'A White man in his fifties with executive presence, hand on chest, eyes closed, in gold light against near-black, representing HERR MAN — a direct masculine identity claim.' },
+  { phrase: "HERR COACH",        gradient: HERR_GRADIENTS.campaignPink,   file: '/images/campaign-im-herr-05.jpg',    alt: 'An Asian woman with an athlete\'s build, mid-breath, eyes beginning to open in magenta-violet light, representing HERR COACH — the athletic and performance market.' },
+  { phrase: "WE ARE HERR",       gradient: HERR_GRADIENTS.campaignCobalt, file: '/images/campaign-im-herr-06.jpg',    alt: 'An Indigenous-presenting person in sovereign stillness with a direct gaze in cobalt and gold light, representing WE ARE HERR — community and movement language.' },
 ];
 
 const DIMENSIONS = [
@@ -111,7 +111,7 @@ export default function HomePage() {
             {/* Regulate */}
             <div className="bg-[var(--herr-black)]">
               <HERRImageSlot
-                src="/images/phase-regulate-open-hand.jpg"
+                src="/images/phase-regulate-v2.jpg"
                 gradient={HERR_GRADIENTS.regulateHand}
                 alt="An open hand resting in stillness, representing the nervous system regulation phase of the HERR clinical wellness protocol."
                 width={600}
@@ -132,7 +132,7 @@ export default function HomePage() {
             {/* Reprogram */}
             <div className="bg-[var(--herr-surface)]">
               <HERRImageSlot
-                src="/images/phase-reprogram-fist.jpg"
+                src="/images/phase-reprogram-v3.jpg"
                 gradient={HERR_GRADIENTS.reprogramFist}
                 alt="A closed hand in sovereign stillness, representing the inner voice reprogramming phase of the HERR methodology."
                 width={600}
@@ -256,7 +256,7 @@ export default function HomePage() {
             {/* Founder image */}
             <div>
               <HERRImageSlot
-                src="/images/founder-bianca-mccall-lmft.jpg"
+                src="/images/founder-bianca-mccall-processed.jpg"
                 gradient={HERR_GRADIENTS.founder}
                 alt="Bianca D. McCall, LMFT — Licensed Marriage and Family Therapist, federal SAMHSA advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
                 width={600}

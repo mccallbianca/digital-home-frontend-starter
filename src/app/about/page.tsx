@@ -77,7 +77,7 @@ export default function AboutPage() {
             {/* Founder image */}
             <div className="sticky top-24">
               <HERRImageSlot
-                src="/images/founder-bianca-mccall-lmft.jpg"
+                src="/images/founder-bianca-mccall-processed.jpg"
                 alt="Bianca D. McCall, LMFT — Licensed Marriage and Family Therapist, federal SAMHSA advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
                 gradient={HERR_GRADIENTS.founder}
                 width={600}

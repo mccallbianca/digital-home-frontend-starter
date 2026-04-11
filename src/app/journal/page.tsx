@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 
@@ -102,8 +103,19 @@ export default async function JournalPage() {
         <div className="max-w-[1200px] mx-auto">
           <Link
             href={`/journal/${featured.slug}`}
-            className="block border border-[var(--herr-border)] bg-[var(--herr-surface)] hover:border-[var(--herr-pink)] transition-colors"
+            className="block border border-[var(--herr-border)] bg-[var(--herr-surface)] hover:border-[var(--herr-pink)] transition-colors overflow-hidden"
           >
+            {featured.image && (
+              <div className="relative w-full aspect-[21/9]">
+                <Image
+                  src={featured.image}
+                  alt={featured.title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            )}
             <div className="p-8 md:p-12">
               <p className="herr-label text-[var(--herr-pink)] mb-4">Featured</p>
               <h2 className="font-display text-3xl md:text-5xl font-light text-[var(--herr-white)] mb-6 leading-tight">
@@ -145,8 +157,19 @@ export default async function JournalPage() {
                 <Link
                   key={article.slug}
                   href={`/journal/${article.slug}`}
-                  className="block bg-[var(--herr-black)] hover:bg-[var(--herr-surface)] transition-colors p-8"
+                  className="block bg-[var(--herr-black)] hover:bg-[var(--herr-surface)] transition-colors overflow-hidden"
                 >
+                  {article.image && (
+                    <div className="relative w-full aspect-[16/9]">
+                      <Image
+                        src={article.image}
+                        alt={article.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-8">
                   <h3 className="font-display text-xl font-light text-[var(--herr-white)] mb-3 leading-snug">
                     {article.title}
                   </h3>
@@ -161,6 +184,7 @@ export default async function JournalPage() {
                     <span>{formatDate(article.published_at)}</span>
                     <span>&middot;</span>
                     <span>{article.reading_time} min read</span>
+                  </div>
                   </div>
                 </Link>
               ))}

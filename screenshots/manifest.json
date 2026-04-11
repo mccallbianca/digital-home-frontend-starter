@@ -1,0 +1,518 @@
+{
+  "generated_at": "2026-04-10T19:52:24.697Z",
+  "base_url": "https://h3rr.com",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "pages": [
+    {
+      "sequence": 1,
+      "route": "/",
+      "name": "Home Page",
+      "screenshot": "01-home.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "11 broken image(s)."
+    },
+    {
+      "sequence": 2,
+      "route": "/how-it-works",
+      "name": "How It Works",
+      "screenshot": "02-how-it-works.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "1 broken image(s)."
+    },
+    {
+      "sequence": 3,
+      "route": "/ecqo-sound",
+      "name": "ECQO Sound",
+      "screenshot": "03-ecqo-sound.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 4,
+      "route": "/ecqo-sound/producers",
+      "name": "ECQO Sound Producers",
+      "screenshot": "04-ecqo-sound-producers.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 5,
+      "route": "/science",
+      "name": "The Science",
+      "screenshot": "05-science.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 6,
+      "route": "/journal",
+      "name": "Journal",
+      "screenshot": "06-journal.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 7,
+      "route": "/journal/the-inner-voice-is-not-yours",
+      "name": "Journal — The Inner Voice Is Not Yours",
+      "screenshot": "07-journal-the-inner-voice-is-not-yours.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 8,
+      "route": "/journal/what-existential-psychology-reveals-about-identity-after-career-transition",
+      "name": "Journal — Identity After Career Transition",
+      "screenshot": "08-journal-what-existential-psychology-reveals-about-identity-after-career-transition.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 9,
+      "route": "/journal/why-high-performers-struggle-to-quiet-their-inner-critic",
+      "name": "Journal — High Performers Inner Critic",
+      "screenshot": "09-journal-why-high-performers-struggle-to-quiet-their-inner-critic.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 10,
+      "route": "/blog",
+      "name": "Blog",
+      "screenshot": "10-blog.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 11,
+      "route": "/about",
+      "name": "About",
+      "screenshot": "11-about.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 12,
+      "route": "/services",
+      "name": "Services",
+      "screenshot": "12-services.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 13,
+      "route": "/community",
+      "name": "Community",
+      "screenshot": "13-community.png",
+      "section": "public",
+      "status": "redirect",
+      "notes": "Redirected to /login."
+    },
+    {
+      "sequence": 14,
+      "route": "/practitioners",
+      "name": "Practitioners",
+      "screenshot": "14-practitioners.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 15,
+      "route": "/affirmations",
+      "name": "Affirmations",
+      "screenshot": "15-affirmations.png",
+      "section": "public",
+      "status": "redirect",
+      "notes": "Redirected to /login."
+    },
+    {
+      "sequence": 16,
+      "route": "/assessment",
+      "name": "Assessment",
+      "screenshot": "16-assessment.png",
+      "section": "public",
+      "status": "redirect",
+      "notes": "Redirected to /login."
+    },
+    {
+      "sequence": 17,
+      "route": "/live-sessions",
+      "name": "Live Sessions",
+      "screenshot": "17-live-sessions.png",
+      "section": "public",
+      "status": "redirect",
+      "notes": "Redirected to /login."
+    },
+    {
+      "sequence": 18,
+      "route": "/my-voice",
+      "name": "My Voice",
+      "screenshot": "18-my-voice.png",
+      "section": "public",
+      "status": "redirect",
+      "notes": "Redirected to /login."
+    },
+    {
+      "sequence": 19,
+      "route": "/subscribe",
+      "name": "Subscribe / Pricing",
+      "screenshot": "19-subscribe.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 20,
+      "route": "/checkout",
+      "name": "Checkout",
+      "screenshot": "20-checkout.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 21,
+      "route": "/portal",
+      "name": "Member Portal",
+      "screenshot": "21-portal.png",
+      "section": "public",
+      "status": "redirect",
+      "notes": "Redirected to /login."
+    },
+    {
+      "sequence": 22,
+      "route": "/contact",
+      "name": "Contact",
+      "screenshot": "22-contact.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 23,
+      "route": "/privacy",
+      "name": "Privacy Policy",
+      "screenshot": "23-privacy.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 24,
+      "route": "/terms",
+      "name": "Terms of Service",
+      "screenshot": "24-terms.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 25,
+      "route": "/signup",
+      "name": "Sign Up",
+      "screenshot": "25-signup.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 26,
+      "route": "/login",
+      "name": "Log In",
+      "screenshot": "26-login.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 27,
+      "route": "/update-password",
+      "name": "Update Password",
+      "screenshot": "27-update-password.png",
+      "section": "public",
+      "status": "redirect",
+      "notes": "Redirected to /login."
+    },
+    {
+      "sequence": 28,
+      "route": "/welcome",
+      "name": "Welcome",
+      "screenshot": "28-welcome.png",
+      "section": "public",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 29,
+      "route": "/onboarding",
+      "name": "Onboarding",
+      "screenshot": "29-onboarding.png",
+      "section": "authenticated",
+      "status": "redirect",
+      "notes": "Redirected to /dashboard."
+    },
+    {
+      "sequence": 30,
+      "route": "/community",
+      "name": "Community",
+      "screenshot": "30-community.png",
+      "section": "authenticated",
+      "status": "redirect",
+      "notes": "Redirected to /dashboard/community."
+    },
+    {
+      "sequence": 31,
+      "route": "/affirmations",
+      "name": "Affirmations",
+      "screenshot": "31-affirmations.png",
+      "section": "authenticated",
+      "status": "redirect",
+      "notes": "Redirected to /dashboard/affirmations."
+    },
+    {
+      "sequence": 32,
+      "route": "/assessment",
+      "name": "Assessment",
+      "screenshot": "32-assessment.png",
+      "section": "authenticated",
+      "status": "redirect",
+      "notes": "Redirected to /dashboard/assessment."
+    },
+    {
+      "sequence": 33,
+      "route": "/live-sessions",
+      "name": "Live Sessions",
+      "screenshot": "33-live-sessions.png",
+      "section": "authenticated",
+      "status": "redirect",
+      "notes": "Redirected to /dashboard/sessions."
+    },
+    {
+      "sequence": 34,
+      "route": "/my-voice",
+      "name": "My Voice",
+      "screenshot": "34-my-voice.png",
+      "section": "authenticated",
+      "status": "redirect",
+      "notes": "Redirected to /dashboard/voice."
+    },
+    {
+      "sequence": 35,
+      "route": "/portal",
+      "name": "Member Portal",
+      "screenshot": "35-portal.png",
+      "section": "authenticated",
+      "status": "redirect",
+      "notes": "Redirected to /dashboard/billing."
+    },
+    {
+      "sequence": 36,
+      "route": "/update-password",
+      "name": "Update Password",
+      "screenshot": "36-update-password.png",
+      "section": "authenticated",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 37,
+      "route": "/dashboard",
+      "name": "Dashboard Home",
+      "screenshot": "37-dashboard.png",
+      "section": "dashboard",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 38,
+      "route": "/dashboard/ecqo-sound",
+      "name": "Dashboard — ECQO Sound Player",
+      "screenshot": "38-dashboard-ecqo-sound.png",
+      "section": "dashboard",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 39,
+      "route": "/dashboard/affirmations",
+      "name": "Dashboard — Affirmations",
+      "screenshot": "39-dashboard-affirmations.png",
+      "section": "dashboard",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 40,
+      "route": "/dashboard/assessment",
+      "name": "Dashboard — Assessment",
+      "screenshot": "40-dashboard-assessment.png",
+      "section": "dashboard",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 41,
+      "route": "/dashboard/billing",
+      "name": "Dashboard — Billing",
+      "screenshot": "41-dashboard-billing.png",
+      "section": "dashboard",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 42,
+      "route": "/dashboard/community",
+      "name": "Dashboard — Community",
+      "screenshot": "42-dashboard-community.png",
+      "section": "dashboard",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 43,
+      "route": "/dashboard/sessions",
+      "name": "Dashboard — Sessions",
+      "screenshot": "43-dashboard-sessions.png",
+      "section": "dashboard",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 44,
+      "route": "/dashboard/voice",
+      "name": "Dashboard — Voice",
+      "screenshot": "44-dashboard-voice.png",
+      "section": "dashboard",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 45,
+      "route": "/admin",
+      "name": "Admin Dashboard",
+      "screenshot": "45-admin.png",
+      "section": "admin",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 46,
+      "route": "/admin/journal",
+      "name": "Admin — Journal",
+      "screenshot": "46-admin-journal.png",
+      "section": "admin",
+      "status": "captured",
+      "notes": "OK (retry with longer timeout)"
+    },
+    {
+      "sequence": 47,
+      "route": "/admin/members",
+      "name": "Admin — Members",
+      "screenshot": "47-admin-members.png",
+      "section": "admin",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 48,
+      "route": "/admin/community",
+      "name": "Admin — Community",
+      "screenshot": "48-admin-community.png",
+      "section": "admin",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 49,
+      "route": "/admin/sessions",
+      "name": "Admin — Sessions",
+      "screenshot": "49-admin-sessions.png",
+      "section": "admin",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 50,
+      "route": "/admin/producers",
+      "name": "Admin — Producers",
+      "screenshot": "50-admin-producers.png",
+      "section": "admin",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 51,
+      "route": "/admin/metrics",
+      "name": "Admin — Metrics",
+      "screenshot": "51-admin-metrics.png",
+      "section": "admin",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 52,
+      "route": "/admin/moments",
+      "name": "Admin — Moments",
+      "screenshot": "52-admin-moments.png",
+      "section": "admin",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 53,
+      "route": "/admin/testimonials",
+      "name": "Admin — Testimonials",
+      "screenshot": "53-admin-testimonials.png",
+      "section": "admin",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 54,
+      "route": "/admin/beta-lab",
+      "name": "Admin — Beta Lab",
+      "screenshot": "54-admin-beta-lab.png",
+      "section": "admin",
+      "status": "captured",
+      "notes": "OK"
+    },
+    {
+      "sequence": 55,
+      "route": "/admin/blist",
+      "name": "Admin — BLIST",
+      "screenshot": "55-admin-blist.png",
+      "section": "admin",
+      "status": "captured",
+      "notes": "OK"
+    }
+  ],
+  "summary": {
+    "total_routes": 55,
+    "captured": 41,
+    "redirects": 14,
+    "errors": 0,
+    "not_found": 0,
+    "missing_content": 0,
+    "broken_images": [
+      "/",
+      "/how-it-works"
+    ],
+    "dead_ends": []
+  }
+}

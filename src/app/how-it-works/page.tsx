@@ -25,7 +25,7 @@ const STEPS = [
     body: 'Before any reprogramming can reach the subconscious, the body must first feel safe. HERR delivers targeted nervous system regulation through your chosen mode — Sleep, Morning, Healing — so that the ground is prepared before the inner voice is addressed. Regulation is not optional. It is the prerequisite.',
     gradient: HERR_GRADIENTS.stepRegulate,
     alt: 'A figure mid-breath, lit in cobalt from the side, chest expanded — representing the nervous system regulation phase of HERR, the prerequisite before reprogramming.',
-    imageFile: '/images/step-02-regulate.jpg',
+    imageFile: '/images/step-02-regulate-v2.jpg',
   },
   {
     number: '03',
