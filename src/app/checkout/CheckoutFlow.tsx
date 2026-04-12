@@ -3,308 +3,560 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
+/* ── Types ─────────────────────────────────────────────────────────────────── */
+
 type Tier = 'free' | 'collective' | 'personalized' | 'elite';
 
-const PLANS: {
+interface Feature {
+  text: string;
+  /** true → white / bold (key differentiator), false → dimmed (inherited) */
+  highlight: boolean;
+  bold?: boolean;
+}
+
+interface Plan {
   tier: Tier;
+  label: string;        // EXPLORE, COLLECTIVE, etc.
   name: string;
   price: string;
   period: string;
+  freeNote?: string;    // "Forever free" for the $0 tier
   tagline: string;
-  description: string;
-  badge: string | null;
-  badgeColor: string;
-  features: string[];
+  features: Feature[];
   cta: string;
   featured: boolean;
-  isFree: boolean;
-}[] = [
+}
+
+/* ── Plan Data ─────────────────────────────────────────────────────────────── */
+
+const PLANS: Plan[] = [
   {
     tier: 'free',
+    label: 'EXPLORE',
     name: 'HERR Free',
     price: '$0',
     period: '',
+    freeNote: 'Forever free',
     tagline: 'Explore the framework.',
-    description:
-      'Access the existential screener and experience the HERR methodology. Your journey starts with awareness.',
-    badge: null,
-    badgeColor: '',
     features: [
-      'Monthly existential screener',
-      'Access to the HERR Journal content library',
-      'Community portal (standard channels)',
+      { text: 'Monthly existential screener', highlight: true },
+      { text: 'HERR Journal content library', highlight: false },
+      { text: 'Community portal (standard channels)', highlight: false },
+      { text: 'HERR methodology introduction', highlight: false },
+      { text: 'Self-guided awareness tools', highlight: false },
     ],
-    cta: 'Create Free Account',
+    cta: 'Start Free',
     featured: false,
-    isFree: true,
   },
   {
     tier: 'collective',
+    label: 'COLLECTIVE',
     name: 'HERR Collective',
     price: '$9',
     period: '/month',
     tagline: 'Bianca\u2019s voice. Your daily reprogramming.',
-    description:
-      'Daily affirmations delivered in the voice of Bianca D. McCall, LMFT — the clinician behind the framework.',
-    badge: null,
-    badgeColor: '',
     features: [
-      'Daily affirmations in Bianca D. McCall\u2019s voice',
-      'Up to 3 activity modes',
-      'Monthly existential screener',
-      'HERR Journal content library',
-      'Community portal (standard channels)',
-      'Voice-only delivery',
+      { text: 'Everything in Free', highlight: false },
+      { text: 'Daily affirmations in Bianca\u2019s voice', highlight: true },
+      { text: 'Up to 3 activity modes', highlight: true },
+      { text: 'Monthly screener with insights', highlight: false },
+      { text: 'Full journal access', highlight: false },
+      { text: 'Collective community channels', highlight: false },
+      { text: 'Voice-only delivery', highlight: false },
     ],
-    cta: 'Begin at $9',
+    cta: 'Join Collective',
     featured: false,
-    isFree: false,
   },
   {
     tier: 'personalized',
+    label: 'PERSONALIZED',
     name: 'HERR Personalized',
     price: '$19',
     period: '/month',
     tagline: 'Your voice. Your reprogramming.',
-    description:
-      'Hear your own voice reprogramming your own mind. The subconscious trusts your voice above all others.',
-    badge: 'Most Popular',
-    badgeColor: 'text-[var(--herr-pink)]',
     features: [
-      'Daily affirmations in your own cloned voice',
-      'Up to 3 activity modes',
-      'Voice or music delivery \u2014 you choose',
-      'Genre selection (updatable weekly)',
-      'Voice clone session + quarterly refresh',
-      'Community portal (standard channels)',
-      'Monthly existential screener',
+      { text: 'Everything in Collective', highlight: false },
+      { text: 'Daily affirmations in your own cloned voice', highlight: true, bold: true },
+      { text: 'Up to 3 activity modes', highlight: false },
+      { text: 'Voice or music delivery \u2014 you choose', highlight: true },
+      { text: 'Genre selection (updatable weekly)', highlight: true },
+      { text: 'Voice clone session + quarterly refresh', highlight: true },
+      { text: 'Personalized community channels', highlight: false },
+      { text: 'Priority support', highlight: false },
     ],
-    cta: 'Begin at $19',
+    cta: 'Get Personalized',
     featured: true,
-    isFree: false,
   },
   {
     tier: 'elite',
+    label: 'ELITE',
     name: 'HERR Elite',
     price: '$29',
     period: '/month',
     tagline: 'Clinical-grade. The full protocol.',
-    description:
-      'The full clinical operating system. Athletes. Executives. Practitioners. Those who need the deepest protocol.',
-    badge: 'Clinical Grade',
-    badgeColor: 'text-[var(--herr-cobalt)]',
     features: [
-      'Everything in HERR Personalized',
-      'Up to 5 activity modes',
-      'Monthly live group session with Bianca D. McCall, LMFT (25 seats)',
-      'Elite-only community channels',
-      'Access to beta testing areas',
-      'Monthly therapeutic progression: reprogramming \u2192 support \u2192 maintenance',
-      'First access to new HERR features',
+      { text: 'Everything in Personalized', highlight: false },
+      { text: 'Up to 5 activity modes', highlight: true },
+      { text: 'Monthly live session with Bianca (25 seats)', highlight: true, bold: true },
+      { text: 'Elite-only community channels', highlight: false },
+      { text: 'Beta testing access', highlight: false },
+      { text: 'Therapeutic progression tracking', highlight: true },
+      { text: 'Quarterly 1-on-1 check-in (15 min)', highlight: true },
+      { text: 'Early access to ECQO features', highlight: false },
     ],
-    cta: 'Begin at $29',
+    cta: 'Go Elite',
     featured: false,
-    isFree: false,
   },
 ];
 
+/* ── Magenta dot SVG ───────────────────────────────────────────────────────── */
+
+function Dot() {
+  return (
+    <span
+      className="shrink-0 mt-[7px] block rounded-full"
+      style={{ width: 6, height: 6, backgroundColor: '#C42D8E' }}
+    />
+  );
+}
+
+/* ── Trust signal icons (simple SVG, no emoji) ─────────────────────────────── */
+
+function IconLock() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
+  );
+}
+function IconShield() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
+  );
+}
+function IconClipboard() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+      <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+    </svg>
+  );
+}
+function IconHeart() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    </svg>
+  );
+}
+
+/* ── Component ─────────────────────────────────────────────────────────────── */
+
 export default function CheckoutFlow() {
-  const [selectedTier, setSelectedTier] = useState<Tier | null>(null);
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<Tier | null>(null);
   const [error, setError] = useState('');
 
-  function handleSelectPlan(tier: Tier) {
-    setSelectedTier(tier);
-    setError('');
-  }
-
-  function validateEmail(value: string): boolean {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(value);
-  }
-
-  async function handleContinue(e: React.FormEvent) {
-    e.preventDefault();
-    setEmailError('');
+  async function handleCta(tier: Tier) {
     setError('');
 
-    if (!email.trim()) {
-      setEmailError('Email is required.');
-      return;
-    }
-    if (!validateEmail(email)) {
-      setEmailError('Please enter a valid email address.');
-      return;
-    }
-    if (!selectedTier) return;
-
-    // Free tier goes straight to signup
-    if (selectedTier === 'free') {
-      sessionStorage.setItem('herr_checkout_email', email);
-      window.location.href = `/signup?email=${encodeURIComponent(email)}`;
+    if (tier === 'free') {
+      window.location.href = '/signup';
       return;
     }
 
-    setLoading(true);
-    sessionStorage.setItem('herr_checkout_email', email);
+    setLoading(tier);
 
     try {
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier: selectedTier, email }),
+        body: JSON.stringify({ tier }),
       });
 
       const data = await res.json();
 
       if (!res.ok || !data.url) {
         setError(data.error ?? 'Something went wrong. Please try again.');
-        setLoading(false);
+        setLoading(null);
         return;
       }
 
       window.location.href = data.url;
     } catch {
       setError('Connection error. Please try again.');
-      setLoading(false);
+      setLoading(null);
     }
   }
 
+  /* ── Button style per tier ─────────────────────────────────────────────── */
+
+  function ctaStyle(tier: Tier): React.CSSProperties {
+    const base: React.CSSProperties = {
+      width: '100%',
+      height: 48,
+      borderRadius: 12,
+      fontWeight: 600,
+      fontSize: 14,
+      textTransform: 'uppercase',
+      letterSpacing: 1,
+      cursor: 'pointer',
+      transition: 'all 0.2s ease',
+      marginTop: 'auto',
+      border: 'none',
+    };
+
+    switch (tier) {
+      case 'free':
+        return { ...base, background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: '#FFFFFF' };
+      case 'collective':
+        return { ...base, background: 'transparent', border: '1px solid #C42D8E', color: '#C42D8E' };
+      case 'personalized':
+        return { ...base, background: '#C42D8E', color: '#FFFFFF' };
+      case 'elite':
+        return { ...base, background: 'linear-gradient(135deg, #C42D8E, #8B1A5E)', color: '#FFFFFF' };
+    }
+  }
+
+  /* ── Card style per tier ───────────────────────────────────────────────── */
+
+  function cardStyle(featured: boolean): React.CSSProperties {
+    if (featured) {
+      return {
+        background: 'linear-gradient(135deg, #16161F 0%, #1E1E2A 100%)',
+        border: '2px solid #C42D8E',
+        borderRadius: 16,
+        padding: '40px 32px',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        boxShadow: '0 0 40px rgba(196, 45, 142, 0.15)',
+        transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+      };
+    }
+    return {
+      background: '#16161F',
+      border: '1px solid rgba(255, 255, 255, 0.08)',
+      borderRadius: 16,
+      padding: '40px 32px',
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'relative',
+      transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+    };
+  }
+
+  /* ── Render ────────────────────────────────────────────────────────────── */
+
   return (
-    <section className="px-6 py-24">
-      <div className="max-w-[1200px] mx-auto">
-        {/* Plan cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--herr-border)]">
-          {PLANS.map((plan) => {
-            const isSelected = selectedTier === plan.tier;
-            return (
-              <button
-                key={plan.tier}
-                onClick={() => handleSelectPlan(plan.tier)}
-                className={`flex flex-col p-8 md:p-10 text-left transition-all duration-300 ${
-                  plan.featured
-                    ? isSelected
-                      ? 'bg-[#FFFFFF] ring-2 ring-[#C42D8E] border border-[#C42D8E]'
-                      : 'bg-[#FFFFFF] border border-[#C42D8E] hover:bg-[#F8F8F8]'
-                    : isSelected
-                      ? 'bg-[var(--herr-surface)] ring-2 ring-[var(--herr-pink)]'
-                      : 'bg-[var(--herr-black)] hover:bg-[var(--herr-surface)]'
-                }`}
-              >
-                {/* Badge */}
-                <div className="h-6 mb-4">
-                  {plan.badge && (
-                    <p className={`herr-label ${plan.badgeColor}`}>{plan.badge}</p>
-                  )}
-                </div>
-
-                {/* Selection indicator */}
-                <div className="flex items-center justify-between mb-2">
-                  <p className={`herr-label ${plan.featured ? 'text-[#0A0A0F]' : 'text-[var(--herr-muted)]'}`}>{plan.name}</p>
-                  <div
-                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
-                      isSelected
-                        ? 'border-[#C42D8E] bg-[#C42D8E]'
-                        : plan.featured ? 'border-[#C42D8E]/40' : 'border-[var(--herr-border-mid)]'
-                    }`}
-                  >
-                    {isSelected && (
-                      <svg className="w-3 h-3 text-[var(--herr-black)]" fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    )}
-                  </div>
-                </div>
-
-                {/* Price */}
-                <div className="flex items-end gap-1 mb-1">
-                  <span className={`font-display text-5xl font-light ${plan.featured ? 'text-[#0A0A0F]' : 'text-[var(--herr-white)]'}`}>
-                    {plan.price}
-                  </span>
-                  {plan.period && (
-                    <span className={`mb-2 text-sm ${plan.featured ? 'text-[#0A0A0F]/60' : 'text-[var(--herr-muted)]'}`}>{plan.period}</span>
-                  )}
-                </div>
-                <p className={`text-[0.78rem] font-light italic font-display mb-4 ${plan.featured ? 'text-[#C42D8E]' : 'text-[var(--herr-pink)]'}`}>
-                  {plan.tagline}
-                </p>
-                <p className={`text-[0.82rem] mb-8 leading-relaxed ${plan.featured ? 'text-[#0A0A0F]/70' : 'text-[var(--herr-muted)]'}`}>
-                  {plan.description}
-                </p>
-
-                {/* Features */}
-                <ul className="flex flex-col gap-3 flex-1">
-                  {plan.features.map((f) => (
-                    <li key={f} className={`flex items-start gap-3 text-[0.82rem] ${plan.featured ? 'text-[#0A0A0F]/80' : 'text-[var(--herr-muted)]'}`}>
-                      <span className={`mt-0.5 shrink-0 leading-none ${plan.featured ? 'text-[#C42D8E]' : 'text-[var(--herr-pink)]'}`}>+</span>
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Email capture form */}
-        {selectedTier && (
-          <div className="mt-12 max-w-md mx-auto animate-fade-up">
-            <form onSubmit={handleContinue}>
-              <label className="herr-label text-[var(--herr-muted)] block mb-3">
-                Enter your email address
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (emailError) setEmailError('');
-                }}
-                placeholder="you@example.com"
-                className={`w-full bg-[var(--herr-surface)] border text-[var(--herr-white)] px-4 py-3 text-sm focus:outline-none transition-colors mb-1 ${
-                  emailError
-                    ? 'border-[var(--herr-pink)]'
-                    : 'border-[var(--herr-border)] focus:border-[var(--herr-cobalt)]'
-                }`}
-              />
-              {emailError && (
-                <p className="text-[0.75rem] text-[var(--herr-pink)] mb-3">{emailError}</p>
-              )}
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn-herr-primary w-full justify-center mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading
-                  ? 'Redirecting…'
-                  : selectedTier === 'free'
-                    ? 'Create Free Account'
-                    : 'Continue to Payment'}
-              </button>
-              {error && (
-                <p className="mt-3 text-[0.78rem] text-[var(--herr-pink)] text-center">{error}</p>
-              )}
-            </form>
-            <p className="mt-4 text-center text-[0.72rem] text-[var(--herr-faint)]">
-              {selectedTier === 'free'
-                ? 'No credit card required.'
-                : 'Secure payment via Stripe. Cancel anytime.'}
-            </p>
-          </div>
-        )}
-
-        {/* Auto-renewal disclosure */}
-        <p className="text-center text-[0.78rem] text-[var(--herr-faint)] mt-8">
-          Paid subscriptions renew automatically each month. Cancel anytime from your member dashboard.
+    <>
+      {/* ── Hero Header ──────────────────────────────────────────────────── */}
+      <div style={{ paddingTop: 80, paddingBottom: 40, textAlign: 'center' }}>
+        <h1
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: 36,
+            fontWeight: 600,
+            color: '#FFFFFF',
+            margin: 0,
+          }}
+          className="max-md:!text-[28px]"
+        >
+          Choose Your HERR Experience
+        </h1>
+        <p
+          style={{
+            fontFamily: "system-ui, -apple-system, sans-serif",
+            fontSize: 16,
+            color: 'rgba(255,255,255,0.6)',
+            marginTop: 12,
+            maxWidth: 560,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            lineHeight: 1.6,
+          }}
+        >
+          Every journey begins with awareness. Select the level of care that meets you where you are.
         </p>
       </div>
-    </section>
+
+      {/* ── Tier Cards ───────────────────────────────────────────────────── */}
+      <div
+        className="checkout-grid"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: 24,
+          maxWidth: 1280,
+          margin: '0 auto',
+          padding: '0 24px',
+          alignItems: 'stretch',
+        }}
+      >
+        {PLANS.map((plan) => (
+          <div
+            key={plan.tier}
+            className={`checkout-card${plan.featured ? ' checkout-card--featured' : ''}`}
+            style={cardStyle(plan.featured)}
+          >
+            {/* "MOST POPULAR" pill */}
+            {plan.featured && (
+              <span
+                style={{
+                  position: 'absolute',
+                  top: -16,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  background: '#C42D8E',
+                  color: '#FFFFFF',
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: 2,
+                  textTransform: 'uppercase',
+                  padding: '6px 20px',
+                  borderRadius: 20,
+                  whiteSpace: 'nowrap',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                }}
+              >
+                Most Popular
+              </span>
+            )}
+
+            {/* Tier label */}
+            <p
+              style={{
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                fontSize: 12,
+                fontWeight: 600,
+                letterSpacing: 2.5,
+                textTransform: 'uppercase',
+                color: plan.featured ? '#C42D8E' : 'rgba(255,255,255,0.5)',
+                marginTop: plan.featured ? 12 : 0,
+                marginBottom: 8,
+              }}
+            >
+              {plan.label}
+            </p>
+
+            {/* Tier name */}
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 24,
+                fontWeight: 600,
+                color: '#FFFFFF',
+                margin: 0,
+              }}
+            >
+              {plan.name}
+            </h2>
+
+            {/* Price */}
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginTop: 24 }}>
+              <span
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontSize: 56,
+                  fontWeight: 700,
+                  color: '#FFFFFF',
+                  lineHeight: 1,
+                }}
+              >
+                {plan.price}
+              </span>
+              {plan.period && (
+                <span
+                  style={{
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
+                    fontSize: 16,
+                    color: 'rgba(255,255,255,0.5)',
+                  }}
+                >
+                  {plan.period}
+                </span>
+              )}
+            </div>
+            {plan.freeNote && (
+              <p
+                style={{
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  fontSize: 14,
+                  fontStyle: 'italic',
+                  color: '#F4F1EB',
+                  marginTop: 4,
+                }}
+              >
+                {plan.freeNote}
+              </p>
+            )}
+
+            {/* Tagline */}
+            <p
+              style={{
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                fontSize: 15,
+                fontStyle: 'italic',
+                color: '#E8388A',
+                marginTop: 8,
+              }}
+            >
+              {plan.tagline}
+            </p>
+
+            {/* Divider */}
+            <div style={{ height: 1, background: 'rgba(255,255,255,0.1)', margin: '24px 0' }} />
+
+            {/* Feature list */}
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, flex: 1, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {plan.features.map((f) => (
+                <li
+                  key={f.text}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 10,
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
+                    fontSize: 14,
+                    lineHeight: 1.6,
+                    color: f.highlight ? '#FFFFFF' : 'rgba(255,255,255,0.5)',
+                    fontWeight: f.bold ? 600 : 400,
+                  }}
+                >
+                  <Dot />
+                  <span>{f.text}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* CTA Button */}
+            <button
+              onClick={() => handleCta(plan.tier)}
+              disabled={loading === plan.tier}
+              style={{
+                ...ctaStyle(plan.tier),
+                marginTop: 32,
+                opacity: loading === plan.tier ? 0.6 : 1,
+              }}
+              className="checkout-cta"
+            >
+              {loading === plan.tier ? 'Redirecting\u2026' : plan.cta}
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* Error */}
+      {error && (
+        <p style={{ textAlign: 'center', color: '#E8388A', fontSize: 14, marginTop: 16 }}>
+          {error}
+        </p>
+      )}
+
+      {/* ── Trust Signals ────────────────────────────────────────────────── */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 32,
+          marginTop: 60,
+          flexWrap: 'wrap',
+          padding: '0 24px',
+        }}
+      >
+        {[
+          { icon: <IconLock />, text: 'Cancel anytime' },
+          { icon: <IconShield />, text: 'Secure checkout via Stripe' },
+          { icon: <IconHeart />, text: 'HIPAA-aligned' },
+          { icon: <IconClipboard />, text: 'No contracts' },
+        ].map((item) => (
+          <span
+            key={item.text}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              fontFamily: 'system-ui, -apple-system, sans-serif',
+              fontSize: 13,
+              color: 'rgba(255,255,255,0.5)',
+            }}
+          >
+            {item.icon}
+            {item.text}
+          </span>
+        ))}
+      </div>
+
+      {/* ── Legal Footer ─────────────────────────────────────────────────── */}
+      <div
+        style={{
+          marginTop: 40,
+          textAlign: 'center',
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+          fontSize: 12,
+          color: 'rgba(255,255,255,0.35)',
+          maxWidth: 600,
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          lineHeight: 1.8,
+          padding: '0 24px 60px',
+        }}
+      >
+        <p style={{ margin: 0 }}>
+          Subscriptions auto-renew monthly. Cancel anytime from your account settings.
+        </p>
+        <p style={{ margin: '4px 0 0' }}>
+          By subscribing, you agree to our{' '}
+          <Link href="/terms" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }} className="hover:underline">
+            Terms of Service
+          </Link>{' '}
+          and{' '}
+          <Link href="/privacy" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }} className="hover:underline">
+            Privacy Policy
+          </Link>.
+        </p>
+        <p style={{ margin: '4px 0 0' }}>
+          HERR is a wellness platform and is not a substitute for licensed clinical care.
+        </p>
+        <p style={{ margin: '4px 0 0' }}>
+          If you are in crisis, call or text 988.
+        </p>
+      </div>
+
+      {/* ── Responsive + hover CSS ───────────────────────────────────────── */}
+      <style>{`
+        .checkout-card:hover {
+          border-color: rgba(255, 255, 255, 0.15) !important;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .checkout-card--featured:hover {
+          border-color: #C42D8E !important;
+          box-shadow: 0 0 60px rgba(196, 45, 142, 0.25) !important;
+        }
+        .checkout-card--featured {
+          transform: scale(1.03);
+        }
+        .checkout-cta:hover {
+          filter: brightness(1.15);
+        }
+        @media (max-width: 1024px) {
+          .checkout-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+        @media (max-width: 767px) {
+          .checkout-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .checkout-card--featured {
+            order: -1;
+            transform: none !important;
+          }
+        }
+      `}</style>
+    </>
   );
 }
