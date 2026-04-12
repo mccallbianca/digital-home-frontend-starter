@@ -68,68 +68,115 @@ export default function RootLayout({
 
 function Footer() {
   return (
-    <footer className="border-t border-[var(--herr-border)] bg-[var(--herr-black)] px-6 py-14">
-      <div className="max-w-[1200px] mx-auto">
+    <footer
+      style={{
+        borderTop: '1px solid rgba(255,255,255,0.08)',
+        padding: '64px 24px',
+        background: '#0A0A0F',
+      }}
+    >
+      <div style={{ maxWidth: 960, margin: '0 auto', textAlign: 'center' }}>
+        {/* Brand */}
+        <p
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: 18,
+            color: '#FFFFFF',
+            marginBottom: 24,
+          }}
+        >
+          HERR™{' '}
+          <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 14 }}>
+            | A product of ECQO Holdings™
+          </span>
+        </p>
 
-        {/* Top row */}
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10 mb-12">
+        {/* Primary nav */}
+        <nav
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '8px 20px',
+            marginBottom: 24,
+          }}
+        >
+          {[
+            { label: 'About', href: '/about' },
+            { label: 'How It Works', href: '/how-it-works' },
+            { label: 'The Science', href: '/the-science' },
+            { label: 'Journal', href: '/journal' },
+            { label: 'ECQO Sound', href: '/ecqo-sound' },
+            { label: 'Pricing', href: '/checkout' },
+          ].map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              style={{
+                fontSize: 12,
+                color: 'rgba(255,255,255,0.5)',
+                textDecoration: 'none',
+              }}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
 
-          {/* Brand */}
-          <div className="max-w-xs">
-            <p className="font-display text-2xl font-light tracking-widest uppercase text-[var(--herr-white)] mb-3">
-              HERR™
-            </p>
-            <p className="text-[0.78rem] text-[var(--herr-muted)] leading-relaxed">
-              Human Existential Response and Reprogramming™. A clinical wellness operating system founded by Bianca D. McCall, LMFT.
-            </p>
-            <p className="text-[0.68rem] text-[var(--herr-faint)] mt-3 tracking-wide">
-              h3rr.com — the 3 represents the three dimensions of human experience HERR™ addresses: Existential, Emotional, and Executive. One tool. Every version of you.
-            </p>
-          </div>
+        {/* Legal nav */}
+        <nav
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '8px 20px',
+            marginBottom: 32,
+          }}
+        >
+          {[
+            { label: 'Terms of Service', href: '/terms' },
+            { label: 'Privacy Policy', href: '/privacy' },
+            { label: 'HIPAA Notice', href: '/hipaa' },
+          ].map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              style={{
+                fontSize: 12,
+                color: 'rgba(255,255,255,0.5)',
+                textDecoration: 'none',
+              }}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
 
-          {/* Nav */}
-          <div className="grid grid-cols-2 gap-x-16 gap-y-3 text-[0.8rem]">
-            {[
-              { label: 'Home', href: '/' },
-              { label: 'About', href: '/about' },
-              { label: 'How It Works', href: '/how-it-works' },
-              { label: 'Subscribe', href: '/subscribe' },
-              { label: 'ECQO Sound', href: '/ecqo-sound' },
-              { label: 'The Science', href: '/science' },
-              { label: 'For Practitioners', href: '/practitioners' },
-              { label: 'Journal', href: '/journal' },
-              { label: 'Contact', href: '/contact' },
-              { label: 'Privacy Policy', href: '/privacy' },
-              { label: 'Terms of Service', href: '/terms' },
-            ].map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-[var(--herr-muted)] hover:text-[var(--herr-white)] transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-        </div>
+        {/* Disclaimer */}
+        <p
+          style={{
+            fontSize: 12,
+            color: 'rgba(255,255,255,0.35)',
+            lineHeight: 1.6,
+            maxWidth: 600,
+            margin: '0 auto 16px',
+          }}
+        >
+          HERR is a wellness platform. It is not a substitute for licensed clinical care.
+          If you are in crisis, call or text{' '}
+          <a
+            href="tel:988"
+            style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'underline' }}
+          >
+            988
+          </a>
+          .
+        </p>
 
-        {/* Disclaimer + Legal */}
-        <div className="border-t border-[var(--herr-border)] pt-8 flex flex-col gap-2">
-          <p className="text-[0.72rem] text-[var(--herr-faint)] leading-relaxed max-w-3xl">
-            HERR™ is a wellness tool and is not a substitute for professional mental health treatment. Always consult a licensed clinician for clinical concerns.
-          </p>
-          <p className="text-[0.72rem] text-[var(--herr-faint)] leading-relaxed max-w-3xl">
-            The HERR™ Progressive Reprogramming System — Patent Pending. HERR™ and Human Existential Response and Reprogramming™ are trademarks of ECQO Holdings™. Unauthorized use is prohibited.
-          </p>
-          <div className="flex flex-wrap items-center gap-4">
-            <p className="text-[0.72rem] text-[var(--herr-faint)]">
-              © {new Date().getFullYear()} ECQO Holdings™. All rights reserved.
-            </p>
-            <a href="/privacy" className="text-[0.72rem] text-[var(--herr-faint)] hover:text-[var(--herr-muted)] transition-colors">Privacy Policy</a>
-            <a href="/terms" className="text-[0.72rem] text-[var(--herr-faint)] hover:text-[var(--herr-muted)] transition-colors">Terms of Service</a>
-          </div>
-        </div>
-
+        {/* Copyright */}
+        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>
+          © {new Date().getFullYear()} ECQO Holdings™. All rights reserved.
+        </p>
       </div>
     </footer>
   );
