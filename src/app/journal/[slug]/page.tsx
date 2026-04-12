@@ -63,137 +63,269 @@ export default async function ArticlePage({
 
   const readingTime = estimateReadingTime(article.body);
   const publishedAt = article.published_at || article.created_at;
-  const articleTags = (article.semantic_tags || []).slice(0, 4);
   const authorName = article.author_name || 'Bianca D. McCall, LMFT';
 
+  // Fetch related articles
+  const { data: related } = await supabase
+    .from('content_objects')
+    .select('slug, title, featured_image_url, semantic_tags, body')
+    .eq('status', 'published')
+    .eq('content_type', 'article')
+    .neq('slug', slug)
+    .order('published_at', { ascending: false })
+    .limit(3);
+
+  const relatedArticles = (related || []).map((a) => ({
+    slug: a.slug,
+    title: a.title,
+    image: a.featured_image_url || '',
+    tag: (a.semantic_tags || [])[0] || '',
+    readTime: estimateReadingTime(a.body),
+  }));
+
   return (
-    <main className="min-h-screen">
-      {/* Article Header */}
-      <section className="pt-32 pb-10 px-6">
-        <div className="max-w-[900px] mx-auto">
-          <Link
-            href="/journal"
-            className="herr-label text-[var(--herr-muted)] hover:text-[var(--herr-white)] transition-colors mb-8 inline-block"
-          >
-            &larr; Back to Journal
-          </Link>
+    <main style={{ minHeight: '100vh', background: '#0A0A0F' }}>
 
-          <div className="flex flex-wrap items-center gap-3 text-[0.75rem] text-[var(--herr-faint)] mb-6">
-            <span className="herr-label border border-[var(--herr-border)] px-3 py-1 capitalize">
-              {article.content_type}
-            </span>
-            <span>{formatDate(publishedAt)}</span>
-            <span>&middot;</span>
-            <span>{readingTime} min read</span>
-          </div>
+      {/* ── Back link ───────────────────────────────────────────────── */}
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '100px 24px 0' }}>
+        <Link
+          href="/journal"
+          style={{
+            fontSize: 13,
+            color: 'rgba(255,255,255,0.5)',
+            textDecoration: 'none',
+            display: 'inline-block',
+            marginBottom: 32,
+          }}
+        >
+          &larr; Back to Journal
+        </Link>
+      </div>
 
-          <h1 className="font-display text-4xl md:text-6xl font-light text-[var(--herr-white)] leading-[0.95] mb-6">
-            {article.title}
-          </h1>
-
-          {article.subtitle && (
-            <p className="font-display text-xl text-[var(--herr-muted)] italic mb-6">
-              {article.subtitle}
-            </p>
-          )}
-
-          {article.excerpt && (
-            <p className="text-lg text-[var(--herr-muted)] max-w-2xl leading-relaxed mb-8">
-              {article.excerpt}
-            </p>
-          )}
-
-          <p className="herr-label text-[var(--herr-pink)]">{authorName}</p>
-        </div>
-      </section>
-
-      {/* Featured Image */}
+      {/* ── Hero Image ──────────────────────────────────────────────── */}
       {article.featured_image_url && (
-        <section className="px-6 pb-10">
-          <div className="max-w-[900px] mx-auto">
-            <div className="border border-[var(--herr-border)] overflow-hidden">
-              <Image
-                src={article.featured_image_url}
-                alt={article.title}
-                width={1792}
-                height={1024}
-                className="w-full aspect-[21/9] object-cover"
-                priority
-              />
+        <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 24px 40px' }}>
+          <div style={{ borderRadius: 16, overflow: 'hidden', position: 'relative', aspectRatio: '16/9' }}>
+            <Image
+              src={article.featured_image_url}
+              alt={article.title}
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+        </div>
+      )}
+
+      {/* ── Title + Author ──────────────────────────────────────────── */}
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 24px 40px' }}>
+        <h1
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: 'clamp(28px, 4vw, 36px)',
+            fontWeight: 600,
+            color: '#FFFFFF',
+            marginBottom: 16,
+            lineHeight: 1.2,
+          }}
+        >
+          {article.title}
+        </h1>
+
+        {/* Author row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+          {/* Avatar placeholder */}
+          <div
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: '50%',
+              background: '#16161F',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 12,
+              color: 'rgba(255,255,255,0.5)',
+              fontWeight: 600,
+              flexShrink: 0,
+            }}
+          >
+            BM
+          </div>
+          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>
+            {authorName} · {formatDate(publishedAt)} · {readingTime} min read
+          </p>
+        </div>
+      </div>
+
+      {/* ── Article Body ────────────────────────────────────────────── */}
+      <article style={{ maxWidth: 720, margin: '0 auto', padding: '0 24px 64px' }}>
+        {article.body && (
+          <div
+            className="herr-prose"
+            style={{
+              fontSize: 18,
+              color: 'rgba(255,255,255,0.8)',
+              lineHeight: 1.8,
+            }}
+            dangerouslySetInnerHTML={{ __html: article.body }}
+          />
+        )}
+      </article>
+
+      {/* ── Article-End CTA ─────────────────────────────────────────── */}
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 24px 64px' }}>
+        <div
+          style={{
+            background: '#16161F',
+            borderRadius: 16,
+            padding: 40,
+            textAlign: 'center',
+            border: '1px solid rgba(255,255,255,0.08)',
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: 24,
+              fontWeight: 600,
+              color: '#FFFFFF',
+              marginBottom: 20,
+            }}
+          >
+            Begin your HERR journey
+          </p>
+          <Link
+            href="/signup"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 48,
+              padding: '0 32px',
+              background: '#C42D8E',
+              color: '#FFFFFF',
+              borderRadius: 12,
+              fontSize: 14,
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              textDecoration: 'none',
+            }}
+          >
+            Start Free
+          </Link>
+        </div>
+      </div>
+
+      {/* ── Related Articles ────────────────────────────────────────── */}
+      {relatedArticles.length > 0 && (
+        <section style={{ padding: '0 24px 80px' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+            <p
+              style={{
+                fontSize: 12,
+                textTransform: 'uppercase',
+                letterSpacing: '2.5px',
+                color: '#C42D8E',
+                marginBottom: 24,
+              }}
+            >
+              MORE FROM THE JOURNAL
+            </p>
+            <div className="related-grid">
+              {relatedArticles.map((r) => (
+                <Link
+                  key={r.slug}
+                  href={`/journal/${r.slug}`}
+                  style={{ textDecoration: 'none', display: 'block' }}
+                >
+                  <div
+                    className="journal-card"
+                    style={{
+                      background: '#16161F',
+                      borderRadius: 16,
+                      overflow: 'hidden',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      height: '100%',
+                    }}
+                  >
+                    {r.image && (
+                      <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden' }}>
+                        <Image
+                          src={r.image}
+                          alt={r.title}
+                          fill
+                          className="object-cover journal-card-img"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
+                    <div style={{ padding: 24 }}>
+                      {r.tag && (
+                        <span
+                          style={{
+                            display: 'inline-block',
+                            background: '#C42D8E',
+                            color: '#FFFFFF',
+                            fontSize: 10,
+                            textTransform: 'uppercase',
+                            borderRadius: 12,
+                            padding: '3px 10px',
+                            marginBottom: 12,
+                          }}
+                        >
+                          {r.tag}
+                        </span>
+                      )}
+                      <h3
+                        style={{
+                          fontFamily: "'Cormorant Garamond', Georgia, serif",
+                          fontSize: 20,
+                          fontWeight: 600,
+                          color: '#FFFFFF',
+                          lineHeight: 1.3,
+                          marginBottom: 8,
+                        }}
+                      >
+                        {r.title}
+                      </h3>
+                      <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>
+                        {r.readTime} min read
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* Article Body */}
-      <section className="px-6 pb-16">
-        <div className="max-w-[900px] mx-auto grid gap-10 lg:grid-cols-[minmax(0,1fr)_220px]">
-          <article className="border border-[var(--herr-border)] bg-[var(--herr-surface)] px-6 py-8 md:px-10 md:py-10">
-            {article.body && (
-              <div
-                className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-headings:font-light prose-headings:text-[var(--herr-white)] prose-p:text-[var(--herr-muted)] prose-p:leading-8 prose-strong:text-[var(--herr-white)] prose-a:text-[var(--herr-pink)] prose-li:text-[var(--herr-muted)] prose-ul:text-[var(--herr-muted)]"
-                dangerouslySetInnerHTML={{ __html: article.body }}
-              />
-            )}
-          </article>
+      {/* ── Disclaimer ──────────────────────────────────────────────── */}
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 24px 48px' }}>
+        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', lineHeight: 1.6 }}>
+          This article is for informational purposes only and does not constitute clinical advice.
+        </p>
+      </div>
 
-          {/* Sidebar */}
-          <aside className="space-y-4">
-            <div className="border border-[var(--herr-border)] bg-[var(--herr-surface)] p-6">
-              <p className="herr-label text-[var(--herr-muted)] mb-4">Details</p>
-              <div className="space-y-3 text-sm">
-                <div className="flex items-center justify-between gap-4 border-b border-[var(--herr-border)] pb-3">
-                  <span className="text-[var(--herr-faint)]">Published</span>
-                  <span className="text-[var(--herr-muted)]">{formatDate(publishedAt)}</span>
-                </div>
-                <div className="flex items-center justify-between gap-4 border-b border-[var(--herr-border)] pb-3">
-                  <span className="text-[var(--herr-faint)]">Reading time</span>
-                  <span className="text-[var(--herr-muted)]">{readingTime} min</span>
-                </div>
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-[var(--herr-faint)]">Author</span>
-                  <span className="text-[var(--herr-muted)] text-right text-[0.8rem]">{authorName}</span>
-                </div>
-              </div>
-            </div>
-
-            {articleTags.length > 0 && (
-              <div className="border border-[var(--herr-border)] bg-[var(--herr-surface)] p-6">
-                <p className="herr-label text-[var(--herr-muted)] mb-4">Topics</p>
-                <div className="flex flex-wrap gap-2">
-                  {articleTags.map((tag: string) => (
-                    <span
-                      key={tag}
-                      className="herr-label text-[var(--herr-faint)] border border-[var(--herr-border)] px-3 py-1"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </aside>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="px-6 py-24 border-t border-[var(--herr-border)] text-center">
-        <div className="max-w-[800px] mx-auto">
-          <p className="herr-label text-[var(--herr-muted)] mb-6">Continue the journey</p>
-          <h2 className="font-display text-4xl md:text-5xl font-light text-[var(--herr-white)] mb-8 leading-tight">
-            The inner voice can be<br />
-            <span className="text-[var(--herr-pink)]">reprogrammed.</span>
-          </h2>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link href="/journal" className="btn-herr-ghost">
-              More Articles
-            </Link>
-            <Link href="/subscribe" className="btn-herr-primary">
-              Begin Your Reprogramming
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* ── Responsive Styles ───────────────────────────────────────── */}
+      <style>{`
+        .related-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+        .journal-card-img {
+          transition: transform 300ms ease;
+        }
+        .journal-card:hover .journal-card-img {
+          transform: scale(1.03);
+        }
+        @media (max-width: 768px) {
+          .related-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
     </main>
   );
 }

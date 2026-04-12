@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/server';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Journal — HERR',
+  title: 'The HERR Journal — Clinical Insights for the Inner Voice',
   description:
     'Clinical insight, existential psychology, and the science of the inner voice. Thought leadership from Bianca D. McCall, LMFT — Founder of HERR and ECQO Holdings.',
 };
@@ -51,20 +51,70 @@ export default async function JournalPage() {
     author: a.author_name || 'Bianca D. McCall, LMFT',
   }));
 
-  // Empty state — only shown when zero published articles exist
+  // Empty state
   if (allArticles.length === 0) {
     return (
-      <main className="min-h-screen">
-        <section className="flex items-center justify-center px-6 pt-32 pb-24">
-          <div className="max-w-2xl border border-[var(--herr-border)] bg-[var(--herr-surface)] p-12 text-center">
-            <p className="herr-label text-[var(--herr-muted)] mb-6">The Journal</p>
-            <h1 className="font-display text-4xl md:text-5xl font-light text-[var(--herr-white)] mb-6 leading-tight">
-              Clinical insight. Existential depth. Coming soon.
-            </h1>
-            <p className="text-[var(--herr-muted)] leading-relaxed mb-8">
-              The HERR journal publishes thought leadership on existential psychology, the inner voice, elite performance, and behavioral wellness. Written by Bianca D. McCall, LMFT.
+      <main style={{ minHeight: '100vh', background: '#0A0A0F' }}>
+        <section
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '60vh',
+            padding: '120px 24px 80px',
+          }}
+        >
+          <div
+            style={{
+              maxWidth: 640,
+              textAlign: 'center',
+            }}
+          >
+            <p
+              style={{
+                fontSize: 12,
+                textTransform: 'uppercase',
+                letterSpacing: '2.5px',
+                color: '#C42D8E',
+                marginBottom: 16,
+              }}
+            >
+              THE HERR JOURNAL
             </p>
-            <Link href="/subscribe" className="btn-herr-primary inline-flex">
+            <h1
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 'clamp(32px, 5vw, 48px)',
+                fontWeight: 600,
+                color: '#FFFFFF',
+                marginBottom: 16,
+                lineHeight: 1.15,
+              }}
+            >
+              Clinical insights for the inner voice.
+            </h1>
+            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.6)', marginBottom: 32, lineHeight: 1.6 }}>
+              The HERR journal publishes thought leadership on existential psychology, the inner voice,
+              elite performance, and behavioral wellness. Written by Bianca D. McCall, LMFT. Articles coming soon.
+            </p>
+            <Link
+              href="/signup"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 48,
+                padding: '0 32px',
+                background: '#C42D8E',
+                color: '#FFFFFF',
+                borderRadius: 12,
+                fontSize: 14,
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                textDecoration: 'none',
+              }}
+            >
               Begin Your Reprogramming
             </Link>
           </div>
@@ -77,114 +127,198 @@ export default async function JournalPage() {
   const rest = allArticles.slice(1);
 
   return (
-    <main className="min-h-screen">
-      {/* Header */}
-      <section className="pt-32 pb-14 px-6">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="flex items-center justify-between gap-6 pb-6 mb-8 border-b border-[var(--herr-border)]">
-            <span className="herr-label text-[var(--herr-faint)]">HERR Journal</span>
-            <span className="herr-label text-[var(--herr-faint)]">{allArticles.length} article{allArticles.length === 1 ? '' : 's'}</span>
-          </div>
+    <main style={{ minHeight: '100vh', background: '#0A0A0F' }}>
 
-          <p className="herr-label text-[var(--herr-muted)] mb-6">
-            Bianca D. McCall, LMFT — Founder of HERR and ECQO Holdings
-          </p>
-          <h1 className="font-display text-5xl md:text-7xl font-light text-[var(--herr-white)] leading-[0.9] mb-6">
-            The Journal
-          </h1>
-          <p className="text-lg text-[var(--herr-muted)] max-w-2xl leading-relaxed">
-            Clinical insight on existential psychology, the inner voice, identity transition, and elite performance.
-          </p>
-        </div>
+      {/* ── Hero ────────────────────────────────────────────────────── */}
+      <section
+        style={{
+          background: '#0A0A0F',
+          padding: 'clamp(80px, 12vw, 120px) 24px clamp(24px, 4vw, 40px)',
+          textAlign: 'center',
+        }}
+      >
+        <h1
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: 'clamp(32px, 5vw, 48px)',
+            fontWeight: 600,
+            color: '#FFFFFF',
+            marginBottom: 12,
+            lineHeight: 1.15,
+          }}
+        >
+          The HERR Journal
+        </h1>
+        <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.6)' }}>
+          Clinical insights for the inner voice.
+        </p>
       </section>
 
-      {/* Featured Article */}
-      <section className="px-6 pb-16">
-        <div className="max-w-[1200px] mx-auto">
-          <Link
-            href={`/journal/${featured.slug}`}
-            className="block border border-[var(--herr-border)] bg-[var(--herr-surface)] hover:border-[var(--herr-pink)] transition-colors overflow-hidden"
-          >
-            {featured.image && (
-              <div className="relative w-full aspect-[21/9]">
-                <Image
-                  src={featured.image}
-                  alt={featured.title}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            )}
-            <div className="p-8 md:p-12">
-              <p className="herr-label text-[var(--herr-pink)] mb-4">Featured</p>
-              <h2 className="font-display text-3xl md:text-5xl font-light text-[var(--herr-white)] mb-6 leading-tight">
-                {featured.title}
-              </h2>
-              {featured.excerpt && (
-                <p className="text-lg text-[var(--herr-muted)] max-w-2xl leading-relaxed mb-6">
-                  {featured.excerpt}
-                </p>
-              )}
-              <div className="flex flex-wrap items-center gap-4">
-                <span className="text-[0.78rem] text-[var(--herr-faint)]">{featured.author}</span>
-                <span className="text-[var(--herr-faint)]">&middot;</span>
-                <span className="text-[0.78rem] text-[var(--herr-faint)]">{formatDate(featured.published_at)}</span>
-                <span className="text-[var(--herr-faint)]">&middot;</span>
-                <span className="text-[0.78rem] text-[var(--herr-faint)]">{featured.reading_time} min read</span>
-              </div>
-              {featured.semantic_tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-6">
-                  {featured.semantic_tags.slice(0, 4).map((tag) => (
-                    <span key={tag} className="herr-label text-[var(--herr-faint)] border border-[var(--herr-border)] px-3 py-1">
-                      {tag}
-                    </span>
-                  ))}
+      {/* ── Featured Article ────────────────────────────────────────── */}
+      <section style={{ padding: '0 24px 48px' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <Link href={`/journal/${featured.slug}`} style={{ textDecoration: 'none', display: 'block' }}>
+            <div
+              className="featured-article"
+              style={{
+                background: '#16161F',
+                borderRadius: 16,
+                overflow: 'hidden',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}
+            >
+              <div className="featured-layout">
+                {/* Image */}
+                {featured.image && (
+                  <div className="featured-image" style={{ position: 'relative', aspectRatio: '16/9' }}>
+                    <Image
+                      src={featured.image}
+                      alt={featured.title}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                  </div>
+                )}
+
+                {/* Content */}
+                <div style={{ padding: 40 }}>
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      background: '#C42D8E',
+                      color: '#FFFFFF',
+                      fontSize: 10,
+                      textTransform: 'uppercase',
+                      borderRadius: 12,
+                      padding: '4px 10px',
+                      marginBottom: 12,
+                    }}
+                  >
+                    Featured
+                  </span>
+                  <h2
+                    style={{
+                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontSize: 'clamp(22px, 3vw, 28px)',
+                      fontWeight: 600,
+                      color: '#FFFFFF',
+                      marginBottom: 12,
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {featured.title}
+                  </h2>
+                  {featured.excerpt && (
+                    <p
+                      style={{
+                        fontSize: 16,
+                        color: 'rgba(255,255,255,0.6)',
+                        lineHeight: 1.6,
+                        marginBottom: 16,
+                        display: '-webkit-box',
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {featured.excerpt}
+                    </p>
+                  )}
+                  <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>
+                    {featured.author} · {formatDate(featured.published_at)} · {featured.reading_time} min read
+                  </p>
                 </div>
-              )}
+              </div>
             </div>
           </Link>
         </div>
       </section>
 
-      {/* Remaining Articles */}
+      {/* ── Article Grid ────────────────────────────────────────────── */}
       {rest.length > 0 && (
-        <section className="px-6 pb-24">
-          <div className="max-w-[1200px] mx-auto">
-            <p className="herr-label text-[var(--herr-muted)] mb-8">More from the archive</p>
-            <div className="grid gap-px bg-[var(--herr-border)] md:grid-cols-2 lg:grid-cols-3">
+        <section style={{ padding: '0 24px 80px' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+            <div className="article-grid">
               {rest.map((article) => (
                 <Link
                   key={article.slug}
                   href={`/journal/${article.slug}`}
-                  className="block bg-[var(--herr-black)] hover:bg-[var(--herr-surface)] transition-colors overflow-hidden"
+                  style={{ textDecoration: 'none', display: 'block' }}
                 >
-                  {article.image && (
-                    <div className="relative w-full aspect-[16/9]">
-                      <Image
-                        src={article.image}
-                        alt={article.title}
-                        fill
-                        className="object-cover"
-                      />
+                  <div
+                    className="journal-card"
+                    style={{
+                      background: '#16161F',
+                      borderRadius: 16,
+                      overflow: 'hidden',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    {article.image && (
+                      <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden' }}>
+                        <Image
+                          src={article.image}
+                          alt={article.title}
+                          fill
+                          className="object-cover journal-card-img"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
+                    <div style={{ padding: 24, display: 'flex', flexDirection: 'column', flex: 1 }}>
+                      {article.semantic_tags?.[0] && (
+                        <span
+                          style={{
+                            display: 'inline-block',
+                            background: '#C42D8E',
+                            color: '#FFFFFF',
+                            fontSize: 10,
+                            textTransform: 'uppercase',
+                            borderRadius: 12,
+                            padding: '3px 10px',
+                            width: 'fit-content',
+                            marginBottom: 12,
+                          }}
+                        >
+                          {article.semantic_tags[0]}
+                        </span>
+                      )}
+                      <h3
+                        style={{
+                          fontFamily: "'Cormorant Garamond', Georgia, serif",
+                          fontSize: 20,
+                          fontWeight: 600,
+                          color: '#FFFFFF',
+                          marginBottom: 8,
+                          lineHeight: 1.3,
+                        }}
+                      >
+                        {article.title}
+                      </h3>
+                      {article.excerpt && (
+                        <p
+                          style={{
+                            fontSize: 14,
+                            color: 'rgba(255,255,255,0.6)',
+                            lineHeight: 1.5,
+                            flex: 1,
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                          }}
+                        >
+                          {article.excerpt}
+                        </p>
+                      )}
+                      <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginTop: 12 }}>
+                        {article.reading_time} min read
+                      </p>
                     </div>
-                  )}
-                  <div className="p-8">
-                  <h3 className="font-display text-xl font-light text-[var(--herr-white)] mb-3 leading-snug">
-                    {article.title}
-                  </h3>
-                  {article.excerpt && (
-                    <p className="text-[0.85rem] text-[var(--herr-muted)] leading-relaxed mb-4 line-clamp-3">
-                      {article.excerpt}
-                    </p>
-                  )}
-                  <div className="flex flex-wrap items-center gap-3 text-[0.75rem] text-[var(--herr-faint)]">
-                    <span>{article.author}</span>
-                    <span>&middot;</span>
-                    <span>{formatDate(article.published_at)}</span>
-                    <span>&middot;</span>
-                    <span>{article.reading_time} min read</span>
-                  </div>
                   </div>
                 </Link>
               ))}
@@ -192,6 +326,32 @@ export default async function JournalPage() {
           </div>
         </section>
       )}
+
+      {/* ── Responsive Styles ───────────────────────────────────────── */}
+      <style>{`
+        .featured-layout {
+          display: grid;
+          grid-template-columns: 50% 50%;
+        }
+        .article-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+        .journal-card-img {
+          transition: transform 300ms ease;
+        }
+        .journal-card:hover .journal-card-img {
+          transform: scale(1.03);
+        }
+        @media (max-width: 1024px) {
+          .article-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+          .featured-layout { grid-template-columns: 1fr; }
+          .article-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
     </main>
   );
 }
