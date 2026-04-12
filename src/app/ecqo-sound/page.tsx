@@ -1,111 +1,339 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import MomentForMusic from '@/components/ecqo-sound/MomentForMusic';
-import BListSection from '@/components/ecqo-sound/BListSection';
+import ScrollFadeIn from '@/components/home/ScrollFadeIn';
 
 export const metadata: Metadata = {
-  title: 'ECQO Sound — Def Jam meets Headspace | HERR',
-  description: 'Genre-personalized therapeutic music. Clinically designed. Composed for your nervous system.',
+  title: 'ECQO Sound\u2122 — Sonic Architecture for the Inner Voice',
+  description:
+    'Eight activity modes. Eight genres. Voice-only or music delivery. ECQO Sound is the proprietary sonic architecture that powers HERR\u2019s daily reprogramming.',
 };
 
-const GENRES = ['Hip Hop','Gospel','R&B/Soul','Lo-fi','Latin','Afrobeats','Classical','Country'];
 const MODES = [
-  { name: 'Sleep', tone: 'Dissolving, releasing' },
-  { name: 'Morning', tone: 'Opening, possibility' },
-  { name: 'Workout', tone: 'Power, activation' },
-  { name: 'Driving', tone: 'Forward motion, clarity' },
-  { name: 'Deep Work', tone: 'Focused, sustained' },
-  { name: 'Love+Family', tone: 'Warmth, connection' },
-  { name: 'Abundance', tone: 'Expansion, joy' },
-  { name: 'Healing', tone: 'Tender, held, safe' },
-];
-const PHASE1 = ['Sleep','Morning','Workout'];
-const TIERS = [
-  { name:'Free', price:'$0', badge:null, pop:false, features:['Browse the HERR platform','Learn about the ECQO clinical framework','Access public journal content'], excluded:['No voice affirmations','No ECQO Sound','No voice cloning'], cta:'Get Started', href:'/signup' },
-  { name:'HERR Collective', price:'$9', badge:null, pop:false, features:['Conversational AI (ECQO Screener)','Voice affirmations in text-to-speech','All 8 activity modes','HERR Nation community','Monthly theme drops'], excluded:['No ECQO Sound music layer','No voice cloning'], cta:'Subscribe — $9/mo', href:'/checkout?tier=collective' },
-  { name:'HERR Personalized', price:'$19', badge:'Most Popular', pop:true, features:['Everything in Collective','Your own cloned voice via ElevenLabs','Full ECQO Sound — genre selection, playlists, ratings','Personalized existential assessment','Quarterly voice + script refresh'], excluded:[], cta:'Subscribe — $19/mo', href:'/checkout?tier=personalized' },
-  { name:'HERR Elite', price:'$29', badge:'Clinical Grade', pop:false, features:['Everything in Personalized','Priority genre access + weekly genre switching','Monthly live session with Bianca D. McCall, LMFT','Elite Lounge + Beta-Testers Lab','Clinically sequenced reprogramming protocol','First access to new features'], excluded:[], cta:'Subscribe — $29/mo', href:'/checkout?tier=elite' },
+  { name: 'Workout', desc: 'High-intensity reprogramming', icon: 'M6 3v12M1 8l5-5 5 5' },
+  { name: 'Driving', desc: 'Commute transformation', icon: 'M5 17h14M2 12h20M7 7l5-5 5 5' },
+  { name: 'Sleep', desc: 'Subconscious overnight work', icon: 'M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z' },
+  { name: 'Morning', desc: 'Start with intention', icon: 'M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83' },
+  { name: 'Deep Work', desc: 'Flow state activation', icon: 'M12 2a8 8 0 0 1 8 8c0 3-2 5.5-4 7l-1 3H9l-1-3c-2-1.5-4-4-4-7a8 8 0 0 1 8-8z' },
+  { name: 'Love + Family', desc: 'Relational affirmations', icon: 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z' },
+  { name: 'Abundance', desc: 'Wealth consciousness', icon: 'M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z' },
+  { name: 'Healing', desc: 'Restoration and recovery', icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' },
 ];
 
-export default async function ECQOSoundPage() {
+const GENRES = [
+  'Ambient', 'R&B', 'Classical', 'Lo-Fi', 'Jazz', 'Electronic', 'Acoustic', 'Orchestral',
+];
+
+export default function ECQOSoundPage() {
   return (
-    <main className="min-h-screen bg-[#0A0A0F] text-white">
-      <section className="relative min-h-screen flex flex-col justify-center px-6 pt-32 pb-24">
-        <div className="max-w-[1200px] mx-auto w-full">
-          <p className="text-[#C42D8E] uppercase tracking-[0.3em] text-sm font-medium mb-6">ECQO Sound</p>
-          <h1 className="text-[clamp(3rem,10vw,8rem)] font-light leading-[0.9] mb-8">Def Jam meets<br/><span className="text-[#C42D8E]">Headspace</span></h1>
-          <p className="text-lg md:text-xl text-[#A0A0B0] max-w-xl leading-relaxed mb-10">Genre-personalized therapeutic music. Clinically designed. Composed for your nervous system. Delivered in your genre, every morning.</p>
-          <a href="#pricing" className="inline-block bg-[#C42D8E] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#C42D8E]/90 transition-colors">Start Listening</a>
-        </div>
+    <main style={{ minHeight: '100vh', background: '#0A0A0F' }}>
+
+      {/* ── Hero ────────────────────────────────────────────────────── */}
+      <section
+        style={{
+          background: '#0A0A0F',
+          padding: 'clamp(80px, 12vw, 120px) 24px clamp(40px, 6vw, 60px)',
+          textAlign: 'center',
+        }}
+      >
+        <h1
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: 'clamp(32px, 5vw, 48px)',
+            fontWeight: 600,
+            color: '#FFFFFF',
+            marginBottom: 12,
+            lineHeight: 1.15,
+          }}
+        >
+          ECQO Sound™
+        </h1>
+        <p style={{ fontSize: 18, color: '#E8388A' }}>
+          Sonic architecture for the inner voice.
+        </p>
       </section>
 
-      <section className="px-6 py-24 border-t border-white/10">
-        <div className="max-w-[1200px] mx-auto">
-          <p className="text-[#A0A0B0] uppercase tracking-[0.3em] text-xs mb-4">The Science</p>
-          <h2 className="text-4xl md:text-5xl font-light mb-8">Proprietary formula. Proven results.</h2>
-          <p className="text-[#A0A0B0] text-lg leading-relaxed max-w-2xl mb-6">Every ECQO Sound track is built on a proprietary formula combining BPM, frequency tuning, brainwave entrainment, and tonal design — scientifically calibrated to support nervous system regulation and subconscious reprogramming.</p>
-          <p className="text-[#A0A0B0] text-lg leading-relaxed max-w-2xl">Each track is personalized to your activity mode, your genre preference, and your clinical profile — so your morning track sounds different from your sleep track, and your workout track hits different from your deep work session. One formula. Infinite expressions.</p>
-        </div>
-      </section>
+      {/* ── Activity Modes ──────────────────────────────────────────── */}
+      <section style={{ background: '#111118', padding: 'clamp(48px, 8vw, 80px) 24px' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <p
+            style={{
+              fontSize: 12,
+              textTransform: 'uppercase',
+              letterSpacing: '2.5px',
+              color: '#C42D8E',
+              marginBottom: 16,
+            }}
+          >
+            ACTIVITY MODES
+          </p>
+          <h2
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: 'clamp(28px, 3.5vw, 32px)',
+              fontWeight: 600,
+              color: '#FFFFFF',
+              marginBottom: 48,
+              lineHeight: 1.3,
+            }}
+          >
+            Eight modes. One purpose.
+          </h2>
 
-      <section className="px-6 py-24 border-t border-white/10 bg-[#111118]">
-        <div className="max-w-[800px] mx-auto">
-          <p className="text-[#A0A0B0] uppercase tracking-[0.3em] text-xs mb-4">Your Journey</p>
-          <h2 className="text-4xl md:text-5xl font-light mb-14">From screener to soundtrack.</h2>
-          <div className="flex flex-col gap-8">
-            {['Complete your ECQO existential screener','Select your genre and activity mode preferences','Your personalized soundtrack is generated daily','Rate tracks, build playlists, discover new releases weekly','Monthly progress reports track your growth over time'].map((s,i) => (
-              <div key={i} className="flex gap-6"><span className="text-[#C42D8E] font-bold text-2xl min-w-[3rem]">{String(i+1).padStart(2,'0')}</span><p className="text-[#A0A0B0] text-lg pt-1">{s}</p></div>
+          <div className="modes-grid">
+            {MODES.map((m, i) => (
+              <ScrollFadeIn key={m.name} delay={i * 60}>
+                <div className="mode-card"
+                  style={{
+                    background: '#16161F',
+                    borderRadius: 16,
+                    padding: 24,
+                    textAlign: 'center',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    cursor: 'default',
+                    transition: 'border-color 200ms ease',
+                    height: '100%',
+                  }}
+                >
+                  <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.5)"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="mode-icon"
+                    style={{ margin: '0 auto 12px', transition: 'stroke 200ms ease' }}
+                  >
+                    <path d={m.icon} />
+                  </svg>
+                  <p
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 600,
+                      color: '#FFFFFF',
+                      marginBottom: 8,
+                    }}
+                  >
+                    {m.name}
+                  </p>
+                  <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>
+                    {m.desc}
+                  </p>
+                </div>
+              </ScrollFadeIn>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="px-6 py-24 border-t border-white/10">
-        <div className="max-w-[1200px] mx-auto">
-          <h2 className="text-4xl md:text-5xl font-light mb-6">Eight genres. Eight activity modes.</h2>
-          <p className="text-[#A0A0B0] mb-10 max-w-xl">Every genre is composed for every mode — no genre is limited to certain moods.</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-12">
-            {MODES.map((m) => (<div key={m.name} className="border border-white/10 p-5 hover:border-[#C42D8E] transition-colors"><p className="text-white font-semibold mb-1">{m.name}</p><p className="text-xs text-white/30">{m.tone}</p></div>))}
+      {/* ── Genre Selection ─────────────────────────────────────────── */}
+      <section style={{ background: '#0A0A0F', padding: 'clamp(48px, 8vw, 80px) 24px' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
+          <p
+            style={{
+              fontSize: 12,
+              textTransform: 'uppercase',
+              letterSpacing: '2.5px',
+              color: '#C42D8E',
+              marginBottom: 16,
+            }}
+          >
+            GENRES
+          </p>
+          <h2
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: 'clamp(28px, 3.5vw, 32px)',
+              fontWeight: 600,
+              color: '#FFFFFF',
+              marginBottom: 32,
+              lineHeight: 1.3,
+            }}
+          >
+            Your sound. Your choice.
+          </h2>
+
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 12,
+              justifyContent: 'center',
+              marginBottom: 24,
+            }}
+          >
+            {GENRES.map((g) => (
+              <span
+                key={g}
+                style={{
+                  background: '#16161F',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  padding: '10px 20px',
+                  borderRadius: 24,
+                  fontSize: 14,
+                  color: 'rgba(255,255,255,0.7)',
+                }}
+              >
+                {g}
+              </span>
+            ))}
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {GENRES.map((g) => (<div key={g} className="border border-white/10 p-6 text-center hover:border-[#C42D8E] transition-colors"><p className="text-white font-medium">{g}</p></div>))}
-          </div>
+
+          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)', fontStyle: 'italic' }}>
+            Genre selection available for Personalized and Elite members.
+          </p>
         </div>
       </section>
 
-      <section id="pricing" className="px-6 py-24 border-t border-white/10 bg-[#111118]">
-        <div className="max-w-[1200px] mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-light mb-4">Membership</h2>
-          <p className="text-[#A0A0B0] text-lg mb-14">Choose your tier.</p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
-            {TIERS.map((t) => (
-              <div key={t.name} className={`flex flex-col p-8 rounded-xl ${t.pop ? 'bg-white text-[#0A0A0F] ring-2 ring-[#C42D8E]' : 'bg-[#0A0A0F] border border-white/10'}`}>
-                {t.badge && <p className={`text-xs uppercase tracking-wider font-semibold mb-2 ${t.pop ? 'text-[#C42D8E]' : 'text-[#FFB300]'}`}>{t.badge}</p>}
-                <h3 className={`text-xl font-bold mb-2 ${t.pop ? 'text-[#0A0A0F]' : 'text-white'}`}>{t.name}</h3>
-                <p className="text-3xl font-bold mb-6">{t.price}<span className="text-sm font-normal opacity-60">/month</span></p>
-                <ul className="space-y-2 mb-6 flex-1">
-                  {t.features.map((f) => (<li key={f} className="flex items-start gap-2 text-sm"><span className={t.pop ? 'text-[#C42D8E]' : 'text-[#00C853]'}>+</span>{f}</li>))}
-                  {t.excluded.map((f) => (<li key={f} className="flex items-start gap-2 text-sm opacity-50"><span>–</span>{f}</li>))}
-                </ul>
-                <Link href={t.href} className={`block text-center py-3 rounded-full font-semibold transition-colors ${t.pop ? 'bg-[#C42D8E] text-white' : 'border border-white/20 text-white hover:border-[#C42D8E]/50'}`}>{t.cta}</Link>
+      {/* ── Voice vs. Music ─────────────────────────────────────────── */}
+      <section style={{ background: '#111118', padding: 'clamp(48px, 8vw, 80px) 24px' }}>
+        <div className="delivery-grid" style={{ maxWidth: 960, margin: '0 auto' }}>
+          {[
+            {
+              icon: 'M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8',
+              title: 'Voice-Only Delivery',
+              body: 'Pure affirmation delivery. Your cloned voice, uninterrupted. Maximum clarity for the subconscious.',
+              tag: 'Available on all paid tiers',
+            },
+            {
+              icon: 'M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z',
+              title: 'Music Delivery',
+              body: 'Affirmations layered with proprietary sonic architecture. Frequency-calibrated soundscapes designed to deepen the reprogramming effect.',
+              tag: 'Available on Personalized and Elite tiers',
+            },
+          ].map((card, i) => (
+            <ScrollFadeIn key={card.title} delay={i * 150}>
+              <div
+                style={{
+                  background: '#16161F',
+                  borderRadius: 16,
+                  padding: 32,
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  height: '100%',
+                }}
+              >
+                <svg
+                  width="40"
+                  height="40"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#C42D8E"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ marginBottom: 20 }}
+                >
+                  <path d={card.icon} />
+                </svg>
+                <p
+                  style={{
+                    fontSize: 20,
+                    fontWeight: 600,
+                    color: '#FFFFFF',
+                    marginBottom: 12,
+                  }}
+                >
+                  {card.title}
+                </p>
+                <p
+                  style={{
+                    fontSize: 16,
+                    color: 'rgba(255,255,255,0.7)',
+                    lineHeight: 1.6,
+                    marginBottom: 16,
+                  }}
+                >
+                  {card.body}
+                </p>
+                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>
+                  {card.tag}
+                </p>
               </div>
-            ))}
-          </div>
-          <p className="text-white/30 text-sm mt-8">Subscriptions renew automatically each month. Cancel anytime.</p>
+            </ScrollFadeIn>
+          ))}
         </div>
       </section>
 
-      <MomentForMusic />
-      <BListSection />
-
-      <section className="px-6 py-24 border-t border-white/10 text-center">
-        <div className="max-w-[800px] mx-auto">
-          <p className="text-[#C42D8E] uppercase tracking-[0.3em] text-sm font-medium mb-6">For Producers</p>
-          <h2 className="text-4xl md:text-5xl font-light mb-6">Your genre. Their healing. Your legacy.</h2>
-          <p className="text-[#A0A0B0] leading-relaxed mb-10 max-w-xl mx-auto">We&apos;re building the world&apos;s first clinically designed music catalog. Independent producers in all eight genres — your compositions become the delivery mechanism for therapeutic change. Original work. Real royalties. Lasting impact.</p>
-          <Link href="/ecqo-sound/producers" className="inline-block bg-[#C42D8E] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#C42D8E]/90 transition-colors">Join the Catalog</Link>
-        </div>
+      {/* ── Bottom CTA ──────────────────────────────────────────────── */}
+      <section
+        style={{
+          background: '#0A0A0F',
+          padding: '80px 24px',
+          textAlign: 'center',
+        }}
+      >
+        <h2
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: 'clamp(24px, 3.5vw, 32px)',
+            fontWeight: 600,
+            color: '#FFFFFF',
+            maxWidth: 600,
+            margin: '0 auto 32px',
+            lineHeight: 1.3,
+          }}
+        >
+          Your daily reprogramming, delivered in the format that moves you.
+        </h2>
+        <Link
+          href="/checkout"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 48,
+            padding: '0 40px',
+            background: '#C42D8E',
+            color: '#FFFFFF',
+            borderRadius: 12,
+            fontSize: 14,
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            letterSpacing: '1px',
+            textDecoration: 'none',
+          }}
+        >
+          Choose Your Plan
+        </Link>
+        <p
+          style={{
+            fontSize: 12,
+            color: 'rgba(255,255,255,0.3)',
+            marginTop: 32,
+            maxWidth: 600,
+            margin: '32px auto 0',
+          }}
+        >
+          ECQO Sound™ is proprietary sonic architecture. Specific frequencies, BPM, and mixing
+          methodology are trade secrets of ECQO Holdings™.
+        </p>
       </section>
+
+      {/* ── Responsive Styles ───────────────────────────────────────── */}
+      <style>{`
+        .modes-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+        }
+        .mode-card:hover {
+          border-color: #C42D8E !important;
+        }
+        .mode-card:hover .mode-icon {
+          stroke: #C42D8E !important;
+        }
+        .delivery-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 32px;
+        }
+        @media (max-width: 768px) {
+          .modes-grid { grid-template-columns: repeat(2, 1fr); }
+          .delivery-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
     </main>
   );
 }
