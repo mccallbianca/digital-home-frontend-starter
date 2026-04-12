@@ -184,10 +184,12 @@ export default function CheckoutFlow() {
                 key={plan.tier}
                 onClick={() => handleSelectPlan(plan.tier)}
                 className={`flex flex-col p-8 md:p-10 text-left transition-all duration-300 ${
-                  isSelected
-                    ? 'bg-[var(--herr-surface)] ring-2 ring-[var(--herr-pink)]'
-                    : plan.featured
-                      ? 'bg-[var(--herr-surface)] hover:bg-[var(--herr-card)]'
+                  plan.featured
+                    ? isSelected
+                      ? 'bg-[#FFFFFF] ring-2 ring-[#C42D8E] border border-[#C42D8E]'
+                      : 'bg-[#FFFFFF] border border-[#C42D8E] hover:bg-[#F8F8F8]'
+                    : isSelected
+                      ? 'bg-[var(--herr-surface)] ring-2 ring-[var(--herr-pink)]'
                       : 'bg-[var(--herr-black)] hover:bg-[var(--herr-surface)]'
                 }`}
               >
@@ -200,12 +202,12 @@ export default function CheckoutFlow() {
 
                 {/* Selection indicator */}
                 <div className="flex items-center justify-between mb-2">
-                  <p className="herr-label text-[var(--herr-muted)]">{plan.name}</p>
+                  <p className={`herr-label ${plan.featured ? 'text-[#0A0A0F]' : 'text-[var(--herr-muted)]'}`}>{plan.name}</p>
                   <div
                     className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
                       isSelected
-                        ? 'border-[var(--herr-pink)] bg-[var(--herr-pink)]'
-                        : 'border-[var(--herr-border-mid)]'
+                        ? 'border-[#C42D8E] bg-[#C42D8E]'
+                        : plan.featured ? 'border-[#C42D8E]/40' : 'border-[var(--herr-border-mid)]'
                     }`}
                   >
                     {isSelected && (
@@ -222,25 +224,25 @@ export default function CheckoutFlow() {
 
                 {/* Price */}
                 <div className="flex items-end gap-1 mb-1">
-                  <span className="font-display text-5xl font-light text-[var(--herr-white)]">
+                  <span className={`font-display text-5xl font-light ${plan.featured ? 'text-[#0A0A0F]' : 'text-[var(--herr-white)]'}`}>
                     {plan.price}
                   </span>
                   {plan.period && (
-                    <span className="text-[var(--herr-muted)] mb-2 text-sm">{plan.period}</span>
+                    <span className={`mb-2 text-sm ${plan.featured ? 'text-[#0A0A0F]/60' : 'text-[var(--herr-muted)]'}`}>{plan.period}</span>
                   )}
                 </div>
-                <p className="text-[0.78rem] text-[var(--herr-pink)] font-light italic font-display mb-4">
+                <p className={`text-[0.78rem] font-light italic font-display mb-4 ${plan.featured ? 'text-[#C42D8E]' : 'text-[var(--herr-pink)]'}`}>
                   {plan.tagline}
                 </p>
-                <p className="text-[0.82rem] text-[var(--herr-muted)] mb-8 leading-relaxed">
+                <p className={`text-[0.82rem] mb-8 leading-relaxed ${plan.featured ? 'text-[#0A0A0F]/70' : 'text-[var(--herr-muted)]'}`}>
                   {plan.description}
                 </p>
 
                 {/* Features */}
                 <ul className="flex flex-col gap-3 flex-1">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3 text-[0.82rem] text-[var(--herr-muted)]">
-                      <span className="text-[var(--herr-pink)] mt-0.5 shrink-0 leading-none">+</span>
+                    <li key={f} className={`flex items-start gap-3 text-[0.82rem] ${plan.featured ? 'text-[#0A0A0F]/80' : 'text-[var(--herr-muted)]'}`}>
+                      <span className={`mt-0.5 shrink-0 leading-none ${plan.featured ? 'text-[#C42D8E]' : 'text-[var(--herr-pink)]'}`}>+</span>
                       <span>{f}</span>
                     </li>
                   ))}
