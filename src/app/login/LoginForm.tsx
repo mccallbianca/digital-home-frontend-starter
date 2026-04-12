@@ -4,6 +4,44 @@ import { useState, useRef } from 'react';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { createClient } from '@/lib/supabase/browser';
 
+const inputStyle = (hasError: boolean): React.CSSProperties => ({
+  width: '100%',
+  background: '#16161F',
+  border: `1px solid ${hasError ? '#EF4444' : 'rgba(255,255,255,0.15)'}`,
+  borderRadius: 12,
+  height: 48,
+  padding: '0 16px',
+  color: '#FFFFFF',
+  fontSize: 14,
+  outline: 'none',
+  transition: 'border-color 200ms ease',
+});
+
+const labelStyle: React.CSSProperties = {
+  display: 'block',
+  fontSize: 12,
+  textTransform: 'uppercase',
+  letterSpacing: '1px',
+  color: 'rgba(255,255,255,0.5)',
+  marginBottom: 6,
+};
+
+const btnPrimary: React.CSSProperties = {
+  width: '100%',
+  height: 48,
+  background: '#C42D8E',
+  color: '#FFFFFF',
+  borderRadius: 12,
+  border: 'none',
+  fontSize: 14,
+  fontWeight: 600,
+  textTransform: 'uppercase',
+  letterSpacing: '1px',
+  cursor: 'pointer',
+  transition: 'background 200ms ease',
+  marginTop: 8,
+};
+
 export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: string }) {
   const captchaRef = useRef<HCaptcha>(null);
 
@@ -14,7 +52,6 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [locked, setLocked] = useState(false);
 
-  // Forgot password state
   const [showReset, setShowReset] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [resetSent, setResetSent] = useState(false);
@@ -31,22 +68,17 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
     if (!email.trim()) errs.email = 'Email is required.';
     if (!password) errs.password = 'Password is required.';
     if (siteKey && !captchaToken) errs.captcha = 'Please complete the captcha.';
-    if (Object.keys(errs).length > 0) {
-      setErrors(errs);
-      return;
-    }
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
 
     setLoading(true);
     setErrors({});
 
     try {
-      // Use hardened login endpoint for lockout tracking + security logging
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, captchaToken }),
       });
-
       const data = await res.json();
 
       if (!res.ok) {
@@ -54,7 +86,7 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
           setLocked(true);
           setErrors({ form: data.error });
         } else {
-          setErrors({ form: data.error || 'We couldn\'t find a match for those credentials. Take a moment and try again.' });
+          setErrors({ form: data.error || "We couldn\u2019t find a match for those credentials. Take a moment and try again." });
         }
         setLoading(false);
         captchaRef.current?.resetCaptcha();
@@ -62,7 +94,6 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
         return;
       }
 
-      // Session was set server-side; now set it client-side too
       const supabase = createClient();
       if (data.session) {
         await supabase.auth.setSession({
@@ -70,13 +101,9 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
           refresh_token: data.session.refresh_token,
         });
       }
-
-      // Full page navigation ensures cookies propagate before server components run.
-      // router.push does a soft navigation which can race with cookie writes,
-      // causing server-side auth checks (e.g. admin layout) to fail.
       window.location.href = redirectTo;
     } catch {
-      setErrors({ form: 'Something didn\'t work as expected. Let\'s try again.' });
+      setErrors({ form: "Something didn\u2019t work as expected. Let\u2019s try again." });
       setLoading(false);
       captchaRef.current?.resetCaptcha();
       setCaptchaToken('');
@@ -85,53 +112,38 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
 
   async function handleResetPassword(e: React.FormEvent) {
     e.preventDefault();
-    if (!resetEmail.trim()) {
-      setResetError('Email is required.');
-      return;
-    }
+    if (!resetEmail.trim()) { setResetError('Email is required.'); return; }
 
     setResetLoading(true);
     setResetError('');
 
     try {
-      // Route through our custom send-link endpoint (branded Resend email)
-      // Redirect to /update-password after callback so user can set new password
       const res = await fetch('/api/auth/send-link', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: resetEmail,
-          next: '/update-password',
-        }),
+        body: JSON.stringify({ email: resetEmail, next: '/update-password' }),
       });
-
-      if (!res.ok) {
-        console.error('[reset-password] send-link failed');
-      }
+      if (!res.ok) console.error('[reset-password] send-link failed');
     } catch (err) {
       console.error('[reset-password]', err);
     }
 
-    // Always show success to prevent email enumeration
     setResetSent(true);
     setResetLoading(false);
   }
 
-  // Forgot password view
+  // Reset password flow
   if (showReset) {
     if (resetSent) {
       return (
-        <div className="text-center">
-          <p className="herr-label text-[var(--herr-cobalt)] mb-4">Check Your Inbox</p>
-          <h2 className="font-display text-3xl font-light text-[var(--herr-white)] mb-4">
-            Check your inbox.
-          </h2>
-          <p className="text-[var(--herr-muted)] leading-relaxed max-w-sm mx-auto">
-            If that email is in our system, a reset link is on its way. Check your inbox.
+        <div style={{ textAlign: 'center' }}>
+          <p style={{ fontSize: 20, fontWeight: 600, color: '#FFFFFF', marginBottom: 12 }}>Check your inbox.</p>
+          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', marginBottom: 24, lineHeight: 1.6 }}>
+            If that email is in our system, a reset link is on its way.
           </p>
           <button
             onClick={() => { setShowReset(false); setResetSent(false); setResetEmail(''); }}
-            className="mt-8 herr-label text-[var(--herr-muted)] hover:text-[var(--herr-white)] transition-colors"
+            style={{ background: 'none', border: 'none', color: '#E8388A', fontSize: 14, cursor: 'pointer' }}
           >
             Back to login
           </button>
@@ -141,29 +153,35 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
 
     return (
       <div>
-        <p className="herr-label text-[var(--herr-cobalt)] mb-4 text-center">Reset Password</p>
-        <form onSubmit={handleResetPassword}>
-          <label className="herr-label text-[var(--herr-muted)] block mb-2">Email Address</label>
-          <input
-            type="email"
-            required
-            value={resetEmail}
-            onChange={e => setResetEmail(e.target.value)}
-            placeholder="you@example.com"
-            className="w-full bg-[var(--herr-surface)] border border-[var(--herr-border)] text-[var(--herr-white)] px-4 py-3 text-sm focus:outline-none focus:border-[var(--herr-cobalt)] transition-colors mb-4"
-          />
-          <button
-            type="submit"
-            disabled={resetLoading}
-            className="btn-herr-primary w-full justify-center disabled:opacity-50"
-          >
-            {resetLoading ? 'Sending…' : 'Send Reset Link'}
+        <form onSubmit={handleResetPassword} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div>
+            <label style={labelStyle}>EMAIL</label>
+            <input
+              type="email"
+              required
+              autoFocus
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              placeholder="you@example.com"
+              style={inputStyle(!!resetError)}
+            />
+          </div>
+          <button type="submit" disabled={resetLoading} style={{ ...btnPrimary, opacity: resetLoading ? 0.5 : 1 }}>
+            {resetLoading ? 'Sending\u2026' : 'Send Reset Link'}
           </button>
-          {resetError && <p className="mt-3 text-[0.78rem] text-[var(--herr-pink)] text-center">{resetError}</p>}
+          {resetError && <p style={{ fontSize: 12, color: '#EF4444', textAlign: 'center' }}>{resetError}</p>}
         </form>
         <button
           onClick={() => setShowReset(false)}
-          className="mt-6 herr-label text-[var(--herr-muted)] hover:text-[var(--herr-white)] transition-colors w-full text-center block"
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'rgba(255,255,255,0.5)',
+            fontSize: 13,
+            cursor: 'pointer',
+            display: 'block',
+            margin: '16px auto 0',
+          }}
         >
           Back to login
         </button>
@@ -171,81 +189,80 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
     );
   }
 
+  // Main login form
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-sm mx-auto">
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {errors.form && (
-        <div className={`mb-4 p-3 border bg-[var(--herr-surface)] ${
-          locked ? 'border-[#2D2561]' : 'border-[#E8388A]'
-        }`}>
-          <p className={`text-[0.8rem] ${locked ? 'text-[#8888aa]' : 'text-[#E8388A]'}`}>{errors.form}</p>
+        <p style={{ fontSize: 12, color: locked ? 'rgba(255,255,255,0.5)' : '#EF4444', textAlign: 'center' }}>
+          {errors.form}
           {locked && (
             <button
               type="button"
               onClick={() => setShowReset(true)}
-              className="mt-2 text-[0.75rem] text-[#1A3A8F] hover:underline"
+              style={{ display: 'block', margin: '8px auto 0', background: 'none', border: 'none', color: '#E8388A', fontSize: 12, cursor: 'pointer' }}
             >
               Reset your password instead
             </button>
           )}
-        </div>
+        </p>
       )}
 
-      <label className="herr-label text-[var(--herr-muted)] block mb-2">Email Address</label>
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        placeholder="you@example.com"
-        className={`w-full bg-[var(--herr-surface)] border text-[var(--herr-white)] px-4 py-3 text-sm focus:outline-none transition-colors mb-1 ${
-          errors.email ? 'border-[var(--herr-pink)]' : 'border-[var(--herr-border)] focus:border-[var(--herr-cobalt)]'
-        }`}
-      />
-      {errors.email && <p className="text-[0.75rem] text-[var(--herr-pink)] mb-2">{errors.email}</p>}
+      <div>
+        <label style={labelStyle}>EMAIL</label>
+        <input
+          type="email"
+          required
+          autoFocus
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@example.com"
+          style={inputStyle(!!errors.email)}
+          onFocus={(e) => { if (!errors.email) e.currentTarget.style.borderColor = '#C42D8E'; }}
+          onBlur={(e) => { if (!errors.email) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; }}
+        />
+        {errors.email && <p style={{ fontSize: 12, color: '#EF4444', marginTop: 4 }}>{errors.email}</p>}
+      </div>
 
-      <label className="herr-label text-[var(--herr-muted)] block mb-2 mt-4">Password</label>
-      <input
-        type="password"
-        required
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        placeholder="Your password"
-        className={`w-full bg-[var(--herr-surface)] border text-[var(--herr-white)] px-4 py-3 text-sm focus:outline-none transition-colors mb-1 ${
-          errors.password ? 'border-[var(--herr-pink)]' : 'border-[var(--herr-border)] focus:border-[var(--herr-cobalt)]'
-        }`}
-      />
-      {errors.password && <p className="text-[0.75rem] text-[var(--herr-pink)] mb-2">{errors.password}</p>}
+      <div>
+        <label style={labelStyle}>PASSWORD</label>
+        <input
+          type="password"
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Your password"
+          style={inputStyle(!!errors.password)}
+          onFocus={(e) => { if (!errors.password) e.currentTarget.style.borderColor = '#C42D8E'; }}
+          onBlur={(e) => { if (!errors.password) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; }}
+        />
+        {errors.password && <p style={{ fontSize: 12, color: '#EF4444', marginTop: 4 }}>{errors.password}</p>}
+      </div>
 
-      <div className="flex justify-end mt-2">
+      <div style={{ textAlign: 'right' }}>
         <button
           type="button"
           onClick={() => setShowReset(true)}
-          className="text-[0.75rem] text-[var(--herr-muted)] hover:text-[var(--herr-white)] transition-colors"
+          style={{
+            background: 'none',
+            border: 'none',
+            color: '#E8388A',
+            fontSize: 14,
+            cursor: 'pointer',
+          }}
         >
           Forgot password?
         </button>
       </div>
 
-      {/* hCaptcha — only rendered when siteKey is configured */}
       {siteKey && (
-        <div className="mt-6 flex justify-center">
-          <HCaptcha
-            sitekey={siteKey}
-            onVerify={setCaptchaToken}
-            onExpire={() => setCaptchaToken('')}
-            theme="dark"
-            ref={captchaRef}
-          />
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+          <HCaptcha sitekey={siteKey} onVerify={setCaptchaToken} onExpire={() => setCaptchaToken('')} theme="dark" ref={captchaRef} />
         </div>
       )}
-      {errors.captcha && <p className="text-[0.75rem] text-[var(--herr-pink)] text-center mt-1">{errors.captcha}</p>}
+      {errors.captcha && <p style={{ fontSize: 12, color: '#EF4444', textAlign: 'center' }}>{errors.captcha}</p>}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="btn-herr-primary w-full justify-center mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {loading ? 'Logging in…' : 'Log In'}
+      <button type="submit" disabled={loading} style={{ ...btnPrimary, opacity: loading ? 0.5 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}>
+        {loading ? 'Signing in\u2026' : 'Sign In'}
       </button>
     </form>
   );
