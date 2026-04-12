@@ -4,25 +4,43 @@ import CheckoutButton from './CheckoutButton';
 export const metadata: Metadata = {
   title: 'Subscribe — Begin Your Reprogramming',
   description:
-    'Three tiers of clinical reprogramming. HERR Collective from $9/month in Bianca D. McCall\'s voice. HERR Personalized at $19/month in your own cloned voice. HERR Elite at $29/month with monthly live sessions.',
+    'Four tiers of clinical reprogramming. HERR Free to explore. Collective at $9/month in Bianca D. McCall\'s voice. Personalized at $19/month in your own cloned voice. Elite at $29/month with live sessions and ECQO Sound.',
 };
 
 const PLANS = [
+  {
+    tier:        'free' as const,
+    name:        'HERR Free',
+    price:       '$0',
+    period:      '',
+    tagline:     'Explore the framework.',
+    description: 'Access the existential screener and experience the HERR methodology. Your journey starts with awareness.',
+    badge:       null,
+    badgeColor:  '',
+    features: [
+      'Monthly existential screener',
+      'Access to the HERR Journal content library',
+      'Community portal (standard channels)',
+    ],
+    cta:      'Create Free Account',
+    featured: false,
+  },
   {
     tier:        'collective' as const,
     name:        'HERR Collective',
     price:       '$9',
     period:      '/month',
-    tagline:     'Bianca\'s voice. Your daily reprogramming.',
-    description: 'The foundational reprogramming experience. The voice that has guided thousands — now guiding you.',
+    tagline:     'Bianca\u2019s voice. Your daily reprogramming.',
+    description: 'Daily affirmations delivered in the voice of Bianca D. McCall, LMFT \u2014 the clinician behind the framework.',
     badge:       null,
     badgeColor:  '',
     features: [
-      'Full affirmation library in Bianca D. McCall\'s cloned voice',
-      'All 8 activity modes: Workout, Driving, Sleep, Morning, Deep Work, Love & Family, Abundance, Healing',
-      'New monthly theme drops — fresh affirmations each month',
-      'Access to the HERR Journal content library',
-      'HERR Nation community membership',
+      'Daily affirmations in Bianca D. McCall\u2019s voice',
+      'Up to 3 activity modes',
+      'Monthly existential screener',
+      'HERR Journal content library',
+      'Community portal (standard channels)',
+      'Voice-only delivery',
     ],
     cta:      'Begin at $9',
     featured: false,
@@ -33,16 +51,17 @@ const PLANS = [
     price:       '$19',
     period:      '/month',
     tagline:     'Your voice. Your reprogramming.',
-    description: 'The member ready to hear their own voice reprogramming their own mind. The subconscious trusts your voice above all others.',
+    description: 'Hear your own voice reprogramming your own mind. The subconscious trusts your voice above all others.',
     badge:       'Most Popular',
     badgeColor:  'text-[var(--herr-pink)]',
     features: [
-      'Everything in HERR Collective',
-      'Your own voice cloned — every affirmation and I AM declaration spoken by you, to you',
-      'Personalized onboarding assessment (existential screener)',
-      'Quarterly refresh of your personalized affirmation library',
-      'Priority 192kbps audio quality',
-      'Monthly theme layer added in Bianca D. McCall\'s voice',
+      'Daily affirmations in your own cloned voice',
+      'Up to 3 activity modes',
+      'Voice or music delivery \u2014 you choose',
+      'Genre selection (updatable weekly)',
+      'Voice clone session + quarterly refresh',
+      'Community portal (standard channels)',
+      'Monthly existential screener',
     ],
     cta:      'Begin at $19',
     featured: true,
@@ -52,18 +71,18 @@ const PLANS = [
     name:        'HERR Elite',
     price:       '$29',
     period:      '/month',
-    tagline:     'Clinical-grade. Your voice. Your protocol.',
-    description: 'The high-performer who wants the full clinical operating system. Athletes. Executives. Practitioners. Those in active transition who need the deepest protocol.',
+    tagline:     'Clinical-grade. The full protocol.',
+    description: 'The full clinical operating system. Athletes. Executives. Practitioners. Those who need the deepest protocol.',
     badge:       'Clinical Grade',
     badgeColor:  'text-[var(--herr-cobalt)]',
     features: [
       'Everything in HERR Personalized',
-      'Full ECQO™ existential screener at onboarding',
-      'Clinically sequenced reprogramming protocol — structured progression, not just affirmations',
-      'Monthly live group session with Bianca D. McCall, LMFT',
-      'Access to HERR Certified Moderators',
-      'First access to new HERR features and beta testing',
-      'Direct line to the clinical framework behind HERR',
+      'Up to 5 activity modes',
+      'Monthly live group session with Bianca D. McCall, LMFT (25 seats)',
+      'Elite-only community channels',
+      'Access to beta testing areas',
+      'Monthly therapeutic progression: reprogramming \u2192 support \u2192 maintenance',
+      'First access to new HERR features',
     ],
     cta:      'Begin at $29',
     featured: false,
@@ -89,7 +108,7 @@ const FAQS = [
   },
   {
     q: 'Which tier is right for me?',
-    a: 'If you are new to reprogramming work, begin with HERR Collective. If you are ready to hear your own voice doing the work, choose HERR Personalized. If you want the full clinical protocol with live access to Bianca D. McCall, LMFT, choose HERR Elite.',
+    a: 'Start with HERR Free to experience the existential screener. If you want daily affirmations in Bianca\u2019s voice, choose Collective. If you are ready to hear your own voice doing the work, choose Personalized. If you want the full clinical protocol with live sessions and ECQO Sound, choose Elite.',
   },
 ];
 
@@ -116,9 +135,9 @@ export default function SubscribePage() {
 
       {/* ── Pricing Cards ─────────────────────────────────────────── */}
       <section className="px-6 py-24">
-        <div className="max-w-[1100px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
 
-          <div className="grid md:grid-cols-3 gap-px bg-[var(--herr-border)]">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--herr-border)]">
             {PLANS.map((plan) => (
               <div
                 key={plan.name}

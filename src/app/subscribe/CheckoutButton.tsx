@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 interface CheckoutButtonProps {
-  tier: 'collective' | 'personalized' | 'elite';
+  tier: 'free' | 'collective' | 'personalized' | 'elite';
   label: string;
   className?: string;
 }
@@ -15,6 +15,12 @@ export default function CheckoutButton({ tier, label, className = '' }: Checkout
   async function handleCheckout() {
     setLoading(true);
     setError('');
+
+    // Free tier goes straight to signup
+    if (tier === 'free') {
+      window.location.href = '/signup';
+      return;
+    }
 
     try {
       const res = await fetch('/api/stripe/checkout', {

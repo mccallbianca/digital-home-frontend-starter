@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
-type Tier = 'personalized' | 'elite';
+type Tier = 'free' | 'collective' | 'personalized' | 'elite';
 
 const PLANS: {
   tier: Tier;
@@ -16,7 +17,49 @@ const PLANS: {
   features: string[];
   cta: string;
   featured: boolean;
+  isFree: boolean;
 }[] = [
+  {
+    tier: 'free',
+    name: 'HERR Free',
+    price: '$0',
+    period: '',
+    tagline: 'Explore the framework.',
+    description:
+      'Access the existential screener and experience the HERR methodology. Your journey starts with awareness.',
+    badge: null,
+    badgeColor: '',
+    features: [
+      'Monthly existential screener',
+      'Access to the HERR Journal content library',
+      'Community portal (standard channels)',
+    ],
+    cta: 'Create Free Account',
+    featured: false,
+    isFree: true,
+  },
+  {
+    tier: 'collective',
+    name: 'HERR Collective',
+    price: '$9',
+    period: '/month',
+    tagline: 'Bianca\u2019s voice. Your daily reprogramming.',
+    description:
+      'Daily affirmations delivered in the voice of Bianca D. McCall, LMFT — the clinician behind the framework.',
+    badge: null,
+    badgeColor: '',
+    features: [
+      'Daily affirmations in Bianca D. McCall\u2019s voice',
+      'Up to 3 activity modes',
+      'Monthly existential screener',
+      'HERR Journal content library',
+      'Community portal (standard channels)',
+      'Voice-only delivery',
+    ],
+    cta: 'Begin at $9',
+    featured: false,
+    isFree: false,
+  },
   {
     tier: 'personalized',
     name: 'HERR Personalized',
@@ -28,36 +71,40 @@ const PLANS: {
     badge: 'Most Popular',
     badgeColor: 'text-[var(--herr-pink)]',
     features: [
-      'Full affirmation library in your own cloned voice',
-      'All 8 activity modes',
-      'Personalized existential assessment',
+      'Daily affirmations in your own cloned voice',
+      'Up to 3 activity modes',
+      'Voice or music delivery \u2014 you choose',
+      'Genre selection (updatable weekly)',
       'Voice clone session + quarterly refresh',
-      'HERR Nation community membership',
-      'Billing & account management',
+      'Community portal (standard channels)',
+      'Monthly existential screener',
     ],
     cta: 'Begin at $19',
     featured: true,
+    isFree: false,
   },
   {
     tier: 'elite',
     name: 'HERR Elite',
     price: '$29',
     period: '/month',
-    tagline: 'Clinical-grade. Your voice. Your protocol.',
+    tagline: 'Clinical-grade. The full protocol.',
     description:
       'The full clinical operating system. Athletes. Executives. Practitioners. Those who need the deepest protocol.',
     badge: 'Clinical Grade',
     badgeColor: 'text-[var(--herr-cobalt)]',
     features: [
       'Everything in HERR Personalized',
-      'Monthly live group session with Bianca D. McCall, LMFT',
-      'Clinically sequenced reprogramming protocol',
+      'Up to 5 activity modes',
+      'Monthly live group session with Bianca D. McCall, LMFT (25 seats)',
       'Elite-only community channels',
-      'Access to HERR Certified Moderators',
+      'Access to beta testing areas',
+      'Monthly therapeutic progression: reprogramming \u2192 support \u2192 maintenance',
       'First access to new HERR features',
     ],
     cta: 'Begin at $29',
     featured: false,
+    isFree: false,
   },
 ];
 
@@ -93,9 +140,14 @@ export default function CheckoutFlow() {
     }
     if (!selectedTier) return;
 
-    setLoading(true);
+    // Free tier goes straight to signup
+    if (selectedTier === 'free') {
+      sessionStorage.setItem('herr_checkout_email', email);
+      window.location.href = `/signup?email=${encodeURIComponent(email)}`;
+      return;
+    }
 
-    // Store email in sessionStorage for reference
+    setLoading(true);
     sessionStorage.setItem('herr_checkout_email', email);
 
     try {
@@ -122,9 +174,9 @@ export default function CheckoutFlow() {
 
   return (
     <section className="px-6 py-24">
-      <div className="max-w-[900px] mx-auto">
+      <div className="max-w-[1200px] mx-auto">
         {/* Plan cards */}
-        <div className="grid md:grid-cols-2 gap-px bg-[var(--herr-border)]">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--herr-border)]">
           {PLANS.map((plan) => {
             const isSelected = selectedTier === plan.tier;
             return (
@@ -170,22 +222,24 @@ export default function CheckoutFlow() {
 
                 {/* Price */}
                 <div className="flex items-end gap-1 mb-1">
-                  <span className="font-display text-6xl font-light text-[var(--herr-white)]">
+                  <span className="font-display text-5xl font-light text-[var(--herr-white)]">
                     {plan.price}
                   </span>
-                  <span className="text-[var(--herr-muted)] mb-2 text-sm">{plan.period}</span>
+                  {plan.period && (
+                    <span className="text-[var(--herr-muted)] mb-2 text-sm">{plan.period}</span>
+                  )}
                 </div>
                 <p className="text-[0.78rem] text-[var(--herr-pink)] font-light italic font-display mb-4">
                   {plan.tagline}
                 </p>
-                <p className="text-[0.85rem] text-[var(--herr-muted)] mb-8 leading-relaxed">
+                <p className="text-[0.82rem] text-[var(--herr-muted)] mb-8 leading-relaxed">
                   {plan.description}
                 </p>
 
                 {/* Features */}
                 <ul className="flex flex-col gap-3 flex-1">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3 text-[0.85rem] text-[var(--herr-muted)]">
+                    <li key={f} className="flex items-start gap-3 text-[0.82rem] text-[var(--herr-muted)]">
                       <span className="text-[var(--herr-pink)] mt-0.5 shrink-0 leading-none">+</span>
                       <span>{f}</span>
                     </li>
@@ -226,21 +280,27 @@ export default function CheckoutFlow() {
                 disabled={loading}
                 className="btn-herr-primary w-full justify-center mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Redirecting to checkout…' : 'Continue to Payment'}
+                {loading
+                  ? 'Redirecting…'
+                  : selectedTier === 'free'
+                    ? 'Create Free Account'
+                    : 'Continue to Payment'}
               </button>
               {error && (
                 <p className="mt-3 text-[0.78rem] text-[var(--herr-pink)] text-center">{error}</p>
               )}
             </form>
             <p className="mt-4 text-center text-[0.72rem] text-[var(--herr-faint)]">
-              Secure payment via Stripe. Cancel anytime.
+              {selectedTier === 'free'
+                ? 'No credit card required.'
+                : 'Secure payment via Stripe. Cancel anytime.'}
             </p>
           </div>
         )}
 
         {/* Auto-renewal disclosure */}
         <p className="text-center text-[0.78rem] text-[var(--herr-faint)] mt-8">
-          Subscriptions renew automatically each month. Cancel anytime from your member dashboard.
+          Paid subscriptions renew automatically each month. Cancel anytime from your member dashboard.
         </p>
       </div>
     </section>
