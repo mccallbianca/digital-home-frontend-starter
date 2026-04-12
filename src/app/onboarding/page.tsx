@@ -1,14 +1,19 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import OnboardingFlow from './OnboardingFlow';
+import OnboardingClient from './OnboardingClient';
 
 export const metadata: Metadata = {
   title: 'Onboarding — HERR',
-  description: 'Complete your HERR member profile and begin your reprogramming protocol.',
+  description: 'Complete your HERR member setup and begin your reprogramming protocol.',
 };
 
-export default async function OnboardingPage() {
+export default async function OnboardingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ fromScreener?: string }>;
+}) {
+  const params = await searchParams;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -16,7 +21,6 @@ export default async function OnboardingPage() {
     redirect('/login?redirect=/onboarding');
   }
 
-  // Check if already onboarded
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
@@ -27,7 +31,6 @@ export default async function OnboardingPage() {
     redirect('/dashboard');
   }
 
-  // Get user's plan from profile or members table
   let plan = profile?.plan ?? null;
   if (!plan && user.email) {
     const { data: member } = await supabase
@@ -38,20 +41,15 @@ export default async function OnboardingPage() {
     plan = member?.tier === 'personalized' || member?.tier === 'elite' ? member.tier : null;
   }
 
+  const displayName = profile?.preferred_name || profile?.first_name || 'there';
+  const fromScreener = params.fromScreener === '1';
+
   return (
-    <main className="min-h-screen">
-      <OnboardingFlow
-        userId={user.id}
-        userEmail={user.email ?? ''}
-        plan={plan as 'personalized' | 'elite' | null}
-        existingProfile={profile ? {
-          firstName: profile.first_name ?? '',
-          lastName: profile.last_name ?? '',
-          preferredName: profile.preferred_name ?? '',
-          pronouns: profile.pronouns ?? '',
-          timezone: profile.timezone ?? '',
-        } : null}
-      />
-    </main>
+    <OnboardingClient
+      userId={user.id}
+      displayName={displayName}
+      plan={plan as 'personalized' | 'elite' | 'collective' | null}
+      fromScreener={fromScreener}
+    />
   );
 }
