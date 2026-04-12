@@ -1,326 +1,1005 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import HERRImageSlot, { HERR_GRADIENTS } from '@/components/ui/HERRImageSlot';
-import ECQOSoundSection from '@/components/ecqo-sound/ECQOSoundSection';
+import Image from 'next/image';
+import WaveformVisual from '@/components/home/WaveformVisual';
+import ScrollFadeIn from '@/components/home/ScrollFadeIn';
 
 export const metadata: Metadata = {
   title: 'HERR — Human Existential Response and Reprogramming',
   description:
-    'A clinical wellness operating system that delivers personalized voice affirmations and I AM declarations in your own cloned voice. Regulate your nervous system. Reprogram your inner voice. Founded by Bianca D. McCall, LMFT.',
+    'A clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice. Regulate first. Reprogram second. Founded by Bianca D. McCall, LMFT.',
 };
 
-const MODES = [
-  'Workout', 'Driving', 'Sleep', 'Morning',
-  'Deep Work', 'Love & Family', 'Abundance', 'Healing',
+/* ── Static data ─────────────────────────────────────────────────────── */
+
+const METHOD_STEPS = [
+  {
+    num: '01',
+    name: 'ASSESS',
+    body: 'Surface what the conscious mind hides. The existential screener quantifies your inner landscape.',
+  },
+  {
+    num: '02',
+    name: 'REGULATE',
+    body: 'Calm the nervous system first. Personalized regulation calibrated to your screener results.',
+  },
+  {
+    num: '03',
+    name: 'REPROGRAM',
+    body: 'Daily affirmations in your own cloned voice. The subconscious trusts your voice above all others.',
+  },
 ];
 
-const CAMPAIGN = [
-  { phrase: "SEEN & HERRD",      gradient: HERR_GRADIENTS.campaignPink,   file: '/images/campaign-im-herr-01.jpg',    alt: 'A Black woman in cinematic stillness, lit in magenta-violet, embodying the universal declaration SEEN & HERRD — the sovereign inner voice that HERR is designed to reprogram.' },
-  { phrase: "I'M WITH HERR",    gradient: HERR_GRADIENTS.campaignCobalt, file: '/images/campaign-im-herr-02.jpg',    alt: 'A Latino man in his early thirties looking directly at camera in quiet determination under cobalt light, representing I\'M WITH HERR — men reclaiming wellness.' },
-  { phrase: "THEY'RE HERR",      gradient: HERR_GRADIENTS.campaignViolet, file: '/images/campaign-im-herr-03.jpg',    alt: 'A non-binary person with a knowing expression under violet-mid light, representing THEY\'RE HERR — the inner voice has no gender.' },
-  { phrase: "HERR MAN",           gradient: HERR_GRADIENTS.campaignGold,   file: '/images/campaign-im-herr-04.jpg',    alt: 'A White man in his fifties with executive presence, hand on chest, eyes closed, in gold light against near-black, representing HERR MAN — a direct masculine identity claim.' },
-  { phrase: "HERR COACH",        gradient: HERR_GRADIENTS.campaignPink,   file: '/images/campaign-im-herr-05.jpg',    alt: 'An Asian woman with an athlete\'s build, mid-breath, eyes beginning to open in magenta-violet light, representing HERR COACH — the athletic and performance market.' },
-  { phrase: "WE ARE HERR",       gradient: HERR_GRADIENTS.campaignCobalt, file: '/images/campaign-im-herr-06.jpg',    alt: 'An Indigenous-presenting person in sovereign stillness with a direct gaze in cobalt and gold light, representing WE ARE HERR — community and movement language.' },
+const TIERS = [
+  {
+    name: 'HERR Collective',
+    price: '$9',
+    tagline: "Bianca\u2019s voice. Your daily reprogramming.",
+    btnStyle: 'outlined' as const,
+  },
+  {
+    name: 'HERR Personalized',
+    price: '$19',
+    tagline: 'Your voice. Your reprogramming.',
+    btnStyle: 'solid' as const,
+    popular: true,
+  },
+  {
+    name: 'HERR Elite',
+    price: '$29',
+    tagline: 'Clinical-grade. The full protocol.',
+    btnStyle: 'gradient' as const,
+  },
 ];
 
-const DIMENSIONS = [
+const CREDENTIALS = [
+  'SAMHSA Advisor',
+  'LMFT',
+  'TEDx Speaker',
+  'Pro Athlete',
+  'NFL/MLB Consultant',
+];
+
+const JOURNAL_PREVIEW = [
   {
-    letter: 'E',
-    name: 'Existential',
-    description: 'The questions that quietly conduct your life. Meaning, purpose, identity, freedom. HERR addresses the concerns most systems never name.',
-    gradient: HERR_GRADIENTS.existential,
-    file: '/images/dim-existential-figure-void.jpg',
-    alt: 'Abstract cinematic portrait representing the existential dimension of HERR — a human figure dwarfed by infinite dark space, confronting questions of meaning and purpose.',
+    slug: 'inner-voice-performance',
+    image: '/images/dim-existential-figure-void.jpg',
+    category: 'Performance',
+    title: 'Why the Inner Voice Determines Every Performance',
+    excerpt: 'The conductor of your life is not your talent, your training, or your discipline. It is the voice only you can hear.',
+    readTime: '5 min read',
   },
   {
-    letter: 'E',
-    name: 'Emotional',
-    description: 'The nervous system first. Before reprogramming can happen, the body must feel safe. HERR begins with regulation.',
-    gradient: HERR_GRADIENTS.emotional,
-    file: '/images/dim-emotional-eye-release.jpg',
-    alt: 'Close-up of a closed eye releasing in violet light, representing emotional regulation at the foundation of the HERR reprogramming protocol — the nervous system finally safe.',
+    slug: 'regulate-before-reprogram',
+    image: '/images/dim-emotional-eye-release.jpg',
+    category: 'Clinical',
+    title: 'Regulate Before You Reprogram',
+    excerpt: 'Why every attempt to install new beliefs fails without first calming the nervous system.',
+    readTime: '4 min read',
   },
   {
-    letter: 'E',
-    name: 'Executive',
-    description: 'Performance, decision-making, leadership, output. When the inner voice aligns with who you are becoming, everything else follows.',
-    gradient: HERR_GRADIENTS.executive,
-    file: '/images/dim-executive-hand-decides.jpg',
-    alt: 'A decisive hand on a glass surface in cobalt and gold light, representing the executive performance dimension of HERR — when the inner voice aligns, everything follows.',
+    slug: 'voice-cloning-subconscious',
+    image: '/images/dim-executive-hand-decides.jpg',
+    category: 'Mindset',
+    title: 'Your Voice Is the Key to the Subconscious',
+    excerpt: 'Self-referential processing is not a theory. It is the mechanism that makes HERR different.',
+    readTime: '6 min read',
   },
 ];
+
+/* ── Page ─────────────────────────────────────────────────────────────── */
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen">
+    <main style={{ minHeight: '100vh', background: '#0A0A0F' }}>
 
-      {/* ── Hero ──────────────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
+      {/* ── Section 1: Hero ─────────────────────────────────────────── */}
+      <section
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+          padding: '0 24px',
+          position: 'relative',
+          overflow: 'hidden',
+          background: 'linear-gradient(135deg, #0A0A0F 0%, #111118 50%, #0A0A0F 100%)',
+          backgroundSize: '400% 400%',
+          animation: 'gradientShift 8s ease infinite',
+        }}
+      >
+        <h1
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: 'clamp(32px, 5vw, 56px)',
+            fontWeight: 600,
+            color: '#FFFFFF',
+            lineHeight: 1.15,
+            maxWidth: 720,
+            margin: '0 0 24px',
+          }}
+        >
+          The Voice Inside You Is the Most Powerful Force in Your Life.
+        </h1>
 
-        {/* Background image */}
-        <div className="absolute inset-0">
-          <HERRImageSlot
-            src="/images/hero-im-herr-portrait.jpg"
-            alt="A person standing in stillness, lit by deep blue light against a near-black background, embodying the sovereign inner voice that HERR is designed to reprogram."
-            gradient={HERR_GRADIENTS.heroPortrait}
-            width={1920}
-            height={1080}
-            className="w-full h-full"
-            priority
-          />
-          {/* Bottom gradient scrim for text legibility */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F] via-transparent to-[rgba(10,10,15,0.4)]" />
+        <p
+          className="animate-fade-up animate-delay-3"
+          style={{
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+            fontSize: 18,
+            color: '#E8388A',
+            margin: '0 0 40px',
+          }}
+        >
+          HERR reprograms it.
+        </p>
+
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
+          <Link
+            href="/signup"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 48,
+              padding: '0 32px',
+              background: '#C42D8E',
+              color: '#FFFFFF',
+              borderRadius: 12,
+              fontSize: 14,
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              textDecoration: 'none',
+              transition: 'background 200ms ease',
+            }}
+          >
+            Begin Your Journey
+          </Link>
+          <a
+            href="#method"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 48,
+              padding: '0 32px',
+              background: 'transparent',
+              color: '#FFFFFF',
+              borderRadius: 12,
+              border: '1px solid rgba(255,255,255,0.3)',
+              fontSize: 14,
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              textDecoration: 'none',
+              transition: 'border-color 200ms ease',
+            }}
+          >
+            See How It Works
+          </a>
         </div>
 
-        {/* Content */}
-        <div className="relative max-w-[1200px] mx-auto w-full px-6 pt-32 pb-24">
-
-          <p className="herr-label text-[var(--herr-muted)] mb-6 animate-fade-up animate-delay-1">
-            Human Existential Response and Reprogramming™
-          </p>
-
-          <h1 className="font-display text-[clamp(5rem,16vw,13rem)] font-light leading-[0.88] tracking-[0.06em] uppercase text-[var(--herr-white)] mb-8 animate-fade-up animate-delay-2">
-            I&apos;M<br />
-            <span className="text-[var(--herr-pink)]">HERR</span>
-          </h1>
-
-          <p className="text-lg md:text-xl text-[var(--herr-muted)] max-w-xl leading-relaxed mb-10 animate-fade-up animate-delay-3">
-            A clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice. Regulate first. Reprogram second.
-          </p>
-
-          <div className="flex flex-wrap gap-4 animate-fade-up animate-delay-4">
-            <Link href="/subscribe" className="btn-herr-primary">
-              Begin Your Reprogramming
-            </Link>
-            <Link href="/how-it-works" className="btn-herr-ghost">
-              How It Works
-            </Link>
-          </div>
-
-        </div>
+        <p
+          style={{
+            fontSize: 13,
+            color: 'rgba(255,255,255,0.4)',
+            marginTop: 32,
+            maxWidth: 480,
+          }}
+        >
+          Designed by a licensed clinician · Used by athletes, executives &amp; practitioners
+        </p>
       </section>
 
-      {/* ── The System ─────────────────────────────────────────────── */}
-      <section className="px-6 py-24 border-t border-[var(--herr-border)]">
-        <div className="max-w-[1200px] mx-auto">
-
-          <p className="herr-label text-[var(--herr-muted)] mb-12">The Mechanism</p>
-
-          <div className="grid md:grid-cols-2 gap-px bg-[var(--herr-border)]">
-
-            {/* Regulate */}
-            <div className="bg-[var(--herr-black)]">
-              <HERRImageSlot
-                src="/images/phase-regulate-v2.jpg"
-                gradient={HERR_GRADIENTS.regulateHand}
-                alt="An open hand resting in stillness, representing the nervous system regulation phase of the HERR clinical wellness protocol."
-                width={600}
-                height={400}
-                className="w-full"
-              />
-              <div className="p-10 md:p-12">
-                <p className="herr-label text-[var(--herr-cobalt)] mb-6">Phase 01</p>
-                <h2 className="font-display text-5xl md:text-6xl font-light text-[var(--herr-white)] mb-6">
-                  Regulate.
-                </h2>
-                <p className="text-[var(--herr-muted)] leading-relaxed max-w-sm">
-                  Before reprogramming can reach the subconscious, the nervous system must first feel safe. HERR begins with assessment: understanding your existential concerns at the point of onset.
-                </p>
-              </div>
-            </div>
-
-            {/* Reprogram */}
-            <div className="bg-[var(--herr-surface)]">
-              <HERRImageSlot
-                src="/images/phase-reprogram-v3.jpg"
-                gradient={HERR_GRADIENTS.reprogramFist}
-                alt="A closed hand in sovereign stillness, representing the inner voice reprogramming phase of the HERR methodology."
-                width={600}
-                height={400}
-                className="w-full"
-              />
-              <div className="p-10 md:p-12">
-                <p className="herr-label text-[var(--herr-pink)] mb-6">Phase 02</p>
-                <h2 className="font-display text-5xl md:text-6xl font-light text-[var(--herr-white)] mb-6">
-                  Reprogram.
-                </h2>
-                <p className="text-[var(--herr-muted)] leading-relaxed max-w-sm">
-                  Personalized I AM declarations, recorded in your own cloned voice, delivered daily. Eight activity modes. Every dimension of your life.
-                </p>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Activity modes */}
-          <div className="mt-8 flex flex-wrap gap-3">
-            {MODES.map((mode) => (
-              <span key={mode} className="herr-label text-[var(--herr-faint)] border border-[var(--herr-border)] px-4 py-2">
-                {mode}
-              </span>
-            ))}
-          </div>
-          <p className="mt-6 text-[0.68rem] text-[var(--herr-faint)] tracking-wide">
-            The HERR™ Progressive Reprogramming System — Patent Pending. © ECQO Holdings™.
+      {/* ── Section 2: The Method ───────────────────────────────────── */}
+      <section
+        id="method"
+        style={{
+          background: '#111118',
+          padding: 'clamp(64px, 10vw, 120px) 24px',
+        }}
+      >
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
+          <p
+            style={{
+              fontSize: 12,
+              textTransform: 'uppercase',
+              letterSpacing: '2.5px',
+              color: '#C42D8E',
+              marginBottom: 16,
+            }}
+          >
+            THE METHOD
           </p>
-
-        </div>
-      </section>
-
-      {/* ── The Three Dimensions ──────────────────────────────────── */}
-      <section className="px-6 py-24 border-t border-[var(--herr-border)] bg-[var(--herr-surface)]">
-        <div className="max-w-[1200px] mx-auto">
-
-          <p className="herr-label text-[var(--herr-muted)] mb-4">The Three Dimensions</p>
-          <h2 className="font-display text-4xl md:text-5xl font-light text-[var(--herr-white)] mb-14">
-            Why h<span className="text-[var(--herr-pink)]">3</span>rr.com
+          <h2
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: 'clamp(28px, 4vw, 36px)',
+              fontWeight: 600,
+              color: '#FFFFFF',
+              marginBottom: 48,
+              lineHeight: 1.2,
+            }}
+          >
+            Three steps to reprogramming your inner voice.
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-px bg-[var(--herr-border)]">
-            {DIMENSIONS.map((dim) => (
-              <div key={dim.name} className="bg-[var(--herr-surface)] hover:bg-[var(--herr-card)] transition-colors duration-300">
-                <HERRImageSlot
-                  src={dim.file}
-                  gradient={dim.gradient}
-                  alt={dim.alt}
-                  width={400}
-                  height={300}
-                  className="w-full"
-                />
-                <div className="p-8">
-                  <p className="font-display text-5xl font-light text-[var(--herr-pink)] opacity-30 mb-4">{dim.letter}</p>
-                  <h3 className="font-display text-2xl font-light text-[var(--herr-white)] mb-4">{dim.name}</h3>
-                  <p className="text-[0.88rem] text-[var(--herr-muted)] leading-relaxed">{dim.description}</p>
+          <div className="method-grid">
+            {METHOD_STEPS.map((step, i) => (
+              <ScrollFadeIn key={step.num} delay={i * 100}>
+                <div
+                  style={{
+                    background: '#16161F',
+                    borderRadius: 16,
+                    padding: '40px 32px',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontSize: 56,
+                      fontWeight: 700,
+                      color: '#C42D8E',
+                      lineHeight: 1,
+                      marginBottom: 16,
+                    }}
+                  >
+                    {step.num}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: 20,
+                      fontWeight: 600,
+                      color: '#FFFFFF',
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px',
+                      marginBottom: 12,
+                    }}
+                  >
+                    {step.name}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: 15,
+                      color: 'rgba(255,255,255,0.7)',
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {step.body}
+                  </p>
                 </div>
-              </div>
+              </ScrollFadeIn>
             ))}
           </div>
 
-          <p className="mt-8 text-[0.72rem] text-[var(--herr-faint)]">
-            h3rr.com — the 3 represents the three dimensions of human experience HERR addresses: Existential, Emotional, and Executive. One tool. Every version of you.
-          </p>
-
+          <div style={{ textAlign: 'center', marginTop: 48 }}>
+            <Link
+              href="/how-it-works"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 48,
+                padding: '0 32px',
+                background: 'transparent',
+                color: '#FFFFFF',
+                borderRadius: 12,
+                border: '1px solid rgba(255,255,255,0.3)',
+                fontSize: 14,
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                textDecoration: 'none',
+              }}
+            >
+              Explore the Full Method
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* ── I'M HERR Campaign ─────────────────────────────────────── */}
-      <section className="px-6 py-24 border-t border-[var(--herr-border)]">
-        <div className="max-w-[1200px] mx-auto">
-
-          <p className="herr-label text-[var(--herr-muted)] mb-6 text-center">
-            HERR is for every human who has ever questioned their own voice.
-          </p>
-
-          {/* Portrait strip */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px bg-[var(--herr-border)] mb-16">
-            {CAMPAIGN.map((item) => (
-              <div key={item.phrase} className="relative group">
-                <HERRImageSlot
-                  src={item.file}
-                  gradient={item.gradient}
-                  alt={item.alt}
-                  width={320}
-                  height={420}
-                  className="w-full"
-                />
-                {/* Campaign phrase overlay */}
-                <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-[rgba(10,10,15,0.85)] via-transparent to-transparent">
-                  <span className="font-display text-[0.7rem] md:text-[0.8rem] font-light tracking-[0.15em] uppercase text-[var(--herr-white)] leading-tight">
-                    {item.phrase}
-                  </span>
-                </div>
-              </div>
-            ))}
+      {/* ── Section 3: Voice Clone Moment ───────────────────────────── */}
+      <section
+        style={{
+          background: '#0A0A0F',
+          padding: 'clamp(64px, 10vw, 120px) 24px',
+        }}
+      >
+        <div className="voice-clone-layout" style={{ maxWidth: 1100, margin: '0 auto' }}>
+          {/* Left: Waveform */}
+          <div className="voice-clone-visual">
+            <ScrollFadeIn>
+              <WaveformVisual />
+            </ScrollFadeIn>
           </div>
 
-          <p className="text-center font-display text-xl md:text-2xl font-light italic text-[var(--herr-muted)] max-w-2xl mx-auto">
-            &ldquo;The inner voice has no gender. Existential concerns are universal.&rdquo;
-          </p>
-
-        </div>
-      </section>
-
-      {/* ── ECQO Sound ─────────────────────────────────────────────── */}
-      <ECQOSoundSection />
-
-      {/* ── ECQO Sound Studio Presents ───────────────────────────── */}
-
-      {/* ── The B-LIST ────────────────────────────────────────────── */}
-
-      {/* ── Clinical Authority ────────────────────────────────────── */}
-      <section className="px-6 py-24 border-t border-[var(--herr-border)] bg-[var(--herr-surface)]">
-        <div className="max-w-[1200px] mx-auto">
-
-          <div className="grid md:grid-cols-2 gap-14 items-center">
-
-            {/* Founder image */}
-            <div>
-              <HERRImageSlot
-                src="/images/founder-bianca-mccall-processed.jpg"
-                gradient={HERR_GRADIENTS.founder}
-                alt="Bianca D. McCall, LMFT — Licensed Marriage and Family Therapist, federal SAMHSA advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
-                width={600}
-                height={700}
-                className="w-full"
-              />
-            </div>
-
-            <div>
-              <p className="herr-label text-[var(--herr-muted)] mb-6">Founded by</p>
-              <h2 className="font-display text-4xl md:text-5xl font-light text-[var(--herr-white)] mb-6 leading-tight">
-                Bianca D. McCall,<br />
-                <span className="text-[var(--herr-muted)]">LMFT</span>
+          {/* Right: Content */}
+          <div className="voice-clone-content">
+            <ScrollFadeIn delay={200}>
+              <h2
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontSize: 'clamp(28px, 4vw, 36px)',
+                  fontWeight: 600,
+                  color: '#FFFFFF',
+                  marginBottom: 24,
+                  lineHeight: 1.2,
+                }}
+              >
+                Hear yourself becoming who you were meant to be.
               </h2>
-              <p className="text-[var(--herr-muted)] leading-relaxed mb-8">
-                Licensed Marriage and Family Therapist. Existential psychology subject matter expert. Federal SAMHSA advisor. National committee member. Retired professional women&apos;s basketball player. International keynote speaker. AI startup founder.
+              <p
+                style={{
+                  fontSize: 16,
+                  color: 'rgba(255,255,255,0.7)',
+                  lineHeight: 1.7,
+                  marginBottom: 32,
+                }}
+              >
+                HERR clones your voice and delivers daily affirmations — written by AI, reviewed by a
+                clinician, spoken by you. The subconscious trusts your own voice above all others.
+                That&apos;s the science. That&apos;s the edge.
               </p>
-              <Link href="/about" className="btn-herr-ghost">
-                Bianca&apos;s Story
+              <Link
+                href="/ecqo-sound"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 48,
+                  padding: '0 32px',
+                  background: '#C42D8E',
+                  color: '#FFFFFF',
+                  borderRadius: 12,
+                  fontSize: 14,
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                  textDecoration: 'none',
+                }}
+              >
+                Explore ECQO Sound
               </Link>
-            </div>
-
+            </ScrollFadeIn>
           </div>
-
         </div>
       </section>
 
-      {/* ── Final CTA ─────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden text-center">
+      {/* ── Section 4: Founder Authority ────────────────────────────── */}
+      <section
+        style={{
+          background: '#111118',
+          padding: 'clamp(64px, 10vw, 120px) 24px',
+        }}
+      >
+        <div className="founder-layout" style={{ maxWidth: 960, margin: '0 auto' }}>
+          {/* Image */}
+          <div className="founder-image">
+            <ScrollFadeIn>
+              <div
+                style={{
+                  borderRadius: 16,
+                  overflow: 'hidden',
+                  position: 'relative',
+                  width: '100%',
+                  maxHeight: 500,
+                  aspectRatio: '3/4',
+                  background: '#16161F',
+                }}
+              >
+                <Image
+                  src="/images/founder-bianca-mccall-processed.jpg"
+                  alt="Bianca D. McCall, LMFT — Licensed Marriage and Family Therapist, federal SAMHSA advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
+                  fill
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                  className="object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </ScrollFadeIn>
+          </div>
 
-        {/* Threshold image */}
-        <div className="absolute inset-0">
-          <HERRImageSlot
-            src="/images/cta-begin-reprogramming-threshold.jpg"
-            gradient={HERR_GRADIENTS.threshold}
-            alt="A human figure walking toward a distant light through a dark corridor, representing the threshold moment of beginning the HERR reprogramming journey."
-            width={1920}
-            height={800}
-            className="w-full h-full"
-          />
-          <div className="absolute inset-0 bg-[rgba(10,10,15,0.65)]" />
+          {/* Content */}
+          <div className="founder-content">
+            <ScrollFadeIn delay={200}>
+              <p
+                style={{
+                  fontSize: 12,
+                  textTransform: 'uppercase',
+                  letterSpacing: '2.5px',
+                  color: '#C42D8E',
+                  marginBottom: 16,
+                }}
+              >
+                THE FOUNDER
+              </p>
+              <h2
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontSize: 'clamp(28px, 3.5vw, 32px)',
+                  fontWeight: 600,
+                  color: '#FFFFFF',
+                  marginBottom: 20,
+                  lineHeight: 1.3,
+                }}
+              >
+                Bianca D. McCall, LMFT
+              </h2>
+              <p
+                style={{
+                  fontSize: 16,
+                  color: 'rgba(255,255,255,0.7)',
+                  lineHeight: 1.7,
+                  marginBottom: 24,
+                }}
+              >
+                Licensed clinician. Federal advisor to SAMHSA. Retired professional athlete. Bianca
+                built HERR from the intersection of existential psychology, performance science, and
+                personal transformation — to reprogram the voice that drives every performance in your
+                life.
+              </p>
+
+              {/* Credential pills */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 32 }}>
+                {CREDENTIALS.map((c) => (
+                  <span
+                    key={c}
+                    style={{
+                      background: '#16161F',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      borderRadius: 8,
+                      padding: '6px 14px',
+                      fontSize: 12,
+                      color: 'rgba(255,255,255,0.6)',
+                    }}
+                  >
+                    {c}
+                  </span>
+                ))}
+              </div>
+
+              <Link
+                href="/about"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 48,
+                  padding: '0 32px',
+                  background: 'transparent',
+                  color: '#FFFFFF',
+                  borderRadius: 12,
+                  border: '1px solid rgba(255,255,255,0.3)',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                  textDecoration: 'none',
+                }}
+              >
+                Read Full Story
+              </Link>
+            </ScrollFadeIn>
+          </div>
         </div>
+      </section>
 
-        <div className="relative px-6 py-32 max-w-[800px] mx-auto">
-          <p className="herr-label text-[var(--herr-muted)] mb-6">Phase 1 — Now Available</p>
-          <h2 className="font-display text-5xl md:text-7xl font-light tracking-[0.04em] uppercase text-[var(--herr-white)] mb-8 leading-tight">
-            Begin Your<br />
-            <span className="text-[var(--herr-pink)]">Reprogramming</span>
-          </h2>
-          <p className="text-[var(--herr-muted)] text-lg mb-10 max-w-md mx-auto">
-            Personalized voice affirmations in your own voice. Starting at $19/month.
+      {/* ── Section 5: Tier Preview ─────────────────────────────────── */}
+      <section
+        style={{
+          background: '#0A0A0F',
+          padding: 'clamp(64px, 10vw, 120px) 24px',
+        }}
+      >
+        <div style={{ maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
+          <p
+            style={{
+              fontSize: 12,
+              textTransform: 'uppercase',
+              letterSpacing: '2.5px',
+              color: '#C42D8E',
+              marginBottom: 16,
+            }}
+          >
+            MEMBERSHIP
           </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link href="/subscribe" className="btn-herr-primary">
-              Subscribe Now
-            </Link>
-            <Link href="/how-it-works" className="btn-herr-ghost">
-              How It Works
+          <h2
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: 'clamp(28px, 4vw, 36px)',
+              fontWeight: 600,
+              color: '#FFFFFF',
+              marginBottom: 48,
+              lineHeight: 1.2,
+            }}
+          >
+            Choose your level of care.
+          </h2>
+
+          <div className="tier-grid">
+            {TIERS.map((tier, i) => (
+              <ScrollFadeIn key={tier.name} delay={i * 100}>
+                <div
+                  style={{
+                    background: '#16161F',
+                    borderRadius: 16,
+                    padding: 32,
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    position: 'relative',
+                    textAlign: 'left',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                  }}
+                >
+                  {tier.popular && (
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: -14,
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        background: '#C42D8E',
+                        color: '#FFFFFF',
+                        fontSize: 10,
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '1.5px',
+                        padding: '4px 14px',
+                        borderRadius: 12,
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      Most Popular
+                    </span>
+                  )}
+
+                  <p style={{ fontSize: 20, fontWeight: 600, color: '#FFFFFF', marginBottom: 8 }}>
+                    {tier.name}
+                  </p>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 8 }}>
+                    <span
+                      style={{
+                        fontFamily: "'Cormorant Garamond', Georgia, serif",
+                        fontSize: 40,
+                        fontWeight: 600,
+                        color: '#FFFFFF',
+                      }}
+                    >
+                      {tier.price}
+                    </span>
+                    <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>/mo</span>
+                  </div>
+                  <p
+                    style={{
+                      fontSize: 14,
+                      color: '#E8388A',
+                      fontStyle: 'italic',
+                      marginBottom: 24,
+                      flex: 1,
+                    }}
+                  >
+                    {tier.tagline}
+                  </p>
+
+                  <Link
+                    href="/checkout"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: 48,
+                      width: '100%',
+                      borderRadius: 12,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px',
+                      textDecoration: 'none',
+                      ...(tier.btnStyle === 'solid'
+                        ? { background: '#C42D8E', color: '#FFFFFF', border: 'none' }
+                        : tier.btnStyle === 'gradient'
+                          ? { background: 'linear-gradient(135deg, #C42D8E, #E8388A)', color: '#FFFFFF', border: 'none' }
+                          : { background: 'transparent', color: '#C42D8E', border: '1.5px solid #C42D8E' }),
+                    }}
+                  >
+                    Choose Plan
+                  </Link>
+                </div>
+              </ScrollFadeIn>
+            ))}
+          </div>
+
+          <Link
+            href="/checkout"
+            style={{
+              display: 'inline-block',
+              marginTop: 32,
+              fontSize: 14,
+              color: '#E8388A',
+              textDecoration: 'none',
+            }}
+          >
+            Compare all plans →
+          </Link>
+        </div>
+      </section>
+
+      {/* ── Section 6: Journal Preview ──────────────────────────────── */}
+      <section
+        style={{
+          background: '#111118',
+          padding: 'clamp(64px, 10vw, 120px) 24px',
+        }}
+      >
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <p
+            style={{
+              fontSize: 12,
+              textTransform: 'uppercase',
+              letterSpacing: '2.5px',
+              color: '#C42D8E',
+              marginBottom: 16,
+            }}
+          >
+            THE HERR JOURNAL
+          </p>
+          <h2
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: 'clamp(28px, 4vw, 36px)',
+              fontWeight: 600,
+              color: '#FFFFFF',
+              marginBottom: 48,
+              lineHeight: 1.2,
+            }}
+          >
+            Clinical insights for the inner voice.
+          </h2>
+
+          <div className="journal-grid">
+            {JOURNAL_PREVIEW.map((article, i) => (
+              <ScrollFadeIn key={article.slug} delay={i * 100}>
+                <Link
+                  href={`/journal/${article.slug}`}
+                  style={{ textDecoration: 'none', display: 'block', height: '100%' }}
+                >
+                  <div
+                    className="journal-card"
+                    style={{
+                      background: '#16161F',
+                      borderRadius: 16,
+                      overflow: 'hidden',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    {/* Image */}
+                    <div
+                      style={{
+                        position: 'relative',
+                        aspectRatio: '16/9',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <Image
+                        src={article.image}
+                        alt={article.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover journal-card-img"
+                        loading="lazy"
+                      />
+                    </div>
+
+                    {/* Content */}
+                    <div style={{ padding: 24, display: 'flex', flexDirection: 'column', flex: 1 }}>
+                      <span
+                        style={{
+                          display: 'inline-block',
+                          background: '#C42D8E',
+                          color: '#FFFFFF',
+                          fontSize: 10,
+                          textTransform: 'uppercase',
+                          borderRadius: 12,
+                          padding: '4px 10px',
+                          width: 'fit-content',
+                          marginBottom: 12,
+                        }}
+                      >
+                        {article.category}
+                      </span>
+                      <h3
+                        style={{
+                          fontFamily: "'Cormorant Garamond', Georgia, serif",
+                          fontSize: 20,
+                          fontWeight: 600,
+                          color: '#FFFFFF',
+                          marginBottom: 8,
+                          lineHeight: 1.3,
+                        }}
+                      >
+                        {article.title}
+                      </h3>
+                      <p
+                        style={{
+                          fontSize: 14,
+                          color: 'rgba(255,255,255,0.6)',
+                          lineHeight: 1.5,
+                          flex: 1,
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        {article.excerpt}
+                      </p>
+                      <p
+                        style={{
+                          fontSize: 12,
+                          color: 'rgba(255,255,255,0.4)',
+                          marginTop: 8,
+                        }}
+                      >
+                        {article.readTime}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              </ScrollFadeIn>
+            ))}
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: 48 }}>
+            <Link
+              href="/journal"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 48,
+                padding: '0 32px',
+                background: 'transparent',
+                color: '#FFFFFF',
+                borderRadius: 12,
+                border: '1px solid rgba(255,255,255,0.3)',
+                fontSize: 14,
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                textDecoration: 'none',
+              }}
+            >
+              Read the Journal
             </Link>
           </div>
         </div>
-
       </section>
 
+      {/* ── Section 7: Final CTA ────────────────────────────────────── */}
+      <section
+        style={{
+          background: '#0A0A0F',
+          padding: 'clamp(80px, 12vw, 120px) 24px',
+          textAlign: 'center',
+        }}
+      >
+        <h2
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: 'clamp(32px, 5vw, 44px)',
+            fontWeight: 600,
+            color: '#FFFFFF',
+            marginBottom: 32,
+            lineHeight: 1.2,
+          }}
+        >
+          Your voice is waiting.
+        </h2>
+        <Link
+          href="/signup"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 48,
+            padding: '0 40px',
+            background: '#C42D8E',
+            color: '#FFFFFF',
+            borderRadius: 12,
+            fontSize: 14,
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            letterSpacing: '1px',
+            textDecoration: 'none',
+          }}
+        >
+          Start Free
+        </Link>
+        <p
+          style={{
+            fontSize: 13,
+            color: 'rgba(255,255,255,0.4)',
+            marginTop: 16,
+          }}
+        >
+          No credit card required. Cancel anytime.
+        </p>
+      </section>
+
+      {/* ── Section 8: Footer ───────────────────────────────────────── */}
+      <footer
+        style={{
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+          padding: '64px 24px',
+          maxWidth: 960,
+          margin: '0 auto',
+          textAlign: 'center',
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: 18,
+            color: '#FFFFFF',
+            marginBottom: 24,
+          }}
+        >
+          HERR™ <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 14 }}>| A product of ECQO Holdings™</span>
+        </p>
+
+        <nav
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '8px 20px',
+            marginBottom: 24,
+          }}
+        >
+          {[
+            { label: 'About', href: '/about' },
+            { label: 'How It Works', href: '/how-it-works' },
+            { label: 'The Science', href: '/the-science' },
+            { label: 'Journal', href: '/journal' },
+            { label: 'ECQO Sound', href: '/ecqo-sound' },
+            { label: 'Pricing', href: '/checkout' },
+          ].map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              style={{
+                fontSize: 12,
+                color: 'rgba(255,255,255,0.5)',
+                textDecoration: 'none',
+              }}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <nav
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '8px 20px',
+            marginBottom: 32,
+          }}
+        >
+          {[
+            { label: 'Terms of Service', href: '/terms' },
+            { label: 'Privacy Policy', href: '/privacy' },
+            { label: 'HIPAA Notice', href: '/hipaa' },
+          ].map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              style={{
+                fontSize: 12,
+                color: 'rgba(255,255,255,0.5)',
+                textDecoration: 'none',
+              }}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <p
+          style={{
+            fontSize: 12,
+            color: 'rgba(255,255,255,0.35)',
+            lineHeight: 1.6,
+            maxWidth: 600,
+            margin: '0 auto 16px',
+          }}
+        >
+          HERR is a wellness platform. It is not a substitute for licensed clinical care.
+          If you are in crisis, call or text{' '}
+          <a href="tel:988" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'underline' }}>
+            988
+          </a>.
+        </p>
+
+        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>
+          © 2026 ECQO Holdings™. All rights reserved.
+        </p>
+      </footer>
+
+      {/* ── Responsive Styles ───────────────────────────────────────── */}
+      <style>{`
+        @keyframes gradientShift {
+          0%   { background-position: 0% 50%; }
+          50%  { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        .method-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 32px;
+        }
+
+        .voice-clone-layout {
+          display: grid;
+          grid-template-columns: 55% 45%;
+          gap: 48px;
+          align-items: center;
+        }
+        .voice-clone-visual { order: 1; }
+        .voice-clone-content { order: 2; }
+
+        .founder-layout {
+          display: grid;
+          grid-template-columns: 40% 60%;
+          gap: 48px;
+          align-items: center;
+        }
+
+        .tier-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+          text-align: left;
+        }
+
+        .journal-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+
+        .journal-card-img {
+          transition: transform 300ms ease;
+        }
+        .journal-card:hover .journal-card-img {
+          transform: scale(1.03);
+        }
+
+        @media (max-width: 1024px) {
+          .method-grid { grid-template-columns: 1fr; }
+          .voice-clone-layout { grid-template-columns: 1fr; }
+          .voice-clone-visual { order: 2; }
+          .voice-clone-content { order: 1; }
+          .founder-layout { grid-template-columns: 1fr; }
+          .tier-grid { grid-template-columns: 1fr; }
+          .journal-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (min-width: 640px) and (max-width: 1024px) {
+          .journal-grid { grid-template-columns: repeat(2, 1fr); }
+          .tier-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+      `}</style>
     </main>
   );
 }
