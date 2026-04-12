@@ -1,13 +1,5 @@
 'use client';
 
-/**
- * DashboardClient — Client-side wrapper for Dashboard
- * =====================================================
- * Handles:
- * - "Navigating HERR" first-load tutorial
- * - Client-side interactivity for the dashboard cards
- */
-
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import NavigatingHERR from './NavigatingHERR';
@@ -34,6 +26,13 @@ interface DashboardClientProps {
   isFirstLoad: boolean;
 }
 
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good morning';
+  if (hour < 17) return 'Good afternoon';
+  return 'Good evening';
+}
+
 export default function DashboardClient({
   userId,
   displayName,
@@ -44,134 +43,379 @@ export default function DashboardClient({
   const [showTutorial, setShowTutorial] = useState(false);
 
   useEffect(() => {
-    // Check if tutorial has been completed
     const tutorialDone = localStorage.getItem(`herr_tutorial_complete_${userId}`);
     if (isFirstLoad && !tutorialDone) {
-      // Small delay so the dashboard renders first
       const timer = setTimeout(() => setShowTutorial(true), 800);
       return () => clearTimeout(timer);
     }
   }, [userId, isFirstLoad]);
 
+  const tierLabel = plan === 'elite'
+    ? 'HERR Elite'
+    : plan === 'personalized'
+      ? 'HERR Personalized'
+      : plan === 'collective'
+        ? 'HERR Collective'
+        : 'HERR Free';
+
+  const navItems = [
+    { label: 'Home', href: '/dashboard', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
+    { label: 'My Affirmations', href: '/dashboard/affirmations', icon: 'M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z' },
+    { label: 'Screener', href: '/dashboard/assessment', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4' },
+    { label: 'Journal', href: '/journal', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
+    { label: 'Community', href: '/community', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
+    { label: 'Settings', href: '/dashboard/billing', icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z' },
+  ];
+
   return (
     <>
-      {/* Tutorial overlay */}
       {showTutorial && (
-        <NavigatingHERR
-          userId={userId}
-          onComplete={() => setShowTutorial(false)}
-        />
+        <NavigatingHERR userId={userId} onComplete={() => setShowTutorial(false)} />
       )}
 
-      <main className="min-h-screen">
-        {/* Header */}
-        <section className="px-6 pt-32 pb-16 border-b border-[var(--herr-border)]">
-          <div className="max-w-[1200px] mx-auto">
-            <p className="herr-label text-[var(--herr-muted)] mb-4">Member Dashboard</p>
-            <h1 className="font-display text-4xl md:text-6xl font-light text-[var(--herr-white)] leading-[0.9] mb-4">
-              Welcome back, {displayName}.
-            </h1>
-            {plan && (
-              <p className="herr-label mt-6" style={{
-                color: plan === 'elite' ? 'var(--herr-cobalt)' :
-                       plan === 'personalized' ? 'var(--herr-pink)' : 'var(--herr-muted)'
-              }}>
-                {plan === 'elite' ? 'HERR Elite' :
-                 plan === 'personalized' ? 'HERR Personalized' : 'HERR Collective'}
-              </p>
-            )}
-          </div>
-        </section>
-
-        {/* Feature cards — 5-section grid */}
-        <section className="px-6 py-16">
-          <div className="max-w-[1200px] mx-auto">
-            {/* Top row: Inbox + Progress (larger cards) */}
-            <div className="grid md:grid-cols-2 gap-px bg-[var(--herr-border)] mb-px">
-              {cards.slice(0, 2).map((card) => (
-                <DashboardCardComponent key={card.sectionId} card={card} featured />
-              ))}
-            </div>
-
-            {/* Bottom row: Live Events + Community + Profile */}
-            <div className="grid md:grid-cols-3 gap-px bg-[var(--herr-border)]">
-              {cards.slice(2).map((card) => (
-                <DashboardCardComponent key={card.sectionId} card={card} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Re-access tutorial link */}
-        <section className="px-6 pb-8">
-          <div className="max-w-[1200px] mx-auto flex items-center gap-6">
-            <button
-              onClick={() => {
-                localStorage.removeItem(`herr_tutorial_complete_${userId}`);
-                setShowTutorial(true);
+      <div className="dash-layout">
+        {/* ── Sidebar (desktop) ─────────────────────────────────── */}
+        <aside className="dash-sidebar">
+          <div style={{ padding: 24 }}>
+            <p
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 20,
+                color: '#FFFFFF',
+                marginBottom: 32,
               }}
-              className="text-[0.72rem] text-[var(--herr-faint)] hover:text-[var(--herr-muted)] transition-colors uppercase tracking-widest"
             >
-              Replay &ldquo;Navigating HERR&rdquo; Tutorial
-            </button>
-          </div>
-        </section>
-
-        {/* Disclaimer */}
-        <section className="px-6 pb-16">
-          <div className="max-w-[1200px] mx-auto">
-            <p className="text-[0.72rem] text-[var(--herr-faint)] leading-relaxed">
-              HERR is a wellness tool and is not a substitute for professional mental health treatment.
-              Always consult a licensed clinician for clinical concerns. &copy; ECQO Holdings.
+              HERR™
             </p>
-          </div>
-        </section>
-      </main>
-    </>
-  );
-}
 
-// ── Individual Card Component ───────────────────────────────
-function DashboardCardComponent({
-  card,
-  featured = false,
-}: {
-  card: DashboardCard;
-  featured?: boolean;
-}) {
-  return (
-    <Link
-      href={card.href}
-      className={`bg-[var(--herr-black)] transition-colors duration-300 flex flex-col gap-3 group hover:bg-[var(--herr-surface)] ${
-        featured ? 'p-10' : 'p-8'
-      }`}
-    >
-      {/* Icon */}
-      <div className="mb-2 text-[var(--herr-faint)] group-hover:text-[var(--herr-pink)] transition-colors">
-        {card.icon}
+            <nav style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              {navItems.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="dash-nav-item"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 12,
+                    padding: '12px 24px',
+                    borderRadius: 8,
+                    fontSize: 14,
+                    color: 'rgba(255,255,255,0.6)',
+                    textDecoration: 'none',
+                    transition: 'background 200ms ease',
+                  }}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d={item.icon} />
+                  </svg>
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </aside>
+
+        {/* ── Main Content ──────────────────────────────────────── */}
+        <main style={{ background: '#0A0A0F', padding: 'clamp(24px, 4vw, 32px)', minHeight: '100vh' }}>
+          {/* Greeting */}
+          <h1
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: 'clamp(24px, 3vw, 32px)',
+              fontWeight: 600,
+              color: '#FFFFFF',
+              marginBottom: 8,
+            }}
+          >
+            {getGreeting()}, {displayName}.
+          </h1>
+          {plan && (
+            <p
+              style={{
+                fontSize: 12,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+                color: plan === 'elite' ? '#2563EB' : plan === 'personalized' ? '#C42D8E' : 'rgba(255,255,255,0.5)',
+                marginBottom: 32,
+              }}
+            >
+              {tierLabel}
+            </p>
+          )}
+
+          {/* Today's Affirmation Card */}
+          <div
+            style={{
+              background: '#16161F',
+              borderRadius: 16,
+              padding: 32,
+              border: '1px solid rgba(255,255,255,0.08)',
+              marginBottom: 24,
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+              <p
+                style={{
+                  fontSize: 12,
+                  textTransform: 'uppercase',
+                  letterSpacing: '2px',
+                  color: '#C42D8E',
+                }}
+              >
+                TODAY&apos;S AFFIRMATION
+              </p>
+              <span
+                style={{
+                  fontSize: 11,
+                  textTransform: 'uppercase',
+                  background: '#16161F',
+                  border: '1px solid #C42D8E',
+                  color: '#C42D8E',
+                  padding: '2px 10px',
+                  borderRadius: 12,
+                }}
+              >
+                MORNING
+              </span>
+            </div>
+            <p
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 18,
+                fontStyle: 'italic',
+                color: 'rgba(255,255,255,0.8)',
+                margin: '16px 0',
+                lineHeight: 1.5,
+              }}
+            >
+              &ldquo;I am becoming the version of myself I was always meant to be.&rdquo;
+            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+              <Link
+                href="/dashboard/affirmations"
+                style={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: '50%',
+                  background: '#C42D8E',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'background 200ms ease, transform 200ms ease',
+                  flexShrink: 0,
+                }}
+              >
+                <svg width="20" height="24" viewBox="0 0 12 14" fill="none">
+                  <path d="M1 1L11 7L1 13V1Z" fill="#FFFFFF" />
+                </svg>
+              </Link>
+              <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>3:24</span>
+            </div>
+          </div>
+
+          {/* Stats Row */}
+          <div className="stats-row" style={{ marginBottom: 32 }}>
+            {[
+              { value: '12', label: 'Day Streak' },
+              { value: '47', label: 'Total Sessions' },
+              { value: 'Morning', label: 'Current Mode' },
+            ].map((stat) => (
+              <div
+                key={stat.label}
+                style={{
+                  background: '#16161F',
+                  borderRadius: 16,
+                  padding: 24,
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  flex: 1,
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontSize: 32,
+                    fontWeight: 600,
+                    color: '#FFFFFF',
+                    marginBottom: 4,
+                  }}
+                >
+                  {stat.value}
+                </p>
+                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>{stat.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Feature Cards Grid */}
+          <div className="cards-grid">
+            {cards.map((card) => (
+              <Link
+                key={card.sectionId}
+                href={card.href}
+                style={{
+                  background: '#16161F',
+                  borderRadius: 16,
+                  padding: 24,
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 8,
+                  transition: 'border-color 200ms ease',
+                }}
+                className="dash-card"
+              >
+                <div style={{ color: 'rgba(255,255,255,0.4)', marginBottom: 4 }}>
+                  {card.icon}
+                </div>
+                <p style={{ fontSize: 16, fontWeight: 600, color: '#FFFFFF' }}>{card.label}</p>
+                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5 }}>
+                  {card.description}
+                </p>
+                {card.status && (
+                  <p style={{ fontSize: 12, color: '#C42D8E', marginTop: 'auto' }}>{card.status}</p>
+                )}
+                {card.locked && (
+                  <p style={{ fontSize: 12, color: '#2563EB', marginTop: 'auto' }}>
+                    Upgrade to HERR Elite &rarr;
+                  </p>
+                )}
+              </Link>
+            ))}
+          </div>
+
+          {/* Re-access tutorial */}
+          <button
+            onClick={() => {
+              localStorage.removeItem(`herr_tutorial_complete_${userId}`);
+              setShowTutorial(true);
+            }}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'rgba(255,255,255,0.25)',
+              fontSize: 11,
+              textTransform: 'uppercase',
+              letterSpacing: '1.5px',
+              cursor: 'pointer',
+              marginTop: 32,
+            }}
+          >
+            Replay &ldquo;Navigating HERR&rdquo; Tutorial
+          </button>
+
+          {/* Disclaimer */}
+          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.25)', marginTop: 24, lineHeight: 1.6 }}>
+            HERR is a wellness tool and is not a substitute for professional mental health treatment.
+            Always consult a licensed clinician for clinical concerns. &copy; ECQO Holdings.
+          </p>
+        </main>
       </div>
 
-      <p className={`herr-label ${card.tierColor}`}>{card.tier}</p>
-      <h2
-        className={`font-display font-light text-[var(--herr-white)] group-hover:text-[var(--herr-pink)] transition-colors duration-300 ${
-          featured ? 'text-3xl' : 'text-2xl'
-        }`}
-      >
-        {card.label}
-      </h2>
-      <p className="text-[0.85rem] text-[var(--herr-muted)] leading-relaxed">
-        {card.description}
-      </p>
-      {card.status && (
-        <p className={`text-[0.75rem] ${card.statusColor} mt-auto pt-2`}>
-          {card.status}
-        </p>
-      )}
-      {card.locked && (
-        <p className="text-[0.75rem] text-[var(--herr-cobalt)] mt-auto pt-2">
-          Upgrade to HERR Elite &rarr;
-        </p>
-      )}
-    </Link>
+      {/* ── Mobile Bottom Bar ───────────────────────────────────── */}
+      <nav className="dash-mobile-bar">
+        {navItems.slice(0, 5).map((item) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 2,
+              textDecoration: 'none',
+              color: 'rgba(255,255,255,0.4)',
+              fontSize: 10,
+            }}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d={item.icon} />
+            </svg>
+            {item.label.split(' ')[0]}
+          </Link>
+        ))}
+      </nav>
+
+      <style>{`
+        .dash-layout {
+          display: grid;
+          grid-template-columns: 240px 1fr;
+          min-height: 100vh;
+        }
+        .dash-sidebar {
+          background: #111118;
+          border-right: 1px solid rgba(255,255,255,0.08);
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          overflow-y: auto;
+        }
+        .dash-nav-item:hover {
+          background: rgba(255,255,255,0.05);
+        }
+        .dash-mobile-bar {
+          display: none;
+        }
+        .stats-row {
+          display: flex;
+          gap: 16px;
+        }
+        .cards-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 16px;
+        }
+        .dash-card:hover {
+          border-color: rgba(255,255,255,0.2) !important;
+        }
+        @media (max-width: 768px) {
+          .dash-layout {
+            grid-template-columns: 1fr;
+          }
+          .dash-sidebar {
+            display: none;
+          }
+          .dash-mobile-bar {
+            display: flex;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: #111118;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            justify-content: space-around;
+            align-items: center;
+            z-index: 50;
+            padding-bottom: env(safe-area-inset-bottom);
+          }
+          .stats-row {
+            flex-direction: column;
+          }
+          .cards-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
+    </>
   );
 }
