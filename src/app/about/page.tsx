@@ -1,234 +1,332 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import HERRImageSlot, { HERR_GRADIENTS } from '@/components/ui/HERRImageSlot';
+import Image from 'next/image';
+import ScrollFadeIn from '@/components/home/ScrollFadeIn';
 
 export const metadata: Metadata = {
-  title: 'About Bianca D. McCall, LMFT — Founder of HERR',
+  title: 'About — Bianca D. McCall, LMFT',
   description:
-    'HERR is for every human who has ever questioned their own voice. Founded by Bianca D. McCall, LMFT — Licensed Marriage and Family Therapist, federal SAMHSA advisor, existential psychology expert, and retired professional athlete.',
+    'Licensed clinician. Federal advisor to SAMHSA. Retired professional athlete. Bianca D. McCall built HERR from the intersection of existential psychology, performance science, and personal transformation.',
 };
 
 const CREDENTIALS = [
   {
-    category: 'Clinical',
-    items: [
-      'Licensed Marriage and Family Therapist (LMFT)',
-      'Existential Psychology Subject Matter Expert',
-      'Federal SAMHSA Advisor — Substance Abuse and Mental Health Services Administration',
-      'National Committee Member in Behavioral Health',
-    ],
+    title: 'Licensed Marriage & Family Therapist (LMFT)',
+    context: 'Behavioral health, existential psychology, trauma-informed care',
   },
   {
-    category: 'Platform',
-    items: [
-      'International Keynote Speaker',
-      'AI Startup Founder — ECQO Holdings',
-      'Retired Professional Women\'s Basketball Player',
-      'Builder at the intersection of clinical science and human performance',
-    ],
+    title: 'SAMHSA SPRC Advisor',
+    context: 'Federal advisory — Suicide Prevention Resource Center (HHS designated)',
   },
+  {
+    title: 'Lived Experience Advisory Committee',
+    context: 'Federal committee — best practices reviewer and subject matter expert',
+  },
+  {
+    title: 'International Speaker',
+    context: 'TED, keynote, and clinical conference speaker — existential psychology and performance',
+  },
+  {
+    title: 'NFL & MLB Wellness Consultant',
+    context: 'Native American Athletic Foundation — wellness and performance consulting',
+  },
+  {
+    title: 'Retired Professional Athlete',
+    context: 'Professional women\u2019s basketball — the bridge to elite performance psychology',
+  },
+];
+
+const ENTITIES = [
+  'ECQO Holdings\u2122',
+  'The Wealth League',
+  "Three M\u2019s Enterprises",
+  'Desert Rose Gives',
 ];
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen">
+    <main style={{ minHeight: '100vh', background: '#0A0A0F' }}>
 
-      {/* ── Hero ──────────────────────────────────────────────────── */}
-      <section className="relative min-h-[70vh] flex flex-col justify-end overflow-hidden">
-
-        {/* Background image */}
-        <div className="absolute inset-0">
-          <HERRImageSlot
-            src="/images/about-hero-voice-frequency.jpg"
-            alt="Abstract voice frequency visualization — cobalt and pink light trails representing the sound and identity at the foundation of the HERR clinical wellness system."
-            gradient={HERR_GRADIENTS.voiceFrequency}
-            width={1920}
-            height={800}
-            className="w-full h-full"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F] via-[rgba(10,10,15,0.5)] to-[rgba(10,10,15,0.2)]" />
-        </div>
-
-        {/* Content */}
-        <div className="relative max-w-[1200px] mx-auto w-full px-6 pt-40 pb-20">
-
-          <p className="herr-label text-[var(--herr-muted)] mb-6">About HERR</p>
-
-          <h1 className="font-display text-5xl md:text-7xl xl:text-8xl font-light text-[var(--herr-white)] leading-[0.9] mb-8">
-            HERR™ is for every human<br />
-            who has ever questioned<br />
-            <span className="text-[var(--herr-pink)]">their own voice.</span>
+      {/* ── Hero — Full-width photo ─────────────────────────────────── */}
+      <section
+        style={{
+          position: 'relative',
+          minHeight: '60vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          overflow: 'hidden',
+        }}
+      >
+        <Image
+          src="/images/founder-bianca-mccall-processed.jpg"
+          alt="Bianca D. McCall, LMFT — Licensed Marriage and Family Therapist, federal SAMHSA advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
+          fill
+          sizes="100vw"
+          className="object-cover"
+          style={{ objectPosition: 'center top' }}
+          priority
+        />
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(to bottom, rgba(10,10,15,0.3), rgba(10,10,15,0.9))',
+          }}
+        />
+        <div
+          style={{
+            position: 'relative',
+            padding: '48px',
+            maxWidth: 1280,
+            margin: '0 auto',
+            width: '100%',
+          }}
+        >
+          <h1
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: 'clamp(32px, 5vw, 44px)',
+              fontWeight: 600,
+              color: '#FFFFFF',
+              marginBottom: 8,
+              lineHeight: 1.2,
+            }}
+          >
+            Bianca D. McCall, LMFT
           </h1>
+          <p style={{ fontSize: 16, color: '#E8388A' }}>
+            Clinician · Federal Advisor · Founder · The IP Behind HERR
+          </p>
+        </div>
+      </section>
 
-          <p className="text-lg md:text-xl text-[var(--herr-muted)] max-w-2xl leading-relaxed">
-            Built from clinical expertise, lived performance, and a deep belief that the inner voice is not fixed. It is reprogrammable. And it belongs to you.
+      {/* ── Section 1: The Story ────────────────────────────────────── */}
+      <section
+        style={{
+          background: '#0A0A0F',
+          padding: 'clamp(48px, 8vw, 80px) 24px',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 720,
+            margin: '0 auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 24,
+          }}
+        >
+          <ScrollFadeIn>
+            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8 }}>
+              Before HERR, before ECQO Holdings, before the clinical frameworks and federal advisory
+              roles — there was a voice. The inner voice that every elite performer hears but few
+              understand. Bianca D. McCall spent her career studying that voice — as an existential
+              psychologist, a licensed marriage and family therapist, and a retired professional
+              women&apos;s basketball player.
+            </p>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={100}>
+            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8 }}>
+              The performance philosophy emerged from the intersection of the court and the clinic: we
+              are all performing roles — in employment, community, family, and life. The inner voice
+              is the conductor of every performance. When that conductor is dysregulated, every
+              performance suffers. When it is reprogrammed, everything transforms.
+            </p>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={200}>
+            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8 }}>
+              HERR is the technology that makes reprogramming personal. Not a generic meditation app.
+              Not a chatbot pretending to be a therapist. A clinical operating system that assesses
+              your existential concerns, regulates your nervous system, and delivers daily affirmations
+              in your own cloned voice — because the subconscious trusts your voice above all others.
+            </p>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={300}>
+            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8 }}>
+              Today, Bianca advises SAMHSA&apos;s Suicide Prevention Resource Center, consults for the
+              Native American Athletic Foundation (NFL, MLB), speaks internationally on stages from TED
+              to the world&apos;s largest wellness conferences, and leads ECQO Holdings — the clinical
+              AI company building the future of personalized behavioral wellness.
+            </p>
+          </ScrollFadeIn>
+        </div>
+      </section>
+
+      {/* ── Section 2: Credentials ──────────────────────────────────── */}
+      <section
+        style={{
+          background: '#111118',
+          padding: 'clamp(48px, 8vw, 80px) 24px',
+        }}
+      >
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <p
+            style={{
+              fontSize: 12,
+              textTransform: 'uppercase',
+              letterSpacing: '2.5px',
+              color: '#C42D8E',
+              marginBottom: 48,
+            }}
+          >
+            CREDENTIALS &amp; EXPERIENCE
           </p>
 
-        </div>
-      </section>
-
-      {/* ── Bianca ───────────────────────────────────────────────── */}
-      <section className="px-6 py-24 bg-[var(--herr-surface)]">
-        <div className="max-w-[1200px] mx-auto">
-
-          <div className="grid md:grid-cols-2 gap-14 items-start">
-
-            {/* Founder image */}
-            <div className="sticky top-24">
-              <HERRImageSlot
-                src="/images/founder-bianca-mccall-processed.jpg"
-                alt="Bianca D. McCall, LMFT — Licensed Marriage and Family Therapist, federal SAMHSA advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
-                gradient={HERR_GRADIENTS.founder}
-                width={600}
-                height={750}
-                className="w-full"
-              />
-            </div>
-
-            <div>
-              <p className="herr-label text-[var(--herr-muted)] mb-6">The Founder</p>
-              <h2 className="font-display text-4xl md:text-5xl font-light text-[var(--herr-white)] mb-8 leading-tight">
-                Bianca D. McCall,<br />LMFT
-              </h2>
-
-              <div className="flex flex-col gap-6 text-[var(--herr-muted)] leading-relaxed mb-10">
-                <p>
-                  Bianca D. McCall is a Licensed Marriage and Family Therapist with a clinical specialization in existential psychology. She is a federal SAMHSA advisor, a national committee member in behavioral health, a retired professional women&apos;s basketball player, and an international keynote speaker.
-                </p>
-                <p>
-                  Bianca is the IP. Bianca is the brand. She built HERR because she understood something most wellness tools miss: the nervous system must be regulated before the inner voice can be reprogrammed. You cannot think your way into a new identity. You must feel your way there first.
-                </p>
-                <p>
-                  Sports is the bridge, not the identity. The arena taught her that performance is an inside job. The clinic showed her the science behind why. HERR is what happens when both truths are held at once.
-                </p>
-              </div>
-
-              {/* Credentials */}
-              <div className="flex flex-col gap-6">
-                {CREDENTIALS.map((group) => (
-                  <div key={group.category}>
-                    <p className="herr-label text-[var(--herr-pink)] mb-4">{group.category}</p>
-                    <div className="flex flex-col gap-3">
-                      {group.items.map((item) => (
-                        <div
-                          key={item}
-                          className="herr-card border border-[var(--herr-border)] border-l-2 border-l-[var(--herr-violet)] p-4"
-                        >
-                          <p className="text-[0.88rem] text-[var(--herr-muted)]">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
+          <div className="credentials-grid">
+            {CREDENTIALS.map((cred, i) => (
+              <ScrollFadeIn key={cred.title} delay={i * 100}>
+                <div
+                  style={{
+                    background: '#16161F',
+                    borderRadius: 16,
+                    padding: 32,
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    height: '100%',
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 600,
+                      color: '#FFFFFF',
+                      marginBottom: 8,
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    {cred.title}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: 14,
+                      color: 'rgba(255,255,255,0.6)',
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {cred.context}
+                  </p>
+                </div>
+              </ScrollFadeIn>
+            ))}
           </div>
-
         </div>
       </section>
 
-      {/* ── The Arena ─────────────────────────────────────────────── */}
-      <section className="border-t border-[var(--herr-border)]">
-        <div className="max-w-[1200px] mx-auto">
+      {/* ── Section 3: The Enterprise ───────────────────────────────── */}
+      <section
+        style={{
+          background: '#0A0A0F',
+          padding: 'clamp(48px, 8vw, 80px) 24px',
+        }}
+      >
+        <div style={{ maxWidth: 720, margin: '0 auto' }}>
+          <ScrollFadeIn>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 28,
+                fontWeight: 600,
+                color: '#FFFFFF',
+                marginBottom: 20,
+              }}
+            >
+              The Enterprise
+            </h2>
+            <p
+              style={{
+                fontSize: 16,
+                color: 'rgba(255,255,255,0.7)',
+                lineHeight: 1.7,
+                marginBottom: 24,
+              }}
+            >
+              HERR is the flagship product of ECQO Holdings™ — a clinical AI company building the
+              future of personalized behavioral wellness. The ECQO ecosystem includes The Wealth
+              League (financial wellness), Three M&apos;s Enterprises (speaking, training,
+              consulting), and Desert Rose Gives (501c3 community impact).
+            </p>
 
-          <div className="grid md:grid-cols-2 gap-px bg-[var(--herr-border)]">
-
-            {/* Arena image */}
-            <div className="bg-[var(--herr-black)]">
-              <HERRImageSlot
-                src="/images/about-arena-after.jpg"
-                alt="An empty basketball arena receding into darkness — representing the moment of identity transition when the athlete role ends and a deeper self must be found. The arena that shaped Bianca D. McCall, LMFT."
-                gradient={HERR_GRADIENTS.arena}
-                width={600}
-                height={500}
-                className="w-full"
-              />
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+              {ENTITIES.map((e) => (
+                <span
+                  key={e}
+                  style={{
+                    background: '#16161F',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    padding: '8px 16px',
+                    borderRadius: 8,
+                    fontSize: 13,
+                    color: 'rgba(255,255,255,0.6)',
+                  }}
+                >
+                  {e}
+                </span>
+              ))}
             </div>
-
-            {/* Arena copy */}
-            <div className="bg-[var(--herr-black)] p-10 md:p-14 flex flex-col justify-center">
-              <p className="herr-label text-[var(--herr-cobalt)] mb-6">The Origin</p>
-              <h2 className="font-display text-4xl md:text-5xl font-light text-[var(--herr-white)] mb-8 leading-tight">
-                What the arena<br />
-                <span className="text-[var(--herr-pink)]">teaches you.</span>
-              </h2>
-              <div className="flex flex-col gap-5 text-[var(--herr-muted)] leading-relaxed">
-                <p>
-                  There is a specific kind of silence that happens when a career ends. Especially an athletic one. The crowd disappears. The structure disappears. And what is left is the question most high performers have never had to answer: who are you when performance is not the answer?
-                </p>
-                <p>
-                  Bianca D. McCall lived that question. And she built HERR so that others would not have to navigate it alone — or without the clinical science to back them up.
-                </p>
-              </div>
-            </div>
-
-          </div>
-
+          </ScrollFadeIn>
         </div>
       </section>
 
-      {/* ── What HERR Is ─────────────────────────────────────────── */}
-      <section className="px-6 py-24 border-t border-[var(--herr-border)]">
-        <div className="max-w-[1200px] mx-auto">
-
-          <p className="herr-label text-[var(--herr-muted)] mb-6">The System</p>
-
-          <div className="grid md:grid-cols-2 gap-14 items-start">
-
-            <div>
-              <h2 className="font-display text-4xl md:text-5xl font-light text-[var(--herr-white)] mb-8 leading-tight">
-                One tool.<br />
-                Every version<br />
-                of you.
-              </h2>
-            </div>
-
-            <div className="flex flex-col gap-6 text-[var(--herr-muted)] leading-relaxed">
-              <p>
-                HERR is a clinical wellness operating system delivered through your own voice. It begins with assessment: understanding your existential concerns at the point of onset. The fears, questions, and unresolved patterns that quietly conduct your daily performance.
-              </p>
-              <p>
-                Then it responds. Personalized voice affirmations and I AM declarations, recorded in your own cloned voice, delivered daily across eight activity modes: Workout, Driving, Sleep, Morning, Deep Work, Love and Family, Abundance, and Healing.
-              </p>
-              <p>
-                HERR&apos;s customer is any high-performing human navigating identity, transition, or wellness. Athletes, executives, behavioral health professionals, caregivers, community leaders. The mission: regulate the nervous system first, then reprogram the inner voice at the subconscious level, so that who you believe you are begins to match who you are becoming.
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── ECQO Holdings ────────────────────────────────────────── */}
-      <section className="px-6 py-24 border-t border-[var(--herr-border)] bg-[var(--herr-surface)]">
-        <div className="max-w-[1200px] mx-auto text-center">
-
-          <p className="herr-label text-[var(--herr-muted)] mb-6">The Company</p>
-          <h2 className="font-display text-3xl md:text-4xl font-light text-[var(--herr-white)] mb-6">
-            ECQO Holdings™
-          </h2>
-          <p className="text-[var(--herr-muted)] max-w-2xl mx-auto leading-relaxed mb-10">
-            HERR™ is the market entry product of ECQO Holdings™, the clinical AI platform founded by Bianca D. McCall, LMFT. Built for the long arc: from individual wellness to enterprise behavioral health. One clinical intelligence. Multiple delivery layers.
+      {/* ── Section 4: CTA ──────────────────────────────────────────── */}
+      <section
+        style={{
+          background: '#111118',
+          padding: '80px 24px',
+          textAlign: 'center',
+        }}
+      >
+        <ScrollFadeIn>
+          <p
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: 'clamp(24px, 4vw, 32px)',
+              fontWeight: 600,
+              color: '#FFFFFF',
+              fontStyle: 'italic',
+              maxWidth: 600,
+              margin: '0 auto 32px',
+              lineHeight: 1.3,
+            }}
+          >
+            &ldquo;The inner voice is the conductor of every performance.&rdquo;
           </p>
-          <p className="text-[0.68rem] text-[var(--herr-faint)] max-w-xl mx-auto mb-8">
-            HERR™ and Human Existential Response and Reprogramming™ are trademarks of ECQO Holdings™. The HERR™ Progressive Reprogramming System — Patent Pending.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/subscribe" className="btn-herr-primary">
-              Begin Your Reprogramming
-            </Link>
-            <Link href="/how-it-works" className="btn-herr-ghost">
-              How It Works
-            </Link>
-          </div>
-
-        </div>
+          <Link
+            href="/checkout"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 48,
+              padding: '0 40px',
+              background: '#C42D8E',
+              color: '#FFFFFF',
+              borderRadius: 12,
+              fontSize: 14,
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              textDecoration: 'none',
+            }}
+          >
+            Experience HERR
+          </Link>
+        </ScrollFadeIn>
       </section>
 
+      {/* ── Responsive Styles ───────────────────────────────────────── */}
+      <style>{`
+        .credentials-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+        @media (max-width: 1024px) {
+          .credentials-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+          .credentials-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
     </main>
   );
 }
