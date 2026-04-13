@@ -29,7 +29,7 @@ export default function CrisisResource({ variant = 'light' }: { variant?: 'light
         }}
       >
         <Image
-          src={isLight ? '/images/988-lifeline-logo.svg' : '/images/988-lifeline-logo-white.svg'}
+          src={isLight ? '/images/988-lifeline-logo.png' : '/images/988-lifeline-logo-white.png'}
           alt="988 Suicide and Crisis Lifeline"
           width={200}
           height={48}
