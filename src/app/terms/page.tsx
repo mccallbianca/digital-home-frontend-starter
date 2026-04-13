@@ -18,8 +18,17 @@ export default function TermsPage() {
   return (
     <main className="min-h-screen">
 
+      {/* ── Attorney Review Banner ────────────────────────────────── */}
+      <div style={{ maxWidth: 860, margin: '0 auto', padding: '96px 24px 0' }}>
+        <div style={{ background: '#16161F', borderRadius: 12, border: '1px solid #C42D8E', padding: 16, marginBottom: 24 }}>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', lineHeight: 1.5 }}>
+            This document is a template and has not been reviewed by legal counsel. Professional legal review is required before launch.
+          </p>
+        </div>
+      </div>
+
       {/* ── Hero ──────────────────────────────────────────────────── */}
-      <section className="px-6 pt-40 pb-16 border-b border-[var(--herr-border)]">
+      <section className="px-6 pt-8 pb-16 border-b border-[var(--herr-border)]">
         <div className="max-w-[860px] mx-auto">
           <p className="herr-label text-[var(--herr-muted)] mb-4">Legal</p>
           <h1 className="font-display text-5xl md:text-6xl font-light text-[var(--herr-white)] mb-6 leading-tight">
