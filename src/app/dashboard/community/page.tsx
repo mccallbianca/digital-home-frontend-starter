@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import HERRNation from './HERRNation';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'HERR Nation — Community',
   description: 'HERR Nation — the community for every human doing the reprogramming work.',

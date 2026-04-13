@@ -4,6 +4,8 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import SessionsClient from './SessionsClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Live Sessions — HERR',
   description: 'Monthly live group sessions with Bianca D. McCall, LMFT.',

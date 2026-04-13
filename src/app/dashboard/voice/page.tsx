@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import VoiceUploader from './VoiceUploader';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'My Voice — HERR',
   description: 'Manage your cloned voice and recording sessions.',

@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import OnboardingClient from './OnboardingClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Onboarding — HERR',
   description: 'Complete your HERR member setup and begin your reprogramming protocol.',

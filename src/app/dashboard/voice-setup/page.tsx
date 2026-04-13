@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import VoiceSetupClient from './VoiceSetupClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Voice Clone Setup — HERR',
   description: 'Set up your voice clone for personalized affirmations.',

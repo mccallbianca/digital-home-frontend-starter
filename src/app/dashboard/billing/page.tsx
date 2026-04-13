@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import BillingPortalButton from './BillingPortalButton';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Billing + Account — HERR',
   description: 'Manage your HERR subscription, payment method, and billing history.',

@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import ECQOSoundPlayer from './ECQOSoundPlayer';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'ECQO Sound — HERR',
   description: 'Your personalized therapeutic soundtrack. Three layers. One experience.',

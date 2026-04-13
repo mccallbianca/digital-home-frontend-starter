@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import ScreenerClient from './ScreenerClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'ECQO Assessment — HERR',
   description: 'Complete your existential concerns questionnaire to personalize your HERR experience.',
