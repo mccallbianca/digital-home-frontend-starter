@@ -12,6 +12,8 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /onboarding/
 
 # AI crawlers — welcome
 User-agent: GPTBot
