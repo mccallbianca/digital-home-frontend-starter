@@ -31,16 +31,20 @@ export default function AnimatedSection({
   const selectedVariant = variants[variant];
   const appliedVariants = stagger
     ? staggerContainer
-    : {
-        hidden: selectedVariant.hidden,
-        visible: {
-          ...selectedVariant.visible,
-          transition: {
-            ...(selectedVariant.visible as Record<string, unknown>).transition,
-            delay,
+    : (() => {
+        const visibleVariant = selectedVariant.visible as Record<string, unknown>;
+        const existingTransition = (visibleVariant.transition ?? {}) as Record<string, unknown>;
+        return {
+          hidden: selectedVariant.hidden,
+          visible: {
+            ...visibleVariant,
+            transition: {
+              ...existingTransition,
+              delay,
+            },
           },
-        },
-      };
+        };
+      })();
 
   return (
     <motion.div
