@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 import ProducerApplicationForm from './ProducerApplicationForm';
 
 export const metadata: Metadata = {
-  title: 'Produce for HERR — ECQO Sound Producer Program | HERR',
+  title: 'Produce for HERR | ECQO Sound Producer Program | HERR',
   description: 'Independent producers: create original therapeutic compositions for the HERR platform. 30% royalty pool, pro-rata streaming revenue, real creative impact.',
   openGraph: {
-    title: 'Produce for HERR — Join the ECQO Sound Catalog',
+    title: 'Produce for HERR | Join the ECQO Sound Catalog',
     description: 'Original compositions. Real royalties. Therapeutic impact. Apply to produce for the HERR platform.',
     url: 'https://h3rr.com/ecqo-sound/producers',
   },
@@ -77,7 +77,7 @@ export default function ProducersPage() {
             Produce music once. Earn on every play, forever.
           </p>
           <p className="text-[var(--herr-muted)] leading-relaxed mb-10 max-w-xl">
-            A personal invitation from Bianca D. McCall, LMFT — ECQO Sound is building the world&apos;s first clinically designed, genre-personalized therapeutic music catalog. We need independent producers who can create original compositions that become the delivery mechanism for real therapeutic change.
+            A personal invitation from Bianca D. McCall, LMFT, ECQO Sound is building the world&apos;s first clinically designed, genre-personalized therapeutic music catalog. We need independent producers who can create original compositions that become the delivery mechanism for real therapeutic change.
           </p>
           <a href="#apply" className="btn-herr-primary">Apply Now</a>
         </div>
@@ -105,7 +105,7 @@ export default function ProducersPage() {
             <div className="bg-[var(--herr-card)] p-8 border-2 border-[var(--herr-magenta)]">
               <p className="herr-label text-[var(--herr-magenta)] mb-2">Layer 3 · YOUR Work</p>
               <h3 className="font-display text-xl font-light text-[var(--herr-white)] mb-3">Music</h3>
-              <p className="text-[0.85rem] text-[var(--herr-muted)]">Original compositions in your genre. Tuned to A=432Hz. Activity-mode-specific BPM. This is the only layer members consciously hear — and the one that makes the clinical treatment possible.</p>
+              <p className="text-[0.85rem] text-[var(--herr-muted)]">Original compositions in your genre. Tuned to A=432Hz. Activity-mode-specific BPM. This is the only layer members consciously hear, and the one that makes the clinical treatment possible.</p>
             </div>
           </div>
         </div>
@@ -136,7 +136,7 @@ export default function ProducersPage() {
             <h2 className="font-display text-3xl font-light text-[var(--herr-white)] mb-6">What you CANNOT include</h2>
             <ul className="space-y-3">
               {[
-                'Lyrics of any kind (competes with subliminal layer — clinical requirement)',
+                'Lyrics of any kind (competes with subliminal layer, clinical requirement)',
                 'Spoken word or vocal chanting with words',
                 'Jarring drops, hard transitions, or sonic surprises (disrupts nervous system regulation)',
                 'Dramatic tempo changes or key modulations (destabilizes brainwave entrainment)',

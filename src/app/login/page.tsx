@@ -3,7 +3,7 @@ import Link from 'next/link';
 import LoginForm from './LoginForm';
 
 export const metadata: Metadata = {
-  title: 'Welcome Back — HERR',
+  title: 'Welcome Back | HERR',
   description: 'Sign in to your HERR member dashboard.',
 };
 

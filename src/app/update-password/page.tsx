@@ -3,7 +3,7 @@ import Link from 'next/link';
 import UpdatePasswordForm from './UpdatePasswordForm';
 
 export const metadata: Metadata = {
-  title: 'Set New Password — HERR',
+  title: 'Set New Password | HERR',
   description: 'Set a new password for your HERR account.',
 };
 

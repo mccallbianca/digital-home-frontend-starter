@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact — HERR',
+  title: 'Contact | HERR',
   description:
     'Contact HERR by ECQO Holdings. General inquiries, media requests, and practitioner partnerships. Founded by Bianca D. McCall, LMFT.',
 };

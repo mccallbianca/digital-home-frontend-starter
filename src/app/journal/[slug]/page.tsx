@@ -34,12 +34,12 @@ export async function generateMetadata({
     .eq('status', 'published')
     .single();
 
-  if (!data) return { title: 'Article Not Found — HERR' };
+  if (!data) return { title: 'Article Not Found | HERR' };
 
   const seo = Array.isArray(data.seo_meta) ? data.seo_meta[0] : data.seo_meta;
 
   return {
-    title: seo?.title || `${data.title} — HERR Journal`,
+    title: seo?.title || `${data.title} | HERR Journal`,
     description: seo?.description || data.excerpt || '',
     openGraph: seo?.og_image_url ? { images: [seo.og_image_url] } : undefined,
   };

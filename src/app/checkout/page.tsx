@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import CheckoutFlow from './CheckoutFlow';
 
 export const metadata: Metadata = {
-  title: 'Begin — Choose Your HERR Membership',
+  title: 'Begin | Choose Your HERR Membership',
   description:
     'Four tiers of clinical reprogramming. HERR Free to explore. Collective at $9/month in Bianca\'s voice. Personalized at $19/month in your own cloned voice. Elite at $29/month with live sessions and ECQO Sound.',
 };
@@ -20,7 +20,7 @@ export default function CheckoutPage() {
             <span className="text-[var(--herr-pink)]">Reprogramming.</span>
           </h1>
           <p className="text-lg text-[var(--herr-muted)] max-w-2xl mx-auto leading-relaxed">
-            Whether you say I&apos;m HERR, I&apos;m HIM with HERR, or We&apos;re HERR — this is where it begins.
+            Whether you say I&apos;m HERR, I&apos;m HIM with HERR, or We&apos;re HERR, this is where it begins.
           </p>
         </div>
       </section>

@@ -471,7 +471,7 @@ export default function OnboardingFlow({ userId, userEmail, plan, existingProfil
             </h2>
             <p className="text-[var(--herr-muted)] leading-relaxed max-w-md mx-auto mb-8">
               A member of our team will reach out to you personally.
-              Your HERR program isn&apos;t going anywhere — we&apos;ll pick this up
+              Your HERR program isn&apos;t going anywhere, we&apos;ll pick this up
               once you&apos;ve had that conversation.
             </p>
             {safetyPause && (

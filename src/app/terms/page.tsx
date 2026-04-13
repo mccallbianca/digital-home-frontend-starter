@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — HERR™',
+  title: 'Terms of Service | HERR™',
   description:
     'Terms of Service for HERR™ by ECQO Holdings™. Read the terms governing your use of the HERR clinical wellness platform, subscription services, and voice cloning features.',
 };
@@ -60,7 +60,7 @@ export default function TermsPage() {
                   ['4', 'Account Registration'],
                   ['5', 'Subscription Plans and Billing'],
                   ['6', 'Cancellation and Refunds'],
-                  ['7', 'Voice Cloning — Terms and Consent'],
+                  ['7', 'Voice Cloning: Terms and Consent'],
                   ['8', 'Clinical Disclaimer'],
                   ['9', 'Acceptable Use'],
                   ['10', 'Intellectual Property'],
@@ -148,9 +148,9 @@ export default function TermsPage() {
                 {BRAND} offers three subscription tiers billed monthly:
               </p>
               <ul className="flex flex-col gap-2 text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">
-                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">HERR™ Collective — $9/month:</strong> Affirmation library delivered in Bianca D. McCall, LMFT's cloned voice.</span></li>
-                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">HERR™ Personalized — $19/month:</strong> Personalized affirmations delivered in your own cloned voice, with clinical assessment.</span></li>
-                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">HERR™ Elite — $29/month:</strong> Full clinical protocol with monthly live group sessions with Bianca D. McCall, LMFT.</span></li>
+                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">HERR™ Collective: $9/month:</strong> Affirmation library delivered in Bianca D. McCall, LMFT's cloned voice.</span></li>
+                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">HERR™ Personalized: $19/month:</strong> Personalized affirmations delivered in your own cloned voice, with clinical assessment.</span></li>
+                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">HERR™ Elite: $29/month:</strong> Full clinical protocol with monthly live group sessions with Bianca D. McCall, LMFT.</span></li>
               </ul>
               <p className="text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">Pricing is subject to change. We will provide at least 30 days' notice before any price increase takes effect for existing subscribers.</p>
 
@@ -178,7 +178,7 @@ export default function TermsPage() {
             {/* 7. Voice Cloning */}
             <div id="t-section-7" className="flex flex-col gap-4">
               <div className="border border-[var(--herr-pink)] border-opacity-30 bg-[var(--herr-surface)] p-6">
-                <h2 className="font-display text-2xl font-light text-[var(--herr-white)] mb-4">7. Voice Cloning — Terms and Consent</h2>
+                <h2 className="font-display text-2xl font-light text-[var(--herr-white)] mb-4">7. Voice Cloning: Terms and Consent</h2>
                 <p className="text-[0.9rem] text-[var(--herr-muted)] leading-relaxed mb-4">
                   The voice cloning feature (available on HERR™ Personalized and HERR™ Elite tiers) is subject to the following terms, which you explicitly agree to when providing voice samples:
                 </p>
@@ -234,7 +234,7 @@ export default function TermsPage() {
             <div id="t-section-10" className="flex flex-col gap-4">
               <h2 className="font-display text-2xl font-light text-[var(--herr-white)]">10. Intellectual Property</h2>
               <p className="text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">
-                All content, features, and functionality of the Service — including but not limited to text, audio, images, the {BRAND} clinical framework, the Progressive Reprogramming System (Patent Pending), software, and design — are owned by {COMPANY} and protected by United States and international copyright, trademark, patent, trade secret, and other intellectual property laws.
+                All content, features, and functionality of the Service, including but not limited to text, audio, images, the {BRAND} clinical framework, the Progressive Reprogramming System (Patent Pending), software, and design, are owned by {COMPANY} and protected by United States and international copyright, trademark, patent, trade secret, and other intellectual property laws.
               </p>
               <p className="text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">
                 {BRAND}™ and Human Existential Response and Reprogramming™ are trademarks of {COMPANY}. Unauthorized use of our trademarks is prohibited. Nothing in these Terms grants you any right to use our trademarks, logos, or brand elements without prior written consent.
@@ -335,7 +335,7 @@ export default function TermsPage() {
                 {BRAND} is a wellness tool and is not a substitute for professional mental health treatment. Always consult a licensed clinician for clinical concerns. If you are in mental health crisis, contact the 988 Suicide and Crisis Lifeline by calling or texting 988.
               </p>
               <p className="text-[0.72rem] text-[var(--herr-faint)]">
-                © {new Date().getFullYear()} {COMPANY}. All rights reserved. {BRAND} and Human Existential Response and Reprogramming™ are trademarks of {COMPANY}. The {BRAND} Progressive Reprogramming System — Patent Pending.
+                © {new Date().getFullYear()} {COMPANY}. All rights reserved. {BRAND} and Human Existential Response and Reprogramming™ are trademarks of {COMPANY}. The {BRAND} Progressive Reprogramming System, Patent Pending.
               </p>
               <div className="flex flex-wrap gap-6 text-[0.78rem]">
                 <Link href="/privacy" className="text-[var(--herr-muted)] hover:text-[var(--herr-white)] transition-colors">Privacy Policy</Link>

@@ -3,9 +3,9 @@ import Link from 'next/link';
 import Stripe from 'stripe';
 
 export const metadata: Metadata = {
-  title: 'Welcome — Your Reprogramming Begins Now',
+  title: 'Welcome | Your Reprogramming Begins Now',
   description:
-    'You have taken the first step. Welcome to HERR — clinical wellness built by Bianca D. McCall, LMFT.',
+    'You have taken the first step. Welcome to HERR, clinical wellness built by Bianca D. McCall, LMFT.',
 };
 
 export default async function WelcomePage({

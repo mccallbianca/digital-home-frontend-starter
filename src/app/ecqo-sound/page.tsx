@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import ScrollFadeIn from '@/components/home/ScrollFadeIn';
 import Waveform from '@/components/ui/Waveform';
+import CrisisResource from '@/components/ui/CrisisResource';
 
 export const metadata: Metadata = {
-  title: 'ECQO Sound\u2122 — Sonic Architecture for the Inner Voice',
+  title: 'ECQO Sound\u2122 | Sonic Architecture for the Inner Voice',
   description:
     'Eight activity modes. Eight genres. Voice-only or music delivery. ECQO Sound is the proprietary sonic architecture that powers HERR\u2019s daily reprogramming.',
 };
@@ -341,6 +342,8 @@ export default function ECQOSoundPage() {
           .delivery-grid { grid-template-columns: 1fr; }
         }
       `}</style>
+
+      <CrisisResource variant="light" />
     </main>
   );
 }

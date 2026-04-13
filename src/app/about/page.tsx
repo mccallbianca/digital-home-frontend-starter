@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import ScrollFadeIn from '@/components/home/ScrollFadeIn';
+import CrisisResource from '@/components/ui/CrisisResource';
 
 export const metadata: Metadata = {
-  title: 'About — Bianca D. McCall, LMFT',
+  title: 'About | Bianca D. McCall, LMFT',
   description:
     'Licensed clinician. Federal advisor to SAMHSA. Retired professional athlete. Bianca D. McCall built HERR from the intersection of existential psychology, performance science, and personal transformation.',
 };
@@ -16,23 +17,23 @@ const CREDENTIALS = [
   },
   {
     title: 'SAMHSA SPRC Advisor',
-    context: 'Federal advisory — Suicide Prevention Resource Center (HHS designated)',
+    context: 'Federal advisory: Suicide Prevention Resource Center (HHS designated)',
   },
   {
     title: 'Lived Experience Advisory Committee',
-    context: 'Federal committee — best practices reviewer and subject matter expert',
+    context: 'Federal committee: best practices reviewer and subject matter expert',
   },
   {
     title: 'International Speaker',
-    context: 'TED, keynote, and clinical conference speaker — existential psychology and performance',
+    context: 'TED, keynote, and clinical conference speaker: existential psychology and performance',
   },
   {
     title: 'NFL & MLB Wellness Consultant',
-    context: 'Native American Athletic Foundation — wellness and performance consulting',
+    context: 'Native American Athletic Foundation: wellness and performance consulting',
   },
   {
     title: 'Retired Professional Athlete',
-    context: 'Professional women\u2019s basketball — the bridge to elite performance psychology',
+    context: 'Professional women\u2019s basketball: the bridge to elite performance psychology',
   },
 ];
 
@@ -60,7 +61,7 @@ export default function AboutPage() {
       >
         <Image
           src="/images/founder-bianca-mccall-processed.jpg"
-          alt="Bianca D. McCall, LMFT — Licensed Marriage and Family Therapist, federal SAMHSA advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
+          alt="Bianca D. McCall, LMFT, Licensed Marriage and Family Therapist, federal SAMHSA advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
           fill
           sizes="100vw"
           className="object-cover"
@@ -120,8 +121,8 @@ export default function AboutPage() {
           <ScrollFadeIn>
             <p style={{ fontSize: 16, color: '#6B6B7B', lineHeight: 1.8 }}>
               Before HERR, before ECQO Holdings, before the clinical frameworks and federal advisory
-              roles — there was a voice. The inner voice that every elite performer hears but few
-              understand. Bianca D. McCall spent her career studying that voice — as a licensed
+              roles, there was a voice. The inner voice that every elite performer hears but few
+              understand. Bianca D. McCall spent her career studying that voice, as a licensed
               clinical practitioner specializing in existential psychology, a Licensed Marriage
               and Family Therapist (LMFT), and a retired professional women&apos;s basketball player.
             </p>
@@ -129,7 +130,7 @@ export default function AboutPage() {
           <ScrollFadeIn delay={100}>
             <p style={{ fontSize: 16, color: '#6B6B7B', lineHeight: 1.8 }}>
               The performance philosophy emerged from the intersection of the court and the clinic: we
-              are all performing roles — in employment, community, family, and life. The inner voice
+              are all performing roles: in employment, community, family, and life. The inner voice
               is the conductor of every performance. When that conductor is dysregulated, every
               performance suffers. When it is reprogrammed, everything transforms.
             </p>
@@ -139,14 +140,14 @@ export default function AboutPage() {
               HERR is the technology that makes reprogramming personal. Not a generic meditation app.
               Not a chatbot pretending to be a therapist. A clinical operating system that assesses
               your existential concerns, regulates your nervous system, and delivers daily affirmations
-              in your own cloned voice — because the subconscious trusts your voice above all others.
+              in your own cloned voice, because the subconscious trusts your voice above all others.
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={300}>
             <p style={{ fontSize: 16, color: '#6B6B7B', lineHeight: 1.8 }}>
               Today, Bianca advises SAMHSA&apos;s Suicide Prevention Resource Center, consults for the
               Native American Athletic Foundation (NFL, MLB), speaks internationally on stages from TED
-              to the world&apos;s largest wellness conferences, and leads ECQO Holdings — the clinical
+              to the world&apos;s largest wellness conferences, and leads ECQO Holdings, the clinical
               AI company building the future of personalized behavioral wellness.
             </p>
           </ScrollFadeIn>
@@ -241,7 +242,7 @@ export default function AboutPage() {
                 marginBottom: 24,
               }}
             >
-              HERR is the flagship product of ECQO Holdings™ — a clinical AI company building the
+              HERR is the flagship product of ECQO Holdings™, a clinical AI company building the
               future of personalized behavioral wellness. The ECQO ecosystem includes The Wealth
               League (financial wellness), Three M&apos;s Enterprises (speaking, training,
               consulting), and Desert Rose Gives (501c3 community impact).
@@ -328,6 +329,8 @@ export default function AboutPage() {
           .credentials-grid { grid-template-columns: 1fr; }
         }
       `}</style>
+
+      <CrisisResource variant="light" />
     </main>
   );
 }

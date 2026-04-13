@@ -3,7 +3,7 @@ import Link from 'next/link';
 import ScrollFadeIn from '@/components/home/ScrollFadeIn';
 
 export const metadata: Metadata = {
-  title: 'ECQO for Developers — Clinical Wellness Infrastructure',
+  title: 'ECQO for Developers | Clinical Wellness Infrastructure',
   description:
     'Integrate ECQO\'s clinical wellness technology into your platform. Voice affirmation APIs, existential assessment frameworks, and certified practitioner tools.',
 };

@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import AdminNav from './AdminNav';
 
-export const metadata: Metadata = { title: 'Admin — HERR' };
+export const metadata: Metadata = { title: 'Admin | HERR' };
 
 const ADMIN_EMAILS = ['bianca@h3rr.com', 'bdmccall@gmail.com', 'mccall.bianca@gmail.com'];
 

@@ -3,9 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import ScrollFadeIn from '@/components/home/ScrollFadeIn';
 import HowItWorksClient from './HowItWorksClient';
+import CrisisResource from '@/components/ui/CrisisResource';
 
 export const metadata: Metadata = {
-  title: 'How It Works — The HERR Method',
+  title: 'How It Works | The HERR Method',
   description:
     'Four steps. One transformation. Assess your existential concerns, regulate the nervous system, reprogram the inner voice in your own cloned voice, and sustain the change over time.',
 };
@@ -16,10 +17,10 @@ const STEPS = [
     label: 'STEP 01',
     title: 'Assess',
     subtitle: 'Know where you stand.',
-    body: 'The monthly existential screener surfaces what the conscious mind hides. Concerns about meaning, identity, freedom, isolation, mortality — quantified and tracked over time.',
+    body: 'The monthly existential screener surfaces what the conscious mind hides. Concerns about meaning, identity, freedom, isolation, mortality, quantified and tracked over time.',
     detail: 'Based on the Existential Concerns Questionnaire framework',
     image: '/images/step-01-assess.jpg',
-    alt: 'Contemplative figure representing existential assessment — the clinical foundation of the HERR method.',
+    alt: 'Contemplative figure representing existential assessment, the clinical foundation of the HERR method.',
   },
   {
     num: '02',
@@ -29,7 +30,7 @@ const STEPS = [
     body: 'Before reprogramming can take hold, the body must be safe. HERR uses personalized regulation exercises calibrated to your screener results.',
     detail: null,
     image: '/images/step-02-regulate-v2.jpg',
-    alt: 'A person in a state of nervous system regulation — the prerequisite before reprogramming can begin.',
+    alt: 'A person in a state of nervous system regulation, the prerequisite before reprogramming can begin.',
   },
   {
     num: '03',
@@ -39,7 +40,7 @@ const STEPS = [
     body: "Daily affirmations written by AI, reviewed for clinical safety, delivered in YOUR cloned voice. The subconscious trusts your own voice above all others. That\u2019s the science. That\u2019s the edge.",
     detail: null,
     image: '/images/step-03-clone-voice.jpg',
-    alt: 'Microphone in magenta light representing voice cloning — the mechanism that makes HERR personal.',
+    alt: 'Microphone in magenta light representing voice cloning, the mechanism that makes HERR personal.',
   },
   {
     num: '04',
@@ -49,7 +50,7 @@ const STEPS = [
     body: "Monthly reassessment. Adjusting scripts. Therapeutic progression from reprogramming to support to maintenance. This isn\u2019t a one-size-fits-all meditation app. It\u2019s a clinical operating system.",
     detail: null,
     image: '/images/step-04-reprogram.jpg',
-    alt: 'Person with headphones representing sustained daily reprogramming — the ongoing HERR protocol.',
+    alt: 'Person with headphones representing sustained daily reprogramming, the ongoing HERR protocol.',
   },
 ];
 
@@ -275,6 +276,8 @@ export default function HowItWorksPage() {
           .hiw-step-reversed .hiw-step-content { order: unset; }
         }
       `}</style>
+
+      <CrisisResource variant="light" />
     </main>
   );
 }

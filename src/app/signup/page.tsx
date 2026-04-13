@@ -3,7 +3,7 @@ import Link from 'next/link';
 import SignupForm from './SignupForm';
 
 export const metadata: Metadata = {
-  title: 'Begin Your Journey — HERR',
+  title: 'Begin Your Journey | HERR',
   description: 'Create your free HERR account and begin your reprogramming journey.',
 };
 

@@ -5,9 +5,10 @@ import WaveformVisual from '@/components/home/WaveformVisual';
 import ScrollFadeIn from '@/components/home/ScrollFadeIn';
 import ParticleField from '@/components/ui/ParticleField';
 import { JsonLd } from '@/components/seo/JsonLd';
+import CrisisResource from '@/components/ui/CrisisResource';
 
 export const metadata: Metadata = {
-  title: 'HERR — Human Existential Response and Reprogramming',
+  title: 'HERR | Human Existential Response and Reprogramming',
   description:
     'A clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice. Regulate first. Reprogram second. Founded by Bianca D. McCall, LMFT.',
 };
@@ -95,7 +96,7 @@ export default function HomePage() {
   const softwareAppSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'HERR — Human Existential Response and Reprogramming',
+    name: 'HERR | Human Existential Response and Reprogramming',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Web',
     url: 'https://h3rr.com',
@@ -366,7 +367,7 @@ export default function HomePage() {
                   marginBottom: 32,
                 }}
               >
-                HERR clones your voice and delivers daily affirmations — written by AI, reviewed by a
+                HERR clones your voice and delivers daily affirmations, written by AI, reviewed by a
                 clinician, spoken by you. The subconscious trusts your own voice above all others.
                 That&apos;s the science. That&apos;s the edge.
               </p>
@@ -419,7 +420,7 @@ export default function HomePage() {
               >
                 <Image
                   src="/images/founder-bianca-mccall-processed.jpg"
-                  alt="Bianca D. McCall, LMFT — Licensed Marriage and Family Therapist, federal SAMHSA advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
+                  alt="Bianca D. McCall, LMFT, Licensed Marriage and Family Therapist, federal SAMHSA advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
                   fill
                   sizes="(max-width: 768px) 100vw, 40vw"
                   className="object-cover"
@@ -465,7 +466,7 @@ export default function HomePage() {
               >
                 Licensed clinician. Federal advisor to SAMHSA. Retired professional athlete. Bianca
                 built HERR from the intersection of existential psychology, performance science, and
-                personal transformation — to reprogram the voice that drives every performance in your
+                personal transformation, to reprogram the voice that drives every performance in your
                 life.
               </p>
 
@@ -1041,6 +1042,8 @@ export default function HomePage() {
           .tier-grid { grid-template-columns: repeat(2, 1fr); }
         }
       `}</style>
+
+      <CrisisResource variant="light" />
     </main>
   );
 }

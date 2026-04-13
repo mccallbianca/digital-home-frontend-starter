@@ -7,7 +7,7 @@ import StarterNotice from '@/components/layout/StarterNotice';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Journal — Digital Home Starter',
+  title: 'Journal | Digital Home Starter',
   description:
     'A polished blog structure for articles, essays, and guides you can adapt to your own brand and publishing system.',
 };

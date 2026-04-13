@@ -3,7 +3,7 @@ import Link from 'next/link';
 import ScrollFadeIn from '@/components/home/ScrollFadeIn';
 
 export const metadata: Metadata = {
-  title: 'Producer Portal — HERR',
+  title: 'Producer Portal | HERR',
   description: 'Create. Upload. Impact. The HERR Producer Network is where clinicians, sonic architects, and wellness creators build the content that powers daily reprogramming.',
 };
 

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import CheckoutButton from './CheckoutButton';
 
 export const metadata: Metadata = {
-  title: 'Subscribe — Begin Your Reprogramming',
+  title: 'Subscribe | Begin Your Reprogramming',
   description:
     'Four tiers of clinical reprogramming. HERR Free to explore. Collective at $9/month in Bianca D. McCall\'s voice. Personalized at $19/month in your own cloned voice. Elite at $29/month with live sessions and ECQO Sound.',
 };
@@ -104,7 +104,7 @@ const FAQS = [
   },
   {
     q: 'Is HERR covered by insurance?',
-    a: 'HERR is a wellness subscription and is not currently covered by health insurance. HSA/FSA eligibility may vary — consult your plan administrator.',
+    a: 'HERR is a wellness subscription and is not currently covered by health insurance. HSA/FSA eligibility may vary, consult your plan administrator.',
   },
   {
     q: 'Which tier is right for me?',
@@ -121,13 +121,13 @@ export default function SubscribePage() {
         <div className="absolute inset-0 herr-glow pointer-events-none" />
         <div className="max-w-[900px] mx-auto relative">
 
-          <p className="herr-label text-[var(--herr-muted)] mb-6">Phase 1 — Now Available</p>
+          <p className="herr-label text-[var(--herr-muted)] mb-6">Phase 1: Now Available</p>
           <h1 className="font-display text-5xl md:text-7xl xl:text-8xl font-light text-[var(--herr-white)] leading-[0.9] mb-8">
             Begin Your<br />
             <span className="text-[var(--herr-pink)]">Reprogramming.</span>
           </h1>
           <p className="text-lg text-[var(--herr-muted)] max-w-2xl mx-auto leading-relaxed">
-            Whether you say I&apos;m HERR, I&apos;m HIM with HERR, or We&apos;re HERR — this is where it begins.
+            Whether you say I&apos;m HERR, I&apos;m HIM with HERR, or We&apos;re HERR, this is where it begins.
           </p>
 
         </div>
@@ -202,7 +202,7 @@ export default function SubscribePage() {
         <div className="max-w-[800px] mx-auto text-center">
           <p className="text-[0.82rem] text-[var(--herr-muted)] leading-relaxed">
             HERR™ is a wellness tool and is not a substitute for professional mental health treatment.
-            Always consult a licensed clinician for clinical concerns. The HERR™ Progressive Reprogramming System — Patent Pending.
+            Always consult a licensed clinician for clinical concerns. The HERR™ Progressive Reprogramming System, Patent Pending.
           </p>
         </div>
       </section>
@@ -221,7 +221,7 @@ export default function SubscribePage() {
               { step: '01', title: 'Subscribe', body: 'Choose your tier and complete checkout. Secure payment via Stripe.' },
               { step: '02', title: 'Assess', body: 'Complete your clinical existential assessment. This is the foundation everything is built on.' },
               { step: '03', title: 'Record', body: 'Tier 2 + 3: Record your voice samples. This becomes the voice that guides you. Tier 1: Skip to Receive.' },
-              { step: '04', title: 'Receive', body: 'Your personalized I AM declarations — in your voice or Bianca D. McCall\'s — delivered across your chosen activity modes.' },
+              { step: '04', title: 'Receive', body: 'Your personalized I AM declarations, in your voice or Bianca D. McCall\'s, delivered across your chosen activity modes.' },
             ].map((item) => (
               <div key={item.step} className="bg-[var(--herr-black)] p-8 hover:bg-[var(--herr-surface)] transition-colors duration-300">
                 <p className="font-display text-4xl font-light text-[var(--herr-pink)] opacity-30 mb-4">{item.step}</p>
@@ -253,7 +253,7 @@ export default function SubscribePage() {
           </div>
 
           <p className="mt-8 text-[0.72rem] text-[var(--herr-faint)] leading-relaxed">
-            HERR™ is a wellness tool and is not a substitute for professional mental health treatment. Always consult a licensed clinician for clinical concerns. HERR™ and Human Existential Response and Reprogramming™ are trademarks of ECQO Holdings™. The HERR™ Progressive Reprogramming System — Patent Pending. © ECQO Holdings™. All rights reserved.
+            HERR™ is a wellness tool and is not a substitute for professional mental health treatment. Always consult a licensed clinician for clinical concerns. HERR™ and Human Existential Response and Reprogramming™ are trademarks of ECQO Holdings™. The HERR™ Progressive Reprogramming System, Patent Pending. © ECQO Holdings™. All rights reserved.
           </p>
 
         </div>

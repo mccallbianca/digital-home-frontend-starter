@@ -126,7 +126,7 @@ export default function StepVoice({ userId }: { userId: string }) {
           <div className="border border-[var(--herr-border)] p-6 mb-6">
             <p className="herr-label text-[var(--herr-cobalt)] mb-3">Voice Sample Script</p>
             <p className="text-[var(--herr-muted)] leading-relaxed mb-4">
-              Record yourself reading the following passage aloud — at a natural, steady pace. This should take approximately 3 minutes:
+              Record yourself reading the following passage aloud, at a natural, steady pace. This should take approximately 3 minutes:
             </p>
             <blockquote className="border-l-2 border-[var(--herr-pink)] pl-4 italic font-display text-lg text-[var(--herr-white)] leading-relaxed">
               &ldquo;{VOICE_SCRIPT}&rdquo;
@@ -135,7 +135,7 @@ export default function StepVoice({ userId }: { userId: string }) {
 
           <div className="space-y-4">
             <p className="herr-label text-[var(--herr-muted)]">
-              Upload your recording (.mp3, .wav, or .m4a — max 25MB)
+              Upload your recording (.mp3, .wav, or .m4a, max 25MB)
             </p>
 
             <div

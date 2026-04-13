@@ -2,13 +2,14 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
+import CrisisResource from '@/components/ui/CrisisResource';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'The HERR Journal — Clinical Insights for the Inner Voice',
+  title: 'The HERR Journal | Clinical Insights for the Inner Voice',
   description:
-    'Clinical insight, existential psychology, and the science of the inner voice. Thought leadership from Bianca D. McCall, LMFT — Founder of HERR and ECQO Holdings.',
+    'Clinical insight, existential psychology, and the science of the inner voice. Thought leadership from Bianca D. McCall, LMFT, Founder of HERR and ECQO Holdings.',
 };
 
 function formatDate(dateStr: string) {
@@ -352,6 +353,8 @@ export default async function JournalPage() {
           .article-grid { grid-template-columns: 1fr; }
         }
       `}</style>
+
+      <CrisisResource variant="light" />
     </main>
   );
 }

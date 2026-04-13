@@ -112,8 +112,8 @@ export default function CommunityClient({ displayName, plan }: CommunityClientPr
           <div style={{ background: '#16161F', borderRadius: 16, padding: 32, border: '2px solid #C42D8E', maxWidth: 480, width: '100%', textAlign: 'center' }}>
             <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 24, color: '#FFFFFF', marginBottom: 8 }}>We&apos;re Here for You</h2>
             <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.7)', marginBottom: 16 }}>It sounds like you may be going through something difficult. You&apos;re not alone.</p>
-            <p style={{ fontSize: 15, color: '#E8388A', fontWeight: 600, marginBottom: 4 }}>Call or text 988 — Suicide &amp; Crisis Lifeline</p>
-            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', marginBottom: 24 }}>Text HOME to 741741 — Crisis Text Line</p>
+            <p style={{ fontSize: 15, color: '#E8388A', fontWeight: 600, marginBottom: 4 }}>Call or text 988: Suicide &amp; Crisis Lifeline</p>
+            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', marginBottom: 24 }}>Text HOME to 741741: Crisis Text Line</p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
               <button onClick={() => { setShowCrisis(false); setMessage(''); }} style={{ height: 48, padding: '0 24px', background: 'transparent', color: '#FFFFFF', borderRadius: 12, border: '1px solid rgba(255,255,255,0.3)', fontSize: 14, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', cursor: 'pointer' }}>
                 Post Anyway

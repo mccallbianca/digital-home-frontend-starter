@@ -3,6 +3,7 @@ import Link from 'next/link';
 import ScrollFadeIn from '@/components/home/ScrollFadeIn';
 import WaveformVisual from '@/components/home/WaveformVisual';
 import { JsonLd } from '@/components/seo/JsonLd';
+import CrisisResource from '@/components/ui/CrisisResource';
 
 export const metadata: Metadata = {
   title: 'The Science Behind HERR',
@@ -114,7 +115,7 @@ export default function TheSciencePage() {
               marginBottom: 48,
             }}
           >
-            ECQO — Existential Concerns Questionnaire at Onset — is the diagnostic foundation of
+            ECQO, Existential Concerns Questionnaire at Onset, is the diagnostic foundation of
             HERR. It surfaces the five core existential concerns that shape every human experience.
           </p>
 
@@ -200,7 +201,7 @@ export default function TheSciencePage() {
                 }}
               >
                 The subconscious mind processes your own voice differently than any external voice.
-                Self-referential processing — a well-documented phenomenon in neuroscience — means
+                Self-referential processing, a well-documented phenomenon in neuroscience, means
                 affirmations delivered in your own voice bypass the skepticism filters that block
                 generic recordings. HERR leverages this by cloning your voice and delivering daily
                 personalized affirmations that speak directly to your subconscious.
@@ -249,12 +250,12 @@ export default function TheSciencePage() {
               {
                 num: '01',
                 name: 'Regulate',
-                body: 'Before new programming can take hold, the nervous system must be calm. HERR uses personalized regulation exercises — calibrated to your screener results — to create the safe internal environment where change becomes possible.',
+                body: 'Before new programming can take hold, the nervous system must be calm. HERR uses personalized regulation exercises, calibrated to your screener results, to create the safe internal environment where change becomes possible.',
               },
               {
                 num: '02',
                 name: 'Reprogram',
-                body: 'With the nervous system regulated, HERR delivers daily I AM declarations — written by AI, reviewed for clinical safety, spoken in your cloned voice. Over time, these declarations install new identity programming at the subconscious level.',
+                body: 'With the nervous system regulated, HERR delivers daily I AM declarations, written by AI, reviewed for clinical safety, spoken in your cloned voice. Over time, these declarations install new identity programming at the subconscious level.',
               },
             ].map((step, i) => (
               <ScrollFadeIn key={step.num} delay={i * 150}>
@@ -342,7 +343,7 @@ export default function TheSciencePage() {
             >
               HERR is informed by established clinical frameworks including existential psychology,
               trauma-informed care, behavioral activation, and self-referential processing research.
-              The founder, Bianca D. McCall, LMFT, serves as Subject 1 — documenting personal
+              The founder, Bianca D. McCall, LMFT, serves as Subject 1, documenting personal
               outcomes monthly across body, wealth, relationships, business, and emotional baseline to
               build the clinical validation foundation for future peer-reviewed research.
             </p>
@@ -436,6 +437,8 @@ export default function TheSciencePage() {
           .concerns-grid { grid-template-columns: 1fr; }
         }
       `}</style>
+
+      <CrisisResource variant="light" />
     </main>
   );
 }

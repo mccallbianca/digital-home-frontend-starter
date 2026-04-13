@@ -70,7 +70,7 @@ export default function StepAssessmentChoice({ userName, onChoose }: StepAssessm
             Take me straight through.
           </h3>
           <p className="text-[0.88rem] text-[var(--herr-muted)] leading-relaxed mb-4">
-            Answer each question on a simple scale. Same questions, same clinical accuracy —
+            Answer each question on a simple scale. Same questions, same clinical accuracy,
             just faster.
           </p>
           <p className="text-[0.75rem] text-[var(--herr-faint)]">

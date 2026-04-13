@@ -16,7 +16,7 @@ const DOMAINS = [
 
 const QUESTIONS = [
   'How often do you reflect on the meaning or purpose of your life?',
-  'How often do you feel connected to something larger than yourself — whether spiritual, communal, or philosophical?',
+  'How often do you feel connected to something larger than yourself, whether spiritual, communal, or philosophical?',
   'How often do you feel at peace when thinking about the uncertainty of your future?',
   'How often do you feel like you are actively driving the direction of your life rather than life happening to you?',
   'How often do feelings of isolation or disconnection affect your daily experience?',
@@ -45,7 +45,7 @@ const TIER_LABELS: Record<string, { label: string; color: string; description: s
   moderate: {
     label: 'Moderate Unease',
     color: 'var(--herr-pink)',
-    description: 'Your responses suggest some areas where you\'re navigating real tension. HERR will start with grounding-focused affirmations before building toward aspirational content — stability before growth.',
+    description: 'Your responses suggest some areas where you\'re navigating real tension. HERR will start with grounding-focused affirmations before building toward aspirational content, stability before growth.',
   },
   elevated: {
     label: 'Elevated Disruption',
@@ -114,7 +114,7 @@ export default function StepQuestionnaire({
         </h2>
         <p className="text-[var(--herr-muted)] mb-8 leading-relaxed">
           Here&apos;s what your responses tell us about your current relationship with core existential themes.
-          This is not a diagnosis — it&apos;s the foundation for how HERR personalizes your experience.
+          This is not a diagnosis, it&apos;s the foundation for how HERR personalizes your experience.
         </p>
 
         {/* Overall tier */}

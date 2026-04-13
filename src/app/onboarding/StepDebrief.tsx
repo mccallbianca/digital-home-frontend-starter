@@ -24,7 +24,7 @@ const TIER_DISPLAY: Record<string, { label: string; color: string; description: 
   MODERATE_UNEASE: {
     label: 'Moderate Unease',
     color: 'var(--herr-pink)',
-    description: 'Your responses suggest some areas where you\'re navigating real tension. HERR will start with grounding-focused affirmations before building toward aspirational content — stability before growth.',
+    description: 'Your responses suggest some areas where you\'re navigating real tension. HERR will start with grounding-focused affirmations before building toward aspirational content, stability before growth.',
   },
   ELEVATED_DISRUPTION: {
     label: 'Elevated Disruption',
@@ -58,7 +58,7 @@ export default function StepDebrief({
       </h2>
       <p className="text-[var(--herr-muted)] mb-8 leading-relaxed">
         Here&apos;s what your responses tell us about your current relationship with core existential themes.
-        This is not a diagnosis — it&apos;s the foundation for how HERR personalizes your experience.
+        This is not a diagnosis, it&apos;s the foundation for how HERR personalizes your experience.
       </p>
 
       {/* Overall tier card */}

@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'For Practitioners — HERR',
+  title: 'For Practitioners | HERR',
   description:
-    'HERR for behavioral health practitioners, coaches, and institutional partners. A clinical wellness operating system built by Bianca D. McCall, LMFT — Federal SAMHSA Advisor. Inquire about group licensing and enterprise integration.',
+    'HERR for behavioral health practitioners, coaches, and institutional partners. A clinical wellness operating system built by Bianca D. McCall, LMFT, Federal SAMHSA Advisor. Inquire about group licensing and enterprise integration.',
 };
 
 const USE_CASES = [
@@ -16,7 +16,7 @@ const USE_CASES = [
   {
     audience: 'Performance Coaches',
     description:
-      'Integrate HERR into your athlete or executive coaching programs. The inner voice work you do in session, your clients can continue daily — in their own voice.',
+      'Integrate HERR into your athlete or executive coaching programs. The inner voice work you do in session, your clients can continue daily, in their own voice.',
   },
   {
     audience: 'Employee Wellness Programs',
@@ -96,13 +96,13 @@ export default function PractitionersPage() {
                 Designed for the field.
               </h2>
               <p className="text-[var(--herr-muted)] leading-relaxed">
-                HERR was designed by Bianca D. McCall, LMFT — a Licensed Marriage and Family Therapist, federal SAMHSA advisor, and existential psychology subject matter expert. It is not a wellness consumer app that borrowed clinical language. It is a clinical framework delivered through technology.
+                HERR was designed by Bianca D. McCall, LMFT, a Licensed Marriage and Family Therapist, federal SAMHSA advisor, and existential psychology subject matter expert. It is not a wellness consumer app that borrowed clinical language. It is a clinical framework delivered through technology.
               </p>
             </div>
 
             <div className="flex flex-col gap-4">
               {[
-                'Grounded in existential psychology — not motivational content',
+                'Grounded in existential psychology, not motivational content',
                 'Compliant with wellness (non-treatment) standards',
                 'Designed for use alongside, not instead of, clinical care',
                 'Group licensing available for practices and organizations',

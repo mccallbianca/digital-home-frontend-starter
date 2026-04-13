@@ -136,7 +136,7 @@ export default function OnboardingClient({
               Over the next few minutes, we&apos;ll set up your personalized experience.
               This includes an existential assessment, your activity preferences, and
               {hasVoice
-                ? ' — if you\u2019re on Personalized or Elite — your voice clone setup.'
+                ? ', if you\u2019re on Personalized or Elite, your voice clone setup.'
                 : ' your daily affirmation content.'}
             </p>
             <p
@@ -207,7 +207,7 @@ export default function OnboardingClient({
                 marginBottom: 16,
               }}
             >
-              This is a brief existential screening — designed to surface what the
+              This is a brief existential screening, designed to surface what the
               conscious mind often hides. There are no wrong answers. Rate each
               statement on a scale that feels true to you right now.
             </p>

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 const COMMUNITY_URL = 'https://www.skool.com/bravebrand/about';
 
 export const metadata: Metadata = {
-  title: 'Services — Digital Home Starter',
+  title: 'Services | Digital Home Starter',
   description: 'Your Services page. Add your offers, outcomes, and pricing.',
 };
 

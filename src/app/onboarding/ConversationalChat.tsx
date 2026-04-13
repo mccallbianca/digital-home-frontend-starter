@@ -300,7 +300,7 @@ export default function ConversationalChat({
       setMessages(prev => [...prev, {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: 'I\'m having a moment — let me catch up. Could you try sending that again?',
+        content: 'I\'m having a moment, let me catch up. Could you try sending that again?',
         timestamp: new Date(),
       }]);
     } finally {

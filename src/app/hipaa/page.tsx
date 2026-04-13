@@ -2,7 +2,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'HIPAA Notice — HERR',
+  title: 'HIPAA Notice | HERR',
   description: 'HERR HIPAA alignment approach, data encryption, and privacy practices.',
 };
 
@@ -49,7 +49,7 @@ export default function HipaaPage() {
             {BRAND} (Human Existential Response and Reprogramming{'\u2122'}) by {COMPANY} is a <strong style={{ color: '#FFFFFF' }}>wellness platform, not a healthcare provider</strong>. As such, {COMPANY} is not a HIPAA covered entity and is not subject to the Health Insurance Portability and Accountability Act (HIPAA) as defined under 45 CFR Part 160.
           </p>
           <p style={pStyle}>
-            However, because {BRAND} collects sensitive personal information — including existential wellness assessments, voice recordings, and behavioral data — we voluntarily align our data practices with HIPAA principles to provide our members with the highest standard of data protection.
+            However, because {BRAND} collects sensitive personal information, including existential wellness assessments, voice recordings, and behavioral data, we voluntarily align our data practices with HIPAA principles to provide our members with the highest standard of data protection.
           </p>
           <p style={pStyle}>
             This means we apply HIPAA-inspired safeguards even though we are not legally required to do so. We believe this is the responsible approach for a platform that sits at the intersection of technology and mental wellness.

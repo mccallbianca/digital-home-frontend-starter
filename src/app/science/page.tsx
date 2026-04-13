@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'The Science — HERR',
+  title: 'The Science | HERR',
   description:
-    'HERR is grounded in existential psychology, nervous system regulation, and subconscious reprogramming science. Understand the clinical framework behind Regulate and Reprogram. Founded by Bianca D. McCall, LMFT — Federal SAMHSA Advisor.',
+    'HERR is grounded in existential psychology, nervous system regulation, and subconscious reprogramming science. Understand the clinical framework behind Regulate and Reprogram. Founded by Bianca D. McCall, LMFT, Federal SAMHSA Advisor.',
 };
 
 const PILLARS = [
@@ -22,7 +22,7 @@ const PILLARS = [
     color: 'var(--herr-cobalt)',
     summary: 'The autonomic nervous system governs the body\'s threat response. Before cognitive reprogramming is possible, the body must first feel safe.',
     detail:
-      'The prefrontal cortex — responsible for rational thought, identity, and decision-making — goes offline under chronic stress. This is why willpower fails. This is why affirmations delivered to an unregulated nervous system do not stick. HERR\'s sequence is clinically intentional: Regulate first. The inner voice cannot be rewired in a body that believes it is under threat.',
+      'The prefrontal cortex, responsible for rational thought, identity, and decision-making, goes offline under chronic stress. This is why willpower fails. This is why affirmations delivered to an unregulated nervous system do not stick. HERR\'s sequence is clinically intentional: Regulate first. The inner voice cannot be rewired in a body that believes it is under threat.',
   },
   {
     number: '03',
@@ -30,7 +30,7 @@ const PILLARS = [
     color: 'var(--herr-pink)',
     summary: 'The subconscious mind processes information differently from the conscious mind. It responds with heightened receptivity to the voice it trusts most: your own.',
     detail:
-      'Research in auditory neuroscience confirms that self-referential processing — hearing and processing one\'s own voice — activates distinct neural pathways compared to hearing another person speak. HERR\'s use of cloned voice delivery is not a feature. It is the mechanism. The inner voice that shaped you becomes the inner voice that transforms you, because it is literally the same voice.',
+      'Research in auditory neuroscience confirms that self-referential processing, hearing and processing one\'s own voice, activates distinct neural pathways compared to hearing another person speak. HERR\'s use of cloned voice delivery is not a feature. It is the mechanism. The inner voice that shaped you becomes the inner voice that transforms you, because it is literally the same voice.',
   },
   {
     number: '04',
@@ -38,7 +38,7 @@ const PILLARS = [
     color: 'var(--herr-violet)',
     summary: 'Identity is not fixed. It is a narrative construct, built from repeated internal and external messages over time. It can be deliberately rebuilt.',
     detail:
-      'The self-concept — how a person defines who they are — is formed through repetition, environment, and the inner voice. Clinical research in identity development confirms that the self-concept is malleable across the lifespan. HERR delivers I AM declarations because the grammatical structure of identity language activates deeper self-schema processing than generic motivational statements. You are not being told you can. You are being reminded of who you already are becoming.',
+      'The self-concept, how a person defines who they are, is formed through repetition, environment, and the inner voice. Clinical research in identity development confirms that the self-concept is malleable across the lifespan. HERR delivers I AM declarations because the grammatical structure of identity language activates deeper self-schema processing than generic motivational statements. You are not being told you can. You are being reminded of who you already are becoming.',
   },
 ];
 
@@ -49,11 +49,11 @@ const FAQS = [
   },
   {
     q: 'Why does the voice matter?',
-    a: 'The subconscious mind processes self-referential content differently from external input. Hearing your own voice activates distinct neural pathways — pathways associated with trust, familiarity, and identity. This is why HERR uses your cloned voice rather than a generated voice. The mechanism depends on it.',
+    a: 'The subconscious mind processes self-referential content differently from external input. Hearing your own voice activates distinct neural pathways, pathways associated with trust, familiarity, and identity. This is why HERR uses your cloned voice rather than a generated voice. The mechanism depends on it.',
   },
   {
     q: 'Why regulate before reprogram?',
-    a: 'A nervous system in a state of chronic activation cannot fully access the prefrontal cortex — the region responsible for identity, rational thought, and behavioral change. Affirmations delivered to an unregulated nervous system are processed as noise. HERR sequences regulation before reprogramming because the science demands it.',
+    a: 'A nervous system in a state of chronic activation cannot fully access the prefrontal cortex, the region responsible for identity, rational thought, and behavioral change. Affirmations delivered to an unregulated nervous system are processed as noise. HERR sequences regulation before reprogramming because the science demands it.',
   },
   {
     q: 'Is HERR clinically validated?',
@@ -80,7 +80,7 @@ export default function SciencePage() {
           </p>
 
           <div className="mt-10 herr-label text-[var(--herr-faint)]">
-            Designed by Bianca D. McCall, LMFT — Licensed Marriage and Family Therapist, Federal SAMHSA Advisor, Existential Psychology Subject Matter Expert
+            Designed by Bianca D. McCall, LMFT, Licensed Marriage and Family Therapist, Federal SAMHSA Advisor, Existential Psychology Subject Matter Expert
           </div>
 
         </div>
@@ -165,7 +165,7 @@ export default function SciencePage() {
           </div>
 
           <p className="mt-8 text-[0.72rem] text-[var(--herr-faint)] leading-relaxed">
-            HERR™ is a wellness tool and is not a substitute for professional mental health treatment. Always consult a licensed clinician for clinical concerns. The HERR™ Progressive Reprogramming System — Patent Pending. © ECQO Holdings™. All rights reserved.
+            HERR™ is a wellness tool and is not a substitute for professional mental health treatment. Always consult a licensed clinician for clinical concerns. The HERR™ Progressive Reprogramming System, Patent Pending. © ECQO Holdings™. All rights reserved.
           </p>
 
         </div>

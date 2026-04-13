@@ -18,8 +18,8 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: 'HERR — Human Existential Response and Reprogramming',
-    template: '%s — HERR',
+    default: 'HERR | Human Existential Response and Reprogramming',
+    template: '%s | HERR',
   },
   description:
     'HERR is a clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice. Regulate your nervous system. Reprogram your inner voice. Founded by Bianca D. McCall, LMFT.',

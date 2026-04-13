@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — HERR™',
+  title: 'Privacy Policy | HERR™',
   description:
     'Privacy Policy for HERR™ by ECQO Holdings™. Learn how we collect, use, and protect your personal data, including voice recordings used for personalized affirmation delivery.',
 };
@@ -57,7 +57,7 @@ export default function PrivacyPage() {
                   ['1', 'Who We Are'],
                   ['2', 'Information We Collect'],
                   ['3', 'How We Use Your Information'],
-                  ['4', 'Voice Data — Special Provisions'],
+                  ['4', 'Voice Data: Special Provisions'],
                   ['5', 'How We Share Your Information'],
                   ['6', 'Data Retention'],
                   ['7', 'Your Rights'],
@@ -132,7 +132,7 @@ export default function PrivacyPage() {
             {/* 4. Voice Data */}
             <div id="section-4" className="flex flex-col gap-4">
               <div className="border border-[var(--herr-pink)] border-opacity-30 bg-[var(--herr-surface)] p-6">
-                <h2 className="font-display text-2xl font-light text-[var(--herr-white)] mb-4">4. Voice Data — Special Provisions</h2>
+                <h2 className="font-display text-2xl font-light text-[var(--herr-white)] mb-4">4. Voice Data: Special Provisions</h2>
                 <p className="text-[0.9rem] text-[var(--herr-muted)] leading-relaxed mb-4">
                   Voice recordings are among the most sensitive personal data we collect. The following provisions apply specifically to members who provide voice samples for cloning (HERR Personalized and HERR Elite tiers).
                 </p>
@@ -242,10 +242,10 @@ export default function PrivacyPage() {
                 {BRAND} integrates with the following third-party services. Each has its own privacy policy governing their data practices:
               </p>
               <ul className="flex flex-col gap-2 text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">
-                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">Stripe</strong> — Payment processing. Stripe Privacy Policy: stripe.com/privacy</span></li>
-                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">ElevenLabs</strong> — Voice cloning technology. ElevenLabs Privacy Policy: elevenlabs.io/privacy</span></li>
-                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">Supabase</strong> — Database and file storage infrastructure. Supabase Privacy Policy: supabase.com/privacy</span></li>
-                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">Cloudflare</strong> — Content delivery and web security. Cloudflare Privacy Policy: cloudflare.com/privacypolicy</span></li>
+                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">Stripe</strong>: Payment processing. Stripe Privacy Policy: stripe.com/privacy</span></li>
+                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">ElevenLabs</strong>: Voice cloning technology. ElevenLabs Privacy Policy: elevenlabs.io/privacy</span></li>
+                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">Supabase</strong>: Database and file storage infrastructure. Supabase Privacy Policy: supabase.com/privacy</span></li>
+                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">Cloudflare</strong>: Content delivery and web security. Cloudflare Privacy Policy: cloudflare.com/privacypolicy</span></li>
               </ul>
               <p className="text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">
                 {BRAND} is not responsible for the privacy practices of these third parties. We encourage you to review their policies.
@@ -280,7 +280,7 @@ export default function PrivacyPage() {
                 {BRAND} is a wellness tool and is not a substitute for professional mental health treatment. Clinical assessment data collected through {BRAND} is not protected health information (PHI) under HIPAA, as {BRAND} is not a covered entity or business associate under HIPAA. Always consult a licensed clinician for clinical concerns.
               </p>
               <p className="text-[0.72rem] text-[var(--herr-faint)]">
-                © {new Date().getFullYear()} {COMPANY}. All rights reserved. {BRAND} and Human Existential Response and Reprogramming™ are trademarks of {COMPANY}. The {BRAND} Progressive Reprogramming System — Patent Pending.
+                © {new Date().getFullYear()} {COMPANY}. All rights reserved. {BRAND} and Human Existential Response and Reprogramming™ are trademarks of {COMPANY}. The {BRAND} Progressive Reprogramming System, Patent Pending.
               </p>
               <div className="flex flex-wrap gap-6 text-[0.78rem]">
                 <Link href="/terms" className="text-[var(--herr-muted)] hover:text-[var(--herr-white)] transition-colors">Terms of Service</Link>

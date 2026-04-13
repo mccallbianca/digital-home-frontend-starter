@@ -121,7 +121,7 @@ export default function AdminDashboard({
                   { tier: 'Elite',        count: stats.byTier.elite,        price: '$29/mo', color: 'text-[var(--herr-pink)]' },
                 ].map(row => (
                   <div key={row.tier} className="bg-[var(--herr-surface)] p-6">
-                    <p className={`herr-label mb-1 ${row.color}`}>{row.tier} — {row.price}</p>
+                    <p className={`herr-label mb-1 ${row.color}`}>{row.tier}: {row.price}</p>
                     <p className="font-display text-3xl font-light text-[var(--herr-white)]">{row.count}</p>
                     <p className="text-xs text-[var(--herr-muted)] mt-1">
                       ${(row.count * parseInt(row.price)).toLocaleString()}/mo
@@ -136,7 +136,7 @@ export default function AdminDashboard({
               <p className="herr-label text-[var(--herr-cobalt)] mb-3">Founder Test Access</p>
               <p className="text-[var(--herr-white)] font-mono text-lg mb-2">HERRFOUNDER</p>
               <p className="text-xs text-[var(--herr-muted)]">
-                100% off — first month — max 5 uses. Use this code at checkout on any tier to test the full onboarding flow.
+                100% off, first month, max 5 uses. Use this code at checkout on any tier to test the full onboarding flow.
               </p>
             </div>
 
