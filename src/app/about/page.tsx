@@ -121,9 +121,9 @@ export default function AboutPage() {
             <p style={{ fontSize: 16, color: '#6B6B7B', lineHeight: 1.8 }}>
               Before HERR, before ECQO Holdings, before the clinical frameworks and federal advisory
               roles — there was a voice. The inner voice that every elite performer hears but few
-              understand. Bianca D. McCall spent her career studying that voice — as an existential
-              psychologist, a licensed marriage and family therapist, and a retired professional
-              women&apos;s basketball player.
+              understand. Bianca D. McCall spent her career studying that voice — as a licensed
+              clinical practitioner specializing in existential psychology, a Licensed Marriage
+              and Family Therapist (LMFT), and a retired professional women&apos;s basketball player.
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={100}>
