@@ -65,26 +65,26 @@ const CREDENTIALS = [
 
 const JOURNAL_PREVIEW = [
   {
-    slug: 'inner-voice-performance',
+    slug: 'understanding-your-inner-conductor',
     image: '/images/dim-existential-figure-void.jpg',
     category: 'Performance',
-    title: 'Why the Inner Voice Determines Every Performance',
+    title: 'Understanding Your Inner Conductor',
     excerpt: 'The conductor of your life is not your talent, your training, or your discipline. It is the voice only you can hear.',
     readTime: '5 min read',
   },
   {
-    slug: 'regulate-before-reprogram',
+    slug: 'science-of-voice-based-reprogramming',
     image: '/images/dim-emotional-eye-release.jpg',
     category: 'Clinical',
-    title: 'Regulate Before You Reprogram',
+    title: 'The Science of Voice-Based Reprogramming',
     excerpt: 'Why every attempt to install new beliefs fails without first calming the nervous system.',
     readTime: '4 min read',
   },
   {
-    slug: 'voice-cloning-subconscious',
+    slug: 'why-your-voice-is-your-most-powerful-tool',
     image: '/images/dim-executive-hand-decides.jpg',
     category: 'Mindset',
-    title: 'Your Voice Is the Key to the Subconscious',
+    title: 'Why Your Voice Is Your Most Powerful Tool',
     excerpt: 'Self-referential processing is not a theory. It is the mechanism that makes HERR different.',
     readTime: '6 min read',
   },
@@ -119,7 +119,7 @@ export default function HomePage() {
     <main style={{ minHeight: '100vh', background: '#0A0A0F' }}>
       <JsonLd data={softwareAppSchema} />
 
-      {/* ── Section 1: Hero ─────────────────────────────────────────── */}
+      {/* ── Section 1: Hero (dark) ─────────────────────────────────── */}
       <section
         style={{
           minHeight: '100vh',
@@ -148,9 +148,10 @@ export default function HomePage() {
             margin: '0 0 24px',
           }}
         >
-          The Voice Inside You Is the Most Powerful Force in Your Life.
+          Reclaim Your Power with HERR
         </h1>
 
+        {/* TODO: Bianca to provide final approved subheadline */}
         <p
           className="animate-fade-up animate-delay-3"
           style={{
@@ -160,7 +161,7 @@ export default function HomePage() {
             margin: '0 0 40px',
           }}
         >
-          HERR reprograms it.
+          Hear yourself becoming who you were meant to be.
         </p>
 
         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -221,11 +222,11 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* ── Section 2: The Method ───────────────────────────────────── */}
+      {/* ── Section 2: The Method (warm light) ─────────────────────── */}
       <section
         id="method"
         style={{
-          background: '#111118',
+          background: '#FAF8F5',
           padding: 'clamp(64px, 10vw, 120px) 24px',
         }}
       >
@@ -246,7 +247,7 @@ export default function HomePage() {
               fontFamily: "'Cormorant Garamond', Georgia, serif",
               fontSize: 'clamp(28px, 4vw, 36px)',
               fontWeight: 600,
-              color: '#FFFFFF',
+              color: '#1A1A2E',
               marginBottom: 48,
               lineHeight: 1.2,
             }}
@@ -259,10 +260,11 @@ export default function HomePage() {
               <ScrollFadeIn key={step.num} delay={i * 100}>
                 <div
                   style={{
-                    background: '#16161F',
+                    background: '#FFFFFF',
                     borderRadius: 16,
                     padding: '40px 32px',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    border: '1px solid rgba(0,0,0,0.06)',
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
                   }}
                 >
                   <p
@@ -281,7 +283,7 @@ export default function HomePage() {
                     style={{
                       fontSize: 20,
                       fontWeight: 600,
-                      color: '#FFFFFF',
+                      color: '#1A1A2E',
                       textTransform: 'uppercase',
                       letterSpacing: '1px',
                       marginBottom: 12,
@@ -292,7 +294,7 @@ export default function HomePage() {
                   <p
                     style={{
                       fontSize: 15,
-                      color: 'rgba(255,255,255,0.7)',
+                      color: '#6B6B7B',
                       lineHeight: 1.6,
                     }}
                   >
@@ -313,9 +315,9 @@ export default function HomePage() {
                 height: 48,
                 padding: '0 32px',
                 background: 'transparent',
-                color: '#FFFFFF',
+                color: '#1A1A2E',
                 borderRadius: 12,
-                border: '1px solid rgba(255,255,255,0.3)',
+                border: '1px solid rgba(26,26,46,0.3)',
                 fontSize: 14,
                 fontWeight: 600,
                 textTransform: 'uppercase',
@@ -329,7 +331,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Section 3: Voice Clone Moment ───────────────────────────── */}
+      {/* ── Section 3: Voice Clone Moment (dark) ───────────────────── */}
       <section
         style={{
           background: '#0A0A0F',
@@ -357,6 +359,7 @@ export default function HomePage() {
                   lineHeight: 1.2,
                 }}
               >
+                {/* TODO: Bianca to provide final approved subheadline */}
                 Hear yourself becoming who you were meant to be.
               </h2>
               <p
@@ -396,10 +399,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Section 4: Founder Authority ────────────────────────────── */}
+      {/* ── Section 4: Founder Authority (warm light) ──────────────── */}
       <section
         style={{
-          background: '#111118',
+          background: '#F4F1EB',
           padding: 'clamp(64px, 10vw, 120px) 24px',
         }}
       >
@@ -415,12 +418,12 @@ export default function HomePage() {
                   width: '100%',
                   maxHeight: 500,
                   aspectRatio: '3/4',
-                  background: '#16161F',
+                  background: '#E8E5DE',
                 }}
               >
                 <Image
                   src="/images/founder-bianca-mccall-processed.jpg"
-                  alt="Bianca D. McCall, LMFT, Licensed Marriage and Family Therapist, federal SAMHSA advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
+                  alt="Bianca D. McCall, LMFT, Licensed Marriage and Family Therapist, federal advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
                   fill
                   sizes="(max-width: 768px) 100vw, 40vw"
                   className="object-cover"
@@ -449,7 +452,7 @@ export default function HomePage() {
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
                   fontSize: 'clamp(28px, 3.5vw, 32px)',
                   fontWeight: 600,
-                  color: '#FFFFFF',
+                  color: '#1A1A2E',
                   marginBottom: 20,
                   lineHeight: 1.3,
                 }}
@@ -459,12 +462,12 @@ export default function HomePage() {
               <p
                 style={{
                   fontSize: 16,
-                  color: 'rgba(255,255,255,0.7)',
+                  color: '#6B6B7B',
                   lineHeight: 1.7,
                   marginBottom: 24,
                 }}
               >
-                Licensed clinician. Federal advisor to SAMHSA. Retired professional athlete. Bianca
+                Licensed clinician. Federal advisor. Retired professional athlete. Bianca
                 built HERR from the intersection of existential psychology, performance science, and
                 personal transformation, to reprogram the voice that drives every performance in your
                 life.
@@ -476,12 +479,13 @@ export default function HomePage() {
                   <span
                     key={c}
                     style={{
-                      background: '#16161F',
-                      border: '1px solid rgba(255,255,255,0.15)',
+                      background: '#FFFFFF',
+                      border: '1px solid rgba(0,0,0,0.08)',
                       borderRadius: 8,
                       padding: '6px 14px',
                       fontSize: 12,
-                      color: 'rgba(255,255,255,0.6)',
+                      color: '#1A1A2E',
+                      boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
                     }}
                   >
                     {c}
@@ -498,9 +502,9 @@ export default function HomePage() {
                   height: 48,
                   padding: '0 32px',
                   background: 'transparent',
-                  color: '#FFFFFF',
+                  color: '#1A1A2E',
                   borderRadius: 12,
-                  border: '1px solid rgba(255,255,255,0.3)',
+                  border: '1px solid rgba(26,26,46,0.3)',
                   fontSize: 14,
                   fontWeight: 600,
                   textTransform: 'uppercase',
@@ -515,7 +519,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Section 5: Tier Preview ─────────────────────────────────── */}
+      {/* ── Section 5: Tier Preview (dark) ─────────────────────────── */}
       <section
         style={{
           background: '#0A0A0F',
@@ -660,10 +664,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Section 6: Journal Preview ──────────────────────────────── */}
+      {/* ── Section 6: Journal Preview (warm light) ────────────────── */}
       <section
         style={{
-          background: '#111118',
+          background: '#FAF8F5',
           padding: 'clamp(64px, 10vw, 120px) 24px',
         }}
       >
@@ -684,7 +688,7 @@ export default function HomePage() {
               fontFamily: "'Cormorant Garamond', Georgia, serif",
               fontSize: 'clamp(28px, 4vw, 36px)',
               fontWeight: 600,
-              color: '#FFFFFF',
+              color: '#1A1A2E',
               marginBottom: 48,
               lineHeight: 1.2,
             }}
@@ -702,10 +706,11 @@ export default function HomePage() {
                   <div
                     className="journal-card"
                     style={{
-                      background: '#16161F',
+                      background: '#FFFFFF',
                       borderRadius: 16,
                       overflow: 'hidden',
-                      border: '1px solid rgba(255,255,255,0.08)',
+                      border: '1px solid rgba(0,0,0,0.06)',
+                      boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
                       height: '100%',
                       display: 'flex',
                       flexDirection: 'column',
@@ -751,7 +756,7 @@ export default function HomePage() {
                           fontFamily: "'Cormorant Garamond', Georgia, serif",
                           fontSize: 20,
                           fontWeight: 600,
-                          color: '#FFFFFF',
+                          color: '#1A1A2E',
                           marginBottom: 8,
                           lineHeight: 1.3,
                         }}
@@ -761,7 +766,7 @@ export default function HomePage() {
                       <p
                         style={{
                           fontSize: 14,
-                          color: 'rgba(255,255,255,0.6)',
+                          color: '#6B6B7B',
                           lineHeight: 1.5,
                           flex: 1,
                           display: '-webkit-box',
@@ -775,7 +780,7 @@ export default function HomePage() {
                       <p
                         style={{
                           fontSize: 12,
-                          color: 'rgba(255,255,255,0.4)',
+                          color: '#6B6B7B',
                           marginTop: 8,
                         }}
                       >
@@ -798,9 +803,9 @@ export default function HomePage() {
                 height: 48,
                 padding: '0 32px',
                 background: 'transparent',
-                color: '#FFFFFF',
+                color: '#1A1A2E',
                 borderRadius: 12,
-                border: '1px solid rgba(255,255,255,0.3)',
+                border: '1px solid rgba(26,26,46,0.3)',
                 fontSize: 14,
                 fontWeight: 600,
                 textTransform: 'uppercase',
@@ -814,7 +819,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Section 7: Final CTA ────────────────────────────────────── */}
+      {/* ── Section 7: Final CTA (dark) ────────────────────────────── */}
       <section
         style={{
           background: '#0A0A0F',
@@ -865,107 +870,6 @@ export default function HomePage() {
           No credit card required. Cancel anytime.
         </p>
       </section>
-
-      {/* ── Section 8: Footer ───────────────────────────────────────── */}
-      <footer
-        style={{
-          borderTop: '1px solid rgba(255,255,255,0.08)',
-          padding: '64px 24px',
-          maxWidth: 960,
-          margin: '0 auto',
-          textAlign: 'center',
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontSize: 18,
-            color: '#FFFFFF',
-            marginBottom: 24,
-          }}
-        >
-          HERR™ <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 14 }}>| A product of ECQO Holdings™</span>
-        </p>
-
-        <nav
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: '8px 20px',
-            marginBottom: 24,
-          }}
-        >
-          {[
-            { label: 'About', href: '/about' },
-            { label: 'How It Works', href: '/how-it-works' },
-            { label: 'The Science', href: '/the-science' },
-            { label: 'Journal', href: '/journal' },
-            { label: 'ECQO Sound', href: '/ecqo-sound' },
-            { label: 'Pricing', href: '/checkout' },
-          ].map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              style={{
-                fontSize: 12,
-                color: 'rgba(255,255,255,0.5)',
-                textDecoration: 'none',
-              }}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-
-        <nav
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: '8px 20px',
-            marginBottom: 32,
-          }}
-        >
-          {[
-            { label: 'Terms of Service', href: '/terms' },
-            { label: 'Privacy Policy', href: '/privacy' },
-            { label: 'HIPAA Notice', href: '/hipaa' },
-          ].map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              style={{
-                fontSize: 12,
-                color: 'rgba(255,255,255,0.5)',
-                textDecoration: 'none',
-              }}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-
-        <p
-          style={{
-            fontSize: 12,
-            color: 'rgba(255,255,255,0.35)',
-            lineHeight: 1.6,
-            maxWidth: 600,
-            margin: '0 auto 16px',
-          }}
-        >
-          HERR is a wellness platform. It is not a substitute for licensed clinical care.
-          If you are in crisis, call or text{' '}
-          <a href="tel:988" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'underline' }}>
-            988
-          </a>.
-        </p>
-
-        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>
-          © 2026 ECQO Holdings™. All rights reserved.
-        </p>
-      </footer>
 
       {/* ── Responsive Styles ───────────────────────────────────────── */}
       <style>{`
