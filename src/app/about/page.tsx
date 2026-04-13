@@ -7,7 +7,7 @@ import CrisisResource from '@/components/ui/CrisisResource';
 export const metadata: Metadata = {
   title: 'About | Bianca D. McCall, LMFT',
   description:
-    'Licensed clinician. Federal advisor to SAMHSA. Retired professional athlete. Bianca D. McCall built HERR from the intersection of existential psychology, performance science, and personal transformation.',
+    'Licensed clinician. Federal advisor. Retired professional athlete. Bianca D. McCall, LMFT built HERR from the intersection of existential psychology, performance science, and personal transformation.',
 };
 
 const CREDENTIALS = [
@@ -33,7 +33,7 @@ const CREDENTIALS = [
   },
   {
     title: 'Retired Professional Athlete',
-    context: 'Professional women\u2019s basketball: the bridge to elite performance psychology',
+    context: 'Professional women&apos;s basketball: the bridge to elite performance psychology',
   },
 ];
 
@@ -48,7 +48,8 @@ export default function AboutPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#0A0A0F' }}>
 
-      {/* ── Hero — Full-width photo ─────────────────────────────────── */}
+      {/* TODO: Replace banner image — Bianca wants elevateUs.ai clip or still frame instead of current hair photo. Requires separate image asset. */}
+      {/* ── Hero ─────────────────────────────────────────────────────── */}
       <section
         style={{
           position: 'relative',
@@ -61,7 +62,7 @@ export default function AboutPage() {
       >
         <Image
           src="/images/founder-bianca-mccall-processed.jpg"
-          alt="Bianca D. McCall, LMFT, Licensed Marriage and Family Therapist, federal SAMHSA advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
+          alt="Bianca D. McCall, LMFT, Licensed Marriage and Family Therapist, federal advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
           fill
           sizes="100vw"
           className="object-cover"
@@ -102,7 +103,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Section 1: The Story (light) ──────────────────────────── */}
+      {/* ── Section 1: Bio (warm light) ──────────────────────────────── */}
       <section
         style={{
           background: '#FAF8F5',
@@ -111,53 +112,55 @@ export default function AboutPage() {
       >
         <div
           style={{
-            maxWidth: 720,
+            maxWidth: 760,
             margin: '0 auto',
             display: 'flex',
             flexDirection: 'column',
-            gap: 24,
+            gap: 28,
           }}
         >
           <ScrollFadeIn>
-            <p style={{ fontSize: 16, color: '#6B6B7B', lineHeight: 1.8 }}>
-              Before HERR, before ECQO Holdings, before the clinical frameworks and federal advisory
-              roles, there was a voice. The inner voice that every elite performer hears but few
-              understand. Bianca D. McCall spent her career studying that voice, as a licensed
-              clinical practitioner specializing in existential psychology, a Licensed Marriage
-              and Family Therapist (LMFT), and a retired professional women&apos;s basketball player.
+            <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75 }}>
+              The connection between the self, and whatever sense, or being, or power we surrender to and share inner-dialogue with is the voice, the gatekeeper which we leave it all up to interpretation, internalization, and executive judgement.{' '}
+              <span style={{ fontWeight: 600 }}>Bianca D. McCall, LMFT</span> has spent her entire career studying that voice and the relationship between it, and every performer in sports, music, entertainment, academia, and special workforces, during transitions - the separation events that are most significant in a lifetime.
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={100}>
-            <p style={{ fontSize: 16, color: '#6B6B7B', lineHeight: 1.8 }}>
-              The performance philosophy emerged from the intersection of the court and the clinic: we
-              are all performing roles: in employment, community, family, and life. The inner voice
-              is the conductor of every performance. When that conductor is dysregulated, every
-              performance suffers. When it is reprogrammed, everything transforms.
+            <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75 }}>
+              The performance philosophy emerged from the intersection of the basketball court and the clinic: we are all performing roles, in school, at work, in community, family, and life. The inner voice is the conductor of every performance. When that conductor is dysregulated, every performance suffers. Reprogramming initiates transformation to heal the distance between who you are and the best version of yourself in this moment.
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={200}>
-            <p style={{ fontSize: 16, color: '#6B6B7B', lineHeight: 1.8 }}>
-              HERR is the technology that makes reprogramming personal. Not a generic meditation app.
-              Not a chatbot pretending to be a therapist. A clinical operating system that assesses
-              your existential concerns, regulates your nervous system, and delivers daily affirmations
-              in your own cloned voice, because the subconscious trusts your voice above all others.
+            <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75 }}>
+              HERR is the technology that empowers you to take command over your own programming. This is not a generic meditation app. Not a chatbot pretending to be a therapist. HERR is a clinically informed operating system that assesses your existential concerns, and combines science with sound therapies. The only app that restores your agency and puts you in command, to author your own story in your own voice.
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={300}>
-            <p style={{ fontSize: 16, color: '#6B6B7B', lineHeight: 1.8 }}>
-              Today, Bianca advises SAMHSA&apos;s Suicide Prevention Resource Center, consults for the
-              Native American Athletic Foundation (NFL, MLB), speaks internationally on stages from TED
-              to the world&apos;s largest wellness conferences, and leads ECQO Holdings, the clinical
-              AI company building the future of personalized behavioral wellness.
+            <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75 }}>
+              Today, Bianca advises on federal and local government public health and prevention initiatives. She is a chief advisor and consultant for professional sports clubs, speaks internationally on stages from TED to the world&apos;s largest conferences, and is the creator of ECQO - the clinical AI company building the future of personalized and protective wellness treatments.
+            </p>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={400}>
+            <p
+              style={{
+                fontSize: 'clamp(1.25rem, 3vw, 1.5rem)',
+                fontWeight: 700,
+                color: '#E8388A',
+                textAlign: 'center',
+                marginTop: 16,
+                lineHeight: 1.4,
+              }}
+            >
+              #1 Self-Care Tool in the World.
             </p>
           </ScrollFadeIn>
         </div>
       </section>
 
-      {/* ── Section 2: Credentials (light) ─────────────────────────── */}
+      {/* ── Section 2: Credentials (dark) ─────────────────────────────── */}
       <section
         style={{
-          background: '#F0EDE6',
+          background: '#0A0A0F',
           padding: 'clamp(48px, 8vw, 80px) 24px',
         }}
       >
@@ -179,11 +182,10 @@ export default function AboutPage() {
               <ScrollFadeIn key={cred.title} delay={i * 100}>
                 <div
                   style={{
-                    background: '#FFFFFF',
+                    background: '#16161F',
                     borderRadius: 16,
                     padding: 32,
-                    border: '1px solid rgba(0,0,0,0.06)',
-                    boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+                    border: '1px solid rgba(255,255,255,0.06)',
                     height: '100%',
                   }}
                 >
@@ -191,7 +193,7 @@ export default function AboutPage() {
                     style={{
                       fontSize: 16,
                       fontWeight: 600,
-                      color: '#1A1A2E',
+                      color: '#FFFFFF',
                       marginBottom: 8,
                       lineHeight: 1.4,
                     }}
@@ -201,7 +203,7 @@ export default function AboutPage() {
                   <p
                     style={{
                       fontSize: 14,
-                      color: '#6B6B7B',
+                      color: 'rgba(255,255,255,0.6)',
                       lineHeight: 1.5,
                     }}
                   >
@@ -214,10 +216,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Section 3: The Enterprise ───────────────────────────────── */}
+      {/* ── Section 3: The Enterprise (warm light) ─────────────────────── */}
       <section
         style={{
-          background: '#0A0A0F',
+          background: '#F4F1EB',
           padding: 'clamp(48px, 8vw, 80px) 24px',
         }}
       >
@@ -228,7 +230,7 @@ export default function AboutPage() {
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontSize: 28,
                 fontWeight: 600,
-                color: '#FFFFFF',
+                color: '#1A1A2E',
                 marginBottom: 20,
               }}
             >
@@ -236,9 +238,9 @@ export default function AboutPage() {
             </h2>
             <p
               style={{
-                fontSize: 16,
-                color: 'rgba(255,255,255,0.7)',
-                lineHeight: 1.7,
+                fontSize: '1.125rem',
+                color: '#1A1A2E',
+                lineHeight: 1.75,
                 marginBottom: 24,
               }}
             >
@@ -253,12 +255,13 @@ export default function AboutPage() {
                 <span
                   key={e}
                   style={{
-                    background: '#16161F',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    background: '#FFFFFF',
+                    border: '1px solid rgba(0,0,0,0.08)',
                     padding: '8px 16px',
                     borderRadius: 8,
                     fontSize: 13,
-                    color: 'rgba(255,255,255,0.6)',
+                    color: '#1A1A2E',
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
                   }}
                 >
                   {e}
@@ -269,7 +272,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Section 4: CTA ──────────────────────────────────────────── */}
+      {/* ── Section 4: CTA (dark) ──────────────────────────────────────── */}
       <section
         style={{
           background: '#111118',
