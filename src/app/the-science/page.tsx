@@ -1,23 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import ScrollFadeIn from '@/components/home/ScrollFadeIn';
-import WaveformVisual from '@/components/home/WaveformVisual';
 import { JsonLd } from '@/components/seo/JsonLd';
 import CrisisResource from '@/components/ui/CrisisResource';
 
 export const metadata: Metadata = {
   title: 'The Science Behind HERR',
   description:
-    'Existential psychology meets voice technology. Understand the clinical framework, the voice mechanism, and the regulate-then-reprogram protocol behind HERR.',
+    'Clinically informed. Grounded in existential psychology. Understand the frameworks, the voice mechanism, and the regulate-then-reprogram protocol behind HERR.',
 };
-
-const CONCERNS = [
-  { num: '01', name: 'Meaning', question: 'Why am I here?' },
-  { num: '02', name: 'Identity', question: 'Who am I beyond my roles?' },
-  { num: '03', name: 'Freedom', question: 'What choices define me?' },
-  { num: '04', name: 'Isolation', question: 'Am I truly connected?' },
-  { num: '05', name: 'Mortality', question: 'How do I face the finite?' },
-];
 
 export default function TheSciencePage() {
   return (
@@ -55,7 +46,7 @@ export default function TheSciencePage() {
         }}
       />
 
-      {/* ── Hero ────────────────────────────────────────────────────── */}
+      {/* ── Hero (dark) ────────────────────────────────────────────── */}
       <section
         style={{
           background: '#0A0A0F',
@@ -75,240 +66,14 @@ export default function TheSciencePage() {
         >
           The Science Behind HERR
         </h1>
-        <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.6)' }}>
-          Existential psychology meets voice technology.
+        <p style={{ fontSize: '1.125rem', color: 'rgba(255,255,255,0.6)' }}>
+          Clinically informed. Grounded in existential psychology.
         </p>
       </section>
 
-      {/* ── Section 1: The Existential Framework (light) ──────────── */}
+      {/* ── Section 1: What Does It Mean To Be Clinically-Informed? (warm) ── */}
       <section style={{ background: '#FAF8F5', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
-        <div style={{ maxWidth: 960, margin: '0 auto' }}>
-          <p
-            style={{
-              fontSize: 12,
-              textTransform: 'uppercase',
-              letterSpacing: '2.5px',
-              color: '#C42D8E',
-              marginBottom: 16,
-            }}
-          >
-            THE FRAMEWORK
-          </p>
-          <h2
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: 'clamp(28px, 3.5vw, 32px)',
-              fontWeight: 600,
-              color: '#1A1A2E',
-              marginBottom: 20,
-              lineHeight: 1.3,
-            }}
-          >
-            Existential Concerns Questionnaire at Onset
-          </h2>
-          <p
-            style={{
-              fontSize: 16,
-              color: '#6B6B7B',
-              lineHeight: 1.7,
-              maxWidth: 720,
-              marginBottom: 48,
-            }}
-          >
-            ECQO, Existential Concerns Questionnaire at Onset, is the diagnostic foundation of
-            HERR. It surfaces the five core existential concerns that shape every human experience.
-          </p>
-
-          <div className="concerns-grid">
-            {CONCERNS.map((c, i) => (
-              <ScrollFadeIn key={c.num} delay={i * 80}>
-                <div
-                  style={{
-                    background: '#FFFFFF',
-                    borderRadius: 16,
-                    padding: 24,
-                    textAlign: 'center',
-                    border: '1px solid rgba(0,0,0,0.06)',
-                    boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
-                    height: '100%',
-                  }}
-                >
-                  <p
-                    style={{
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
-                      fontSize: 36,
-                      fontWeight: 600,
-                      color: '#C42D8E',
-                      marginBottom: 8,
-                    }}
-                  >
-                    {c.num}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: 16,
-                      fontWeight: 600,
-                      color: '#1A1A2E',
-                      marginBottom: 8,
-                    }}
-                  >
-                    {c.name}
-                  </p>
-                  <p style={{ fontSize: 13, color: '#6B6B7B' }}>
-                    {c.question}
-                  </p>
-                </div>
-              </ScrollFadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 2: Voice & The Subconscious ─────────────────────── */}
-      <section style={{ background: '#0A0A0F', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
-        <div className="voice-science-layout" style={{ maxWidth: 960, margin: '0 auto' }}>
-          {/* Left: Content */}
-          <div className="voice-science-content">
-            <ScrollFadeIn>
-              <p
-                style={{
-                  fontSize: 12,
-                  textTransform: 'uppercase',
-                  letterSpacing: '2.5px',
-                  color: '#C42D8E',
-                  marginBottom: 16,
-                }}
-              >
-                THE MECHANISM
-              </p>
-              <h2
-                style={{
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontSize: 'clamp(28px, 3.5vw, 32px)',
-                  fontWeight: 600,
-                  color: '#FFFFFF',
-                  marginBottom: 20,
-                  lineHeight: 1.3,
-                }}
-              >
-                Your Voice Is the Key
-              </h2>
-              <p
-                style={{
-                  fontSize: 16,
-                  color: 'rgba(255,255,255,0.7)',
-                  lineHeight: 1.7,
-                }}
-              >
-                The subconscious mind processes your own voice differently than any external voice.
-                Self-referential processing, a well-documented phenomenon in neuroscience, means
-                affirmations delivered in your own voice bypass the skepticism filters that block
-                generic recordings. HERR leverages this by cloning your voice and delivering daily
-                personalized affirmations that speak directly to your subconscious.
-              </p>
-            </ScrollFadeIn>
-          </div>
-
-          {/* Right: Waveform */}
-          <div className="voice-science-visual">
-            <ScrollFadeIn delay={200}>
-              <WaveformVisual />
-            </ScrollFadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 3: Regulate → Reprogram ─────────────────────────── */}
-      <section style={{ background: '#111118', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
-        <div style={{ maxWidth: 960, margin: '0 auto' }}>
-          <p
-            style={{
-              fontSize: 12,
-              textTransform: 'uppercase',
-              letterSpacing: '2.5px',
-              color: '#C42D8E',
-              marginBottom: 16,
-            }}
-          >
-            THE PROTOCOL
-          </p>
-          <h2
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: 'clamp(28px, 3.5vw, 32px)',
-              fontWeight: 600,
-              color: '#FFFFFF',
-              marginBottom: 48,
-              lineHeight: 1.3,
-            }}
-          >
-            Regulate First. Reprogram Second.
-          </h2>
-
-          <div className="protocol-grid">
-            {[
-              {
-                num: '01',
-                name: 'Regulate',
-                body: 'Before new programming can take hold, the nervous system must be calm. HERR uses personalized regulation exercises, calibrated to your screener results, to create the safe internal environment where change becomes possible.',
-              },
-              {
-                num: '02',
-                name: 'Reprogram',
-                body: 'With the nervous system regulated, HERR delivers daily I AM declarations, written by AI, reviewed for clinical safety, spoken in your cloned voice. Over time, these declarations install new identity programming at the subconscious level.',
-              },
-            ].map((step, i) => (
-              <ScrollFadeIn key={step.num} delay={i * 150}>
-                <div
-                  style={{
-                    background: '#16161F',
-                    borderRadius: 16,
-                    padding: 32,
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    height: '100%',
-                  }}
-                >
-                  <p
-                    style={{
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
-                      fontSize: 48,
-                      fontWeight: 600,
-                      color: '#C42D8E',
-                      marginBottom: 12,
-                      lineHeight: 1,
-                    }}
-                  >
-                    {step.num}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: 20,
-                      fontWeight: 600,
-                      color: '#FFFFFF',
-                      marginBottom: 16,
-                    }}
-                  >
-                    {step.name}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: 16,
-                      color: 'rgba(255,255,255,0.7)',
-                      lineHeight: 1.7,
-                    }}
-                  >
-                    {step.body}
-                  </p>
-                </div>
-              </ScrollFadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 4: Evidence & Validation (light) ──────────────── */}
-      <section style={{ background: '#FAF8F5', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
-        <div style={{ maxWidth: 720, margin: '0 auto' }}>
+        <div style={{ maxWidth: 760, margin: '0 auto' }}>
           <ScrollFadeIn>
             <p
               style={{
@@ -319,7 +84,7 @@ export default function TheSciencePage() {
                 marginBottom: 16,
               }}
             >
-              THE EVIDENCE
+              THE FOUNDATION
             </p>
             <h2
               style={{
@@ -327,43 +92,252 @@ export default function TheSciencePage() {
                 fontSize: 'clamp(28px, 3.5vw, 32px)',
                 fontWeight: 600,
                 color: '#1A1A2E',
-                marginBottom: 24,
+                marginBottom: 28,
                 lineHeight: 1.3,
               }}
             >
-              Informed by Established Science
+              What Does It Mean To Be Clinically-Informed?
             </h2>
-            <p
-              style={{
-                fontSize: 16,
-                color: '#6B6B7B',
-                lineHeight: 1.7,
-                marginBottom: 24,
-              }}
-            >
-              HERR is informed by established clinical frameworks including existential psychology,
-              trauma-informed care, behavioral activation, and self-referential processing research.
-              The founder, Bianca D. McCall, LMFT, serves as Subject 1, documenting personal
-              outcomes monthly across body, wealth, relationships, business, and emotional baseline to
-              build the clinical validation foundation for future peer-reviewed research.
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={100}>
+            <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75, marginBottom: 20 }}>
+              Clinically informed means the product was designed by a licensed clinical professional using established therapeutic frameworks, evidence-based approaches, and trauma-informed care principles. Every element of HERR, from the existential assessment to the affirmation scripts to the activity-mode delivery system, was built with clinical expertise and ethical standards at the foundation.
             </p>
-            <p
-              style={{
-                fontSize: 16,
-                color: '#6B6B7B',
-                lineHeight: 1.7,
-              }}
-            >
-              The ECQO assessment framework draws from decades of existential psychology research. The
-              voice cloning delivery mechanism is built on neuroscience evidence that self-generated
-              speech activates unique neural pathways associated with identity formation and belief
-              change.
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={200}>
+            <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75, marginBottom: 20 }}>
+              This does not mean HERR is a clinical treatment or a replacement for therapy. It means that the methodology, the language, the sequencing, and the safeguards were informed by years of clinical practice and professional training. The distinction matters: HERR is a wellness tool designed with clinical rigor, not a medical device making clinical claims.
+            </p>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={300}>
+            <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75 }}>
+              The creator, <span style={{ fontWeight: 600 }}>Bianca D. McCall, LMFT</span>, brought her background in systems therapies, existential psychology, and trauma-informed care to every design decision. The result is a product that respects the complexity of the human experience while remaining accessible to anyone seeking to take command of their inner voice.
             </p>
           </ScrollFadeIn>
         </div>
       </section>
 
-      {/* ── Bottom CTA + Disclaimer ─────────────────────────────────── */}
+      {/* ── Section 2: What Is Existential Psychology? (dark) ────────── */}
+      <section style={{ background: '#0A0A0F', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
+        <div style={{ maxWidth: 760, margin: '0 auto' }}>
+          <ScrollFadeIn>
+            <p
+              style={{
+                fontSize: 12,
+                textTransform: 'uppercase',
+                letterSpacing: '2.5px',
+                color: '#C42D8E',
+                marginBottom: 16,
+              }}
+            >
+              THE FRAMEWORK
+            </p>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 'clamp(28px, 3.5vw, 32px)',
+                fontWeight: 600,
+                color: '#FFFFFF',
+                marginBottom: 28,
+                lineHeight: 1.3,
+              }}
+            >
+              What Is Existential Psychology?
+            </h2>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={100}>
+            <p style={{ fontSize: '1.125rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.75, marginBottom: 20 }}>
+              Existential psychology is a clinical and philosophical framework focused on the core concerns of human existence: meaning, purpose, identity, freedom, isolation, mortality, and the inner voice. Rather than treating symptoms in isolation, existential psychology examines how these fundamental concerns shape every aspect of a person&apos;s life, from their relationships to their performance to their sense of self.
+            </p>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={200}>
+            <p style={{ fontSize: '1.125rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.75, marginBottom: 20 }}>
+              Its roots trace through existential-humanistic psychology, Viktor Frankl&apos;s logotherapy (the search for meaning as the primary motivational force), and existential positive psychology, which bridges the existential tradition with strengths-based approaches to well-being. These are not fringe theories. They are established frameworks taught in graduate clinical programs and applied in therapeutic settings worldwide.
+            </p>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={300}>
+            <p style={{ fontSize: '1.125rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.75 }}>
+              HERR applies these frameworks to everyday performance and wellness, not just crisis intervention. The existential concerns that shape an elite athlete&apos;s performance under pressure are the same concerns that shape a parent&apos;s experience of identity transition, a student&apos;s navigation of purpose, or a professional&apos;s confrontation with burnout. HERR meets people where they are.
+            </p>
+          </ScrollFadeIn>
+        </div>
+      </section>
+
+      {/* ── Section 3: Why Does The Inner Voice Matter? (warm) ────── */}
+      <section style={{ background: '#FAF8F5', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
+        <div style={{ maxWidth: 760, margin: '0 auto' }}>
+          <ScrollFadeIn>
+            <p
+              style={{
+                fontSize: 12,
+                textTransform: 'uppercase',
+                letterSpacing: '2.5px',
+                color: '#C42D8E',
+                marginBottom: 16,
+              }}
+            >
+              THE INNER VOICE
+            </p>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 'clamp(28px, 3.5vw, 32px)',
+                fontWeight: 600,
+                color: '#1A1A2E',
+                marginBottom: 28,
+                lineHeight: 1.3,
+              }}
+            >
+              Why Does The Inner Voice Matter?
+            </h2>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={100}>
+            <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75, marginBottom: 20 }}>
+              The inner voice is the conductor of every performance. It existed before consciousness, was shaped by significant separation events beginning with birth, and was programmed by the significant adults who assigned language to our filters for interpreting life. Before you had the words to question it, your inner voice was already telling you who you are, what you deserve, and what is possible.
+            </p>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={200}>
+            <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75, marginBottom: 20 }}>
+              When that conductor is dysregulated, every performance suffers: at work, in relationships, in health, in every domain. The person who cannot perform under pressure, the partner who cannot show up fully, the professional who self-sabotages at the threshold of success, these are not failures of character. They are symptoms of a dysregulated inner voice running outdated programming.
+            </p>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={300}>
+            <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75 }}>
+              HERR was built on the understanding that the inner voice can be reprogrammed. Not through willpower, not through positive thinking, but through a deliberate, clinically informed process that first calms the system, then installs new programming in the most trusted voice available: your own.
+            </p>
+          </ScrollFadeIn>
+        </div>
+      </section>
+
+      {/* ── Section 4: How Does HERR Regulate The Inner Voice? (dark) ── */}
+      <section style={{ background: '#0A0A0F', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
+        <div style={{ maxWidth: 760, margin: '0 auto' }}>
+          <ScrollFadeIn>
+            <p
+              style={{
+                fontSize: 12,
+                textTransform: 'uppercase',
+                letterSpacing: '2.5px',
+                color: '#C42D8E',
+                marginBottom: 16,
+              }}
+            >
+              REGULATE
+            </p>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 'clamp(28px, 3.5vw, 32px)',
+                fontWeight: 600,
+                color: '#FFFFFF',
+                marginBottom: 28,
+                lineHeight: 1.3,
+              }}
+            >
+              How Does HERR Regulate The Inner Voice?
+            </h2>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={100}>
+            <p style={{ fontSize: '1.125rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.75, marginBottom: 20 }}>
+              Regulation comes first because a dysregulated nervous system cannot receive new programming. Affirmations delivered to a body that believes it is under threat are processed as noise. HERR&apos;s sequence is clinically intentional: calm the system before attempting to change it.
+            </p>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={200}>
+            <p style={{ fontSize: '1.125rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.75, marginBottom: 20 }}>
+              HERR regulates through personalized voice affirmations, sound therapy frequencies, and activity-mode delivery calibrated to the user&apos;s existential screener results. Each mode is designed for a specific state of being, whether the user needs grounding during a high-stress workday, centering before sleep, or activation before a performance.
+            </p>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={300}>
+            <p style={{ fontSize: '1.125rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.75 }}>
+              HERR uses the user&apos;s own cloned voice because research in auditory neuroscience shows that self-referential processing activates distinct neural pathways compared to hearing another person speak. Your own voice bypasses the skepticism filters that block generic recordings. The mechanism depends on it.
+            </p>
+          </ScrollFadeIn>
+        </div>
+      </section>
+
+      {/* ── Section 5: How Does HERR Reprogram The Inner Voice? (warm) ── */}
+      <section style={{ background: '#FAF8F5', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
+        <div style={{ maxWidth: 760, margin: '0 auto' }}>
+          <ScrollFadeIn>
+            <p
+              style={{
+                fontSize: 12,
+                textTransform: 'uppercase',
+                letterSpacing: '2.5px',
+                color: '#C42D8E',
+                marginBottom: 16,
+              }}
+            >
+              REPROGRAM
+            </p>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 'clamp(28px, 3.5vw, 32px)',
+                fontWeight: 600,
+                color: '#1A1A2E',
+                marginBottom: 28,
+                lineHeight: 1.3,
+              }}
+            >
+              How Does HERR Reprogram The Inner Voice?
+            </h2>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={100}>
+            <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75, marginBottom: 20 }}>
+              Once regulated, HERR delivers I AM declarations in the user&apos;s own cloned voice to install new identity programming at the subconscious level. These are not generic motivational affirmations. Each script is generated based on the specific existential concerns identified in the ECQO assessment, targeting the precise areas where the user&apos;s inner voice is running outdated or harmful programming.
+            </p>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={200}>
+            <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75, marginBottom: 20 }}>
+              This is not positive thinking. It is deliberate cognitive restructuring using the most trusted voice available: your own. The grammatical structure of I AM declarations activates deeper self-schema processing than generic motivational statements. You are not being told you can. You are being reminded of who you are already becoming.
+            </p>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={300}>
+            <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75 }}>
+              Over time, these declarations create measurable shifts in how the user experiences their core existential concerns. Monthly reassessment through the ECQO screener tracks this progression, adjusting scripts as the user evolves. The result is not a one-time intervention but a sustained reprogramming protocol that adapts to the user&apos;s transformation.
+            </p>
+          </ScrollFadeIn>
+        </div>
+      </section>
+
+      {/* ── Section 6: Is HERR Clinically Validated? (dark) ──────────── */}
+      <section style={{ background: '#0A0A0F', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
+        <div style={{ maxWidth: 760, margin: '0 auto' }}>
+          <ScrollFadeIn>
+            <p
+              style={{
+                fontSize: 12,
+                textTransform: 'uppercase',
+                letterSpacing: '2.5px',
+                color: '#C42D8E',
+                marginBottom: 16,
+              }}
+            >
+              VALIDATION
+            </p>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 'clamp(28px, 3.5vw, 32px)',
+                fontWeight: 600,
+                color: '#FFFFFF',
+                marginBottom: 28,
+                lineHeight: 1.3,
+              }}
+            >
+              Is HERR Clinically Validated?
+            </h2>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={100}>
+            <p style={{ fontSize: '1.125rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.75 }}>
+              HERR is grounded in established clinical frameworks including Value Assessment of the Core Existential Concerns, Existential-Humanistic Psychology, Logotherapy, Existential Positive Psychology, and Phenological Approach. HERR is a wellness tool, not a clinical treatment, and has not undergone independent clinical trials. It was designed by a licensed clinical professional with expertise in systems therapies and existential psychology.
+            </p>
+          </ScrollFadeIn>
+        </div>
+      </section>
+
+      {/* ── Bottom CTA + Disclaimer (dark) ─────────────────────────── */}
       <section
         style={{
           background: '#111118',
@@ -409,34 +383,6 @@ export default function TheSciencePage() {
           or your local emergency services.
         </p>
       </section>
-
-      {/* ── Responsive Styles ───────────────────────────────────────── */}
-      <style>{`
-        .concerns-grid {
-          display: grid;
-          grid-template-columns: repeat(5, 1fr);
-          gap: 16px;
-        }
-        .voice-science-layout {
-          display: grid;
-          grid-template-columns: 55% 45%;
-          gap: 48px;
-          align-items: center;
-        }
-        .protocol-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 40px;
-        }
-        @media (max-width: 1024px) {
-          .concerns-grid { grid-template-columns: repeat(3, 1fr); }
-          .voice-science-layout { grid-template-columns: 1fr; }
-          .protocol-grid { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 640px) {
-          .concerns-grid { grid-template-columns: 1fr; }
-        }
-      `}</style>
 
       <CrisisResource variant="light" />
     </main>
