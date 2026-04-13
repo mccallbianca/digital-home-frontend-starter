@@ -203,6 +203,7 @@ export default function DashboardClient({
             <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
               <Link
                 href="/dashboard/affirmations"
+                className="play-btn"
                 style={{
                   width: 64,
                   height: 64,
@@ -213,6 +214,7 @@ export default function DashboardClient({
                   justifyContent: 'center',
                   transition: 'background 200ms ease, transform 200ms ease',
                   flexShrink: 0,
+                  animation: 'playPulse 2s ease-in-out infinite',
                 }}
               >
                 <svg width="20" height="24" viewBox="0 0 12 14" fill="none">
@@ -384,8 +386,17 @@ export default function DashboardClient({
           grid-template-columns: repeat(2, 1fr);
           gap: 16px;
         }
+        .dash-card {
+          transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+        }
         .dash-card:hover {
           border-color: rgba(255,255,255,0.2) !important;
+          transform: translateY(-4px);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        @keyframes playPulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(196, 45, 142, 0.4); }
+          50%      { box-shadow: 0 0 20px 8px rgba(196, 45, 142, 0.15); }
         }
         @media (max-width: 768px) {
           .dash-layout {

@@ -275,7 +275,7 @@ export default function ScreenerClient({ userId, fromOnboarding }: ScreenerClien
             <button
               key={opt.value}
               onClick={() => handleSelect(opt.value)}
-              className="likert-btn"
+              className={`likert-btn${selected === opt.value ? ' likert-selected' : ''}`}
               style={{
                 width: 64,
                 height: 64,
@@ -358,6 +358,14 @@ export default function ScreenerClient({ userId, fromOnboarding }: ScreenerClien
       </div>
 
       <style>{`
+        .likert-selected {
+          animation: ratingPop 200ms ease;
+        }
+        @keyframes ratingPop {
+          0%   { transform: scale(1); }
+          50%  { transform: scale(1.15); }
+          100% { transform: scale(1); }
+        }
         @media (max-width: 480px) {
           .likert-btn {
             width: 48px !important;
