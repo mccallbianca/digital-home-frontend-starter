@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import ScrollFadeIn from '@/components/home/ScrollFadeIn';
 import WaveformVisual from '@/components/home/WaveformVisual';
+import { JsonLd } from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
   title: 'The Science Behind HERR',
@@ -20,6 +21,38 @@ const CONCERNS = [
 export default function TheSciencePage() {
   return (
     <main style={{ minHeight: '100vh', background: '#0A0A0F' }}>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: [
+            {
+              '@type': 'Question',
+              name: 'What is HERR?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'HERR (Human Existential Response and Reprogramming) is a clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice, founded by Bianca D. McCall, LMFT.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'How does voice cloning work in HERR?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'HERR clones your voice using AI technology and delivers daily affirmations spoken in your own voice. Self-referential processing research shows the subconscious trusts your own voice above all others.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Is HERR a therapy app?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'HERR is a wellness platform, not a healthcare provider or therapy replacement. It is informed by existential psychology and clinical frameworks but is not a substitute for licensed clinical care.',
+              },
+            },
+          ],
+        }}
+      />
 
       {/* ── Hero ────────────────────────────────────────────────────── */}
       <section
@@ -46,8 +79,8 @@ export default function TheSciencePage() {
         </p>
       </section>
 
-      {/* ── Section 1: The Existential Framework ────────────────────── */}
-      <section style={{ background: '#111118', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
+      {/* ── Section 1: The Existential Framework (light) ──────────── */}
+      <section style={{ background: '#FAF8F5', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <p
             style={{
@@ -65,7 +98,7 @@ export default function TheSciencePage() {
               fontFamily: "'Cormorant Garamond', Georgia, serif",
               fontSize: 'clamp(28px, 3.5vw, 32px)',
               fontWeight: 600,
-              color: '#FFFFFF',
+              color: '#1A1A2E',
               marginBottom: 20,
               lineHeight: 1.3,
             }}
@@ -75,7 +108,7 @@ export default function TheSciencePage() {
           <p
             style={{
               fontSize: 16,
-              color: 'rgba(255,255,255,0.7)',
+              color: '#6B6B7B',
               lineHeight: 1.7,
               maxWidth: 720,
               marginBottom: 48,
@@ -90,11 +123,12 @@ export default function TheSciencePage() {
               <ScrollFadeIn key={c.num} delay={i * 80}>
                 <div
                   style={{
-                    background: '#16161F',
+                    background: '#FFFFFF',
                     borderRadius: 16,
                     padding: 24,
                     textAlign: 'center',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    border: '1px solid rgba(0,0,0,0.06)',
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
                     height: '100%',
                   }}
                 >
@@ -113,13 +147,13 @@ export default function TheSciencePage() {
                     style={{
                       fontSize: 16,
                       fontWeight: 600,
-                      color: '#FFFFFF',
+                      color: '#1A1A2E',
                       marginBottom: 8,
                     }}
                   >
                     {c.name}
                   </p>
-                  <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>
+                  <p style={{ fontSize: 13, color: '#6B6B7B' }}>
                     {c.question}
                   </p>
                 </div>
@@ -271,8 +305,8 @@ export default function TheSciencePage() {
         </div>
       </section>
 
-      {/* ── Section 4: Evidence & Validation ─────────────────────────── */}
-      <section style={{ background: '#0A0A0F', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
+      {/* ── Section 4: Evidence & Validation (light) ──────────────── */}
+      <section style={{ background: '#FAF8F5', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
         <div style={{ maxWidth: 720, margin: '0 auto' }}>
           <ScrollFadeIn>
             <p
@@ -291,7 +325,7 @@ export default function TheSciencePage() {
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontSize: 'clamp(28px, 3.5vw, 32px)',
                 fontWeight: 600,
-                color: '#FFFFFF',
+                color: '#1A1A2E',
                 marginBottom: 24,
                 lineHeight: 1.3,
               }}
@@ -301,7 +335,7 @@ export default function TheSciencePage() {
             <p
               style={{
                 fontSize: 16,
-                color: 'rgba(255,255,255,0.7)',
+                color: '#6B6B7B',
                 lineHeight: 1.7,
                 marginBottom: 24,
               }}
@@ -315,7 +349,7 @@ export default function TheSciencePage() {
             <p
               style={{
                 fontSize: 16,
-                color: 'rgba(255,255,255,0.7)',
+                color: '#6B6B7B',
                 lineHeight: 1.7,
               }}
             >

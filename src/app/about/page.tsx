@@ -101,10 +101,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Section 1: The Story ────────────────────────────────────── */}
+      {/* ── Section 1: The Story (light) ──────────────────────────── */}
       <section
         style={{
-          background: '#0A0A0F',
+          background: '#FAF8F5',
           padding: 'clamp(48px, 8vw, 80px) 24px',
         }}
       >
@@ -118,7 +118,7 @@ export default function AboutPage() {
           }}
         >
           <ScrollFadeIn>
-            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8 }}>
+            <p style={{ fontSize: 16, color: '#6B6B7B', lineHeight: 1.8 }}>
               Before HERR, before ECQO Holdings, before the clinical frameworks and federal advisory
               roles — there was a voice. The inner voice that every elite performer hears but few
               understand. Bianca D. McCall spent her career studying that voice — as an existential
@@ -127,7 +127,7 @@ export default function AboutPage() {
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={100}>
-            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8 }}>
+            <p style={{ fontSize: 16, color: '#6B6B7B', lineHeight: 1.8 }}>
               The performance philosophy emerged from the intersection of the court and the clinic: we
               are all performing roles — in employment, community, family, and life. The inner voice
               is the conductor of every performance. When that conductor is dysregulated, every
@@ -135,7 +135,7 @@ export default function AboutPage() {
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={200}>
-            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8 }}>
+            <p style={{ fontSize: 16, color: '#6B6B7B', lineHeight: 1.8 }}>
               HERR is the technology that makes reprogramming personal. Not a generic meditation app.
               Not a chatbot pretending to be a therapist. A clinical operating system that assesses
               your existential concerns, regulates your nervous system, and delivers daily affirmations
@@ -143,7 +143,7 @@ export default function AboutPage() {
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={300}>
-            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8 }}>
+            <p style={{ fontSize: 16, color: '#6B6B7B', lineHeight: 1.8 }}>
               Today, Bianca advises SAMHSA&apos;s Suicide Prevention Resource Center, consults for the
               Native American Athletic Foundation (NFL, MLB), speaks internationally on stages from TED
               to the world&apos;s largest wellness conferences, and leads ECQO Holdings — the clinical
@@ -153,10 +153,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Section 2: Credentials ──────────────────────────────────── */}
+      {/* ── Section 2: Credentials (light) ─────────────────────────── */}
       <section
         style={{
-          background: '#111118',
+          background: '#F0EDE6',
           padding: 'clamp(48px, 8vw, 80px) 24px',
         }}
       >
@@ -178,10 +178,11 @@ export default function AboutPage() {
               <ScrollFadeIn key={cred.title} delay={i * 100}>
                 <div
                   style={{
-                    background: '#16161F',
+                    background: '#FFFFFF',
                     borderRadius: 16,
                     padding: 32,
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    border: '1px solid rgba(0,0,0,0.06)',
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
                     height: '100%',
                   }}
                 >
@@ -189,7 +190,7 @@ export default function AboutPage() {
                     style={{
                       fontSize: 16,
                       fontWeight: 600,
-                      color: '#FFFFFF',
+                      color: '#1A1A2E',
                       marginBottom: 8,
                       lineHeight: 1.4,
                     }}
@@ -199,7 +200,7 @@ export default function AboutPage() {
                   <p
                     style={{
                       fontSize: 14,
-                      color: 'rgba(255,255,255,0.6)',
+                      color: '#6B6B7B',
                       lineHeight: 1.5,
                     }}
                   >

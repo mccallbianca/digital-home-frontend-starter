@@ -3,6 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import WaveformVisual from '@/components/home/WaveformVisual';
 import ScrollFadeIn from '@/components/home/ScrollFadeIn';
+import ParticleField from '@/components/ui/ParticleField';
+import { JsonLd } from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
   title: 'HERR — Human Existential Response and Reprogramming',
@@ -90,8 +92,31 @@ const JOURNAL_PREVIEW = [
 /* ── Page ─────────────────────────────────────────────────────────────── */
 
 export default function HomePage() {
+  const softwareAppSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'HERR — Human Existential Response and Reprogramming',
+    applicationCategory: 'HealthApplication',
+    operatingSystem: 'Web',
+    url: 'https://h3rr.com',
+    description:
+      'A clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice.',
+    creator: {
+      '@type': 'Person',
+      name: 'Bianca D. McCall, LMFT',
+      jobTitle: 'Licensed Marriage and Family Therapist',
+    },
+    offers: [
+      { '@type': 'Offer', name: 'HERR Free', price: '0', priceCurrency: 'USD' },
+      { '@type': 'Offer', name: 'HERR Collective', price: '9', priceCurrency: 'USD' },
+      { '@type': 'Offer', name: 'HERR Personalized', price: '19', priceCurrency: 'USD' },
+      { '@type': 'Offer', name: 'HERR Elite', price: '29', priceCurrency: 'USD' },
+    ],
+  };
+
   return (
     <main style={{ minHeight: '100vh', background: '#0A0A0F' }}>
+      <JsonLd data={softwareAppSchema} />
 
       {/* ── Section 1: Hero ─────────────────────────────────────────── */}
       <section
@@ -110,6 +135,7 @@ export default function HomePage() {
           animation: 'gradientShift 8s ease infinite',
         }}
       >
+        <ParticleField />
         <h1
           style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
@@ -524,16 +550,20 @@ export default function HomePage() {
             {TIERS.map((tier, i) => (
               <ScrollFadeIn key={tier.name} delay={i * 100}>
                 <div
+                  className={tier.popular ? 'tier-card-popular' : undefined}
                   style={{
                     background: '#16161F',
                     borderRadius: 16,
                     padding: 32,
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    border: tier.popular
+                      ? '1px solid rgba(196, 45, 142, 0.4)'
+                      : '1px solid rgba(255,255,255,0.08)',
                     position: 'relative',
                     textAlign: 'left',
                     display: 'flex',
                     flexDirection: 'column',
                     height: '100%',
+                    ...(tier.popular ? { animation: 'borderGlow 3s ease-in-out infinite' } : {}),
                   }}
                 >
                   {tier.popular && (
@@ -819,6 +849,7 @@ export default function HomePage() {
             textTransform: 'uppercase',
             letterSpacing: '1px',
             textDecoration: 'none',
+            animation: 'ctaPulse 2s ease-in-out infinite',
           }}
         >
           Start Free
@@ -941,6 +972,16 @@ export default function HomePage() {
           0%   { background-position: 0% 50%; }
           50%  { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
+        }
+
+        @keyframes borderGlow {
+          0%, 100% { box-shadow: 0 0 30px rgba(196, 45, 142, 0.15); }
+          50%      { box-shadow: 0 0 50px rgba(196, 45, 142, 0.3); }
+        }
+
+        @keyframes ctaPulse {
+          0%, 100% { transform: scale(1); }
+          50%      { transform: scale(1.02); }
         }
 
         .method-grid {

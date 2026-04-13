@@ -94,12 +94,13 @@ export default function HowItWorksPage() {
       {/* ── 4-Step Sections (alternating) ───────────────────────────── */}
       {STEPS.map((step, i) => {
         const imageLeft = i % 2 === 0;
+        const isLight = i === 1 || i === 3; // steps 2 & 4 get warm light bg
 
         return (
           <section
             key={step.num}
             style={{
-              background: i % 2 === 0 ? '#0A0A0F' : '#111118',
+              background: isLight ? '#FAF8F5' : i % 2 === 0 ? '#0A0A0F' : '#111118',
               padding: 'clamp(64px, 10vw, 100px) 24px',
             }}
           >
@@ -112,11 +113,12 @@ export default function HowItWorksPage() {
                 <ScrollFadeIn delay={0}>
                   <div
                     style={{
-                      background: '#16161F',
+                      background: isLight ? '#FFFFFF' : '#16161F',
                       borderRadius: 16,
                       overflow: 'hidden',
                       padding: 24,
                       maxWidth: 480,
+                      ...(isLight ? { boxShadow: '0 4px 24px rgba(0,0,0,0.08)' } : {}),
                     }}
                   >
                     <div style={{ position: 'relative', aspectRatio: '4/3', borderRadius: 8, overflow: 'hidden' }}>
@@ -152,7 +154,7 @@ export default function HowItWorksPage() {
                       fontFamily: "'Cormorant Garamond', Georgia, serif",
                       fontSize: 'clamp(28px, 3.5vw, 32px)',
                       fontWeight: 600,
-                      color: '#FFFFFF',
+                      color: isLight ? '#1A1A2E' : '#FFFFFF',
                       marginBottom: 8,
                       lineHeight: 1.3,
                     }}
@@ -172,7 +174,7 @@ export default function HowItWorksPage() {
                   <p
                     style={{
                       fontSize: 16,
-                      color: 'rgba(255,255,255,0.7)',
+                      color: isLight ? '#6B6B7B' : 'rgba(255,255,255,0.7)',
                       lineHeight: 1.7,
                       marginBottom: step.detail ? 16 : 0,
                     }}
@@ -183,7 +185,7 @@ export default function HowItWorksPage() {
                     <p
                       style={{
                         fontSize: 14,
-                        color: 'rgba(255,255,255,0.4)',
+                        color: isLight ? '#6B6B7B' : 'rgba(255,255,255,0.4)',
                         fontStyle: 'italic',
                       }}
                     >
