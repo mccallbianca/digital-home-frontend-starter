@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import ScrollFadeIn from '@/components/home/ScrollFadeIn';
+import Waveform from '@/components/ui/Waveform';
 
 export const metadata: Metadata = {
   title: 'ECQO Sound\u2122 — Sonic Architecture for the Inner Voice',
@@ -47,9 +48,10 @@ export default function ECQOSoundPage() {
         >
           ECQO Sound™
         </h1>
-        <p style={{ fontSize: 18, color: '#E8388A' }}>
+        <p style={{ fontSize: 18, color: '#E8388A', marginBottom: 24 }}>
           Sonic architecture for the inner voice.
         </p>
+        <Waveform barCount={7} />
       </section>
 
       {/* ── Activity Modes ──────────────────────────────────────────── */}
@@ -318,8 +320,13 @@ export default function ECQOSoundPage() {
           grid-template-columns: repeat(4, 1fr);
           gap: 16px;
         }
+        .mode-card {
+          transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+        }
         .mode-card:hover {
           border-color: #C42D8E !important;
+          transform: translateY(-4px);
+          box-shadow: 0 8px 24px rgba(196, 45, 142, 0.1);
         }
         .mode-card:hover .mode-icon {
           stroke: #C42D8E !important;

@@ -225,8 +225,10 @@ export default function CheckoutFlow() {
   function cardStyle(featured: boolean): React.CSSProperties {
     if (featured) {
       return {
-        background: 'linear-gradient(135deg, #16161F 0%, #1E1E2A 100%)',
-        border: '2px solid #C42D8E',
+        background: 'rgba(22, 22, 31, 0.7)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border: '2px solid rgba(196, 45, 142, 0.5)',
         borderRadius: 16,
         padding: '40px 32px',
         display: 'flex',
@@ -538,6 +540,11 @@ export default function CheckoutFlow() {
         }
         .checkout-card--featured {
           transform: scale(1.03);
+          animation: checkoutGlow 3s ease-in-out infinite;
+        }
+        @keyframes checkoutGlow {
+          0%, 100% { box-shadow: 0 0 30px rgba(196, 45, 142, 0.15); }
+          50%      { box-shadow: 0 0 50px rgba(196, 45, 142, 0.3); }
         }
         .checkout-cta:hover {
           filter: brightness(1.15);

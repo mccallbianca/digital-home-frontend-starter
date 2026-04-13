@@ -72,7 +72,8 @@ export default function SignupForm() {
     color: '#FFFFFF',
     fontSize: 14,
     outline: 'none',
-    transition: 'border-color 200ms ease',
+    transition: 'border-color 200ms ease, box-shadow 200ms ease',
+    ...(hasError ? { animation: 'inputShake 400ms ease' } : {}),
   });
 
   const labelStyle: React.CSSProperties = {
@@ -102,10 +103,16 @@ export default function SignupForm() {
           placeholder="you@example.com"
           style={inputStyle(!!errors.email)}
           onFocus={(e) => {
-            if (!errors.email) e.currentTarget.style.borderColor = '#C42D8E';
+            if (!errors.email) {
+              e.currentTarget.style.borderColor = '#C42D8E';
+              e.currentTarget.style.boxShadow = '0 0 12px rgba(196, 45, 142, 0.2)';
+            }
           }}
           onBlur={(e) => {
-            if (!errors.email) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+            if (!errors.email) {
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+              e.currentTarget.style.boxShadow = 'none';
+            }
           }}
         />
         {errors.email && (
@@ -125,10 +132,16 @@ export default function SignupForm() {
             placeholder="Minimum 8 characters"
             style={{ ...inputStyle(!!errors.password), paddingRight: 48 }}
             onFocus={(e) => {
-              if (!errors.password) e.currentTarget.style.borderColor = '#C42D8E';
+              if (!errors.password) {
+                e.currentTarget.style.borderColor = '#C42D8E';
+                e.currentTarget.style.boxShadow = '0 0 12px rgba(196, 45, 142, 0.2)';
+              }
             }}
             onBlur={(e) => {
-              if (!errors.password) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+              if (!errors.password) {
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+                e.currentTarget.style.boxShadow = 'none';
+              }
             }}
           />
           <button
@@ -187,10 +200,16 @@ export default function SignupForm() {
           placeholder="Re-enter your password"
           style={inputStyle(!!errors.confirmPassword)}
           onFocus={(e) => {
-            if (!errors.confirmPassword) e.currentTarget.style.borderColor = '#C42D8E';
+            if (!errors.confirmPassword) {
+              e.currentTarget.style.borderColor = '#C42D8E';
+              e.currentTarget.style.boxShadow = '0 0 12px rgba(196, 45, 142, 0.2)';
+            }
           }}
           onBlur={(e) => {
-            if (!errors.confirmPassword) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+            if (!errors.confirmPassword) {
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+              e.currentTarget.style.boxShadow = 'none';
+            }
           }}
         />
         {errors.confirmPassword && (
@@ -237,6 +256,16 @@ export default function SignupForm() {
       >
         {loading ? 'Creating account\u2026' : 'Create Account'}
       </button>
+
+      <style>{`
+        @keyframes inputShake {
+          0%, 100% { transform: translateX(0); }
+          20% { transform: translateX(-5px); }
+          40% { transform: translateX(5px); }
+          60% { transform: translateX(-3px); }
+          80% { transform: translateX(3px); }
+        }
+      `}</style>
     </form>
   );
 }

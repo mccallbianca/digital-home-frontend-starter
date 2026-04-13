@@ -14,7 +14,8 @@ const inputStyle = (hasError: boolean): React.CSSProperties => ({
   color: '#FFFFFF',
   fontSize: 14,
   outline: 'none',
-  transition: 'border-color 200ms ease',
+  transition: 'border-color 200ms ease, box-shadow 200ms ease',
+  ...(hasError ? { animation: 'inputShake 400ms ease' } : {}),
 });
 
 const labelStyle: React.CSSProperties = {
@@ -217,8 +218,8 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
           style={inputStyle(!!errors.email)}
-          onFocus={(e) => { if (!errors.email) e.currentTarget.style.borderColor = '#C42D8E'; }}
-          onBlur={(e) => { if (!errors.email) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; }}
+          onFocus={(e) => { if (!errors.email) { e.currentTarget.style.borderColor = '#C42D8E'; e.currentTarget.style.boxShadow = '0 0 12px rgba(196,45,142,0.2)'; } }}
+          onBlur={(e) => { if (!errors.email) { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.boxShadow = 'none'; } }}
         />
         {errors.email && <p style={{ fontSize: 12, color: '#EF4444', marginTop: 4 }}>{errors.email}</p>}
       </div>
@@ -232,8 +233,8 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Your password"
           style={inputStyle(!!errors.password)}
-          onFocus={(e) => { if (!errors.password) e.currentTarget.style.borderColor = '#C42D8E'; }}
-          onBlur={(e) => { if (!errors.password) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; }}
+          onFocus={(e) => { if (!errors.password) { e.currentTarget.style.borderColor = '#C42D8E'; e.currentTarget.style.boxShadow = '0 0 12px rgba(196,45,142,0.2)'; } }}
+          onBlur={(e) => { if (!errors.password) { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.boxShadow = 'none'; } }}
         />
         {errors.password && <p style={{ fontSize: 12, color: '#EF4444', marginTop: 4 }}>{errors.password}</p>}
       </div>
@@ -264,6 +265,16 @@ export default function LoginForm({ redirectTo = '/dashboard' }: { redirectTo?: 
       <button type="submit" disabled={loading} style={{ ...btnPrimary, opacity: loading ? 0.5 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}>
         {loading ? 'Signing in\u2026' : 'Sign In'}
       </button>
+
+      <style>{`
+        @keyframes inputShake {
+          0%, 100% { transform: translateX(0); }
+          20% { transform: translateX(-5px); }
+          40% { transform: translateX(5px); }
+          60% { transform: translateX(-3px); }
+          80% { transform: translateX(3px); }
+        }
+      `}</style>
     </form>
   );
 }
