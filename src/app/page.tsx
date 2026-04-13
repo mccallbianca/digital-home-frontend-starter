@@ -151,17 +151,18 @@ export default function HomePage() {
           Reclaim Your Power with HERR
         </h1>
 
-        {/* TODO: Bianca to provide final approved subheadline */}
         <p
           className="animate-fade-up animate-delay-3"
           style={{
             fontFamily: 'system-ui, -apple-system, sans-serif',
-            fontSize: 18,
-            color: '#E8388A',
-            margin: '0 0 40px',
+            fontSize: '1.25rem',
+            color: '#FAF8F5',
+            margin: '16px 0 40px',
+            maxWidth: 640,
+            lineHeight: 1.5,
           }}
         >
-          Hear yourself becoming who you were meant to be.
+          The first clinically-informed defense against a world designed to dysregulate your nervous system.
         </p>
 
         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -359,8 +360,7 @@ export default function HomePage() {
                   lineHeight: 1.2,
                 }}
               >
-                {/* TODO: Bianca to provide final approved subheadline */}
-                Hear yourself becoming who you were meant to be.
+                The first clinically-informed defense against a world designed to dysregulate your nervous system.
               </h2>
               <p
                 style={{
