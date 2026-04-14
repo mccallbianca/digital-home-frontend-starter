@@ -48,7 +48,7 @@ export default function AboutPage() {
   return (
     <main style={{ minHeight: '100vh', background: '#0A0A0F' }}>
 
-      {/* TODO: Replace banner image — Bianca wants elevateUs.ai clip or still frame instead of current hair photo. Requires separate image asset. */}
+      {/* TODO: Replace banner with elevateUs.ai clip or still frame once asset is delivered. Current image: bianca-hero.png (brand-aligned). Future banner: /images/about-banner.jpg */}
       {/* ── Hero ─────────────────────────────────────────────────────── */}
       <section
         style={{
@@ -61,7 +61,7 @@ export default function AboutPage() {
         }}
       >
         <Image
-          src="/images/founder-bianca-mccall-processed.jpg"
+          src="/images/bianca-hero.png"
           alt="Bianca D. McCall, LMFT, Licensed Marriage and Family Therapist, federal advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
           fill
           sizes="100vw"
