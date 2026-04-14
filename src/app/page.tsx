@@ -119,7 +119,10 @@ export default function HomePage() {
     <main style={{ minHeight: '100vh', background: '#0A0A0F' }}>
       <JsonLd data={softwareAppSchema} />
 
-      {/* ── Section 1: Hero (dark) ─────────────────────────────────── */}
+      {/* ── Section 1: Hero (dark + video background) ────────────── */}
+      {/* TODO: Add hero-loop.mp4 to /public/videos/ — compressed elevateUs.ai highlight reel, <5MB, 10-15 seconds */}
+      {/* TODO: Add hero-mobile.jpg to /public/images/ — still frame from highlight reel */}
+      {/* TODO: Add hero-poster.jpg to /public/images/ — first frame of video for loading state */}
       <section
         style={{
           minHeight: '100vh',
@@ -131,12 +134,64 @@ export default function HomePage() {
           padding: '0 24px',
           position: 'relative',
           overflow: 'hidden',
-          background: 'linear-gradient(135deg, #0A0A0F 0%, #111118 50%, #0A0A0F 100%)',
-          backgroundSize: '400% 400%',
-          animation: 'gradientShift 8s ease infinite',
+          background: '#0A0A0F',
         }}
       >
+        {/* Background video (desktop/tablet only) */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/images/hero-poster.jpg"
+          className="hero-video"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            zIndex: 0,
+          }}
+        >
+          <source src="/videos/hero-loop.mp4" type="video/mp4" />
+        </video>
+
+        {/* Mobile fallback image (replaces video below 768px via CSS) */}
+        <div
+          className="hero-mobile-bg"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: 'url(/images/hero-mobile.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            zIndex: 0,
+            display: 'none',
+          }}
+        />
+
+        {/* Dark overlay for text legibility */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'rgba(10, 10, 15, 0.6)',
+            zIndex: 1,
+          }}
+        />
+
         <ParticleField />
+
+        {/* Hero content (above video + overlay) */}
         <h1
           style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
@@ -146,6 +201,8 @@ export default function HomePage() {
             lineHeight: 1.15,
             maxWidth: 720,
             margin: '0 0 24px',
+            position: 'relative',
+            zIndex: 2,
           }}
         >
           Reclaim Your Power with HERR
@@ -160,12 +217,14 @@ export default function HomePage() {
             margin: '16px 0 40px',
             maxWidth: 640,
             lineHeight: 1.5,
+            position: 'relative',
+            zIndex: 2,
           }}
         >
           The first clinically-informed defense against a world designed to dysregulate your nervous system.
         </p>
 
-        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center', position: 'relative', zIndex: 2 }}>
           <Link
             href="/signup"
             style={{
@@ -217,6 +276,8 @@ export default function HomePage() {
             color: 'rgba(255,255,255,0.4)',
             marginTop: 32,
             maxWidth: 480,
+            position: 'relative',
+            zIndex: 2,
           }}
         >
           Designed by a licensed clinician · Used by athletes, executives &amp; practitioners
@@ -873,6 +934,12 @@ export default function HomePage() {
 
       {/* ── Responsive Styles ───────────────────────────────────────── */}
       <style>{`
+        /* Hero video: hide on mobile, show mobile fallback image instead */
+        @media (max-width: 767px) {
+          .hero-video { display: none !important; }
+          .hero-mobile-bg { display: block !important; }
+        }
+
         @keyframes gradientShift {
           0%   { background-position: 0% 50%; }
           50%  { background-position: 100% 50%; }
