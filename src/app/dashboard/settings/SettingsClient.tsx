@@ -18,9 +18,9 @@ interface SettingsClientProps {
 
 const TIER_LABELS: Record<string, string> = {
   free: 'HERR Free',
-  collective: 'HERR Collective — $9/mo',
-  personalized: 'HERR Personalized — $19/mo',
-  elite: 'HERR Elite — $29/mo',
+  collective: 'HERR Collective: $9/mo',
+  personalized: 'HERR Personalized: $19/mo',
+  elite: 'HERR Elite: $29/mo',
 };
 
 export default function SettingsClient({

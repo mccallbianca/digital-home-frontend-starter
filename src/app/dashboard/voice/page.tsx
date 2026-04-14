@@ -6,7 +6,7 @@ import VoiceUploader from './VoiceUploader';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'My Voice — HERR',
+  title: 'My Voice | HERR',
   description: 'Manage your cloned voice and recording sessions.',
 };
 
@@ -25,7 +25,7 @@ export default async function VoicePage() {
 
   return (
     <main className="min-h-screen">
-      <section className="px-6 pt-32 pb-16 border-b border-[var(--herr-border)]">
+      <section className="px-6 pt-32 pb-16 border-b border-[var(--herr-border)]" style={{ background: '#0A0A0F' }}>
         <div className="max-w-[900px] mx-auto">
           <Link href="/dashboard" className="herr-label text-[var(--herr-muted)] hover:text-[var(--herr-white)] transition-colors mb-8 inline-block">
             ← Dashboard
@@ -40,25 +40,25 @@ export default async function VoicePage() {
         </div>
       </section>
 
-      <section className="px-6 py-16">
+      <section className="px-6 py-16" style={{ background: '#FAF8F5' }}>
         <div className="max-w-[900px] mx-auto">
           {/* Status cards */}
-          <div className="grid md:grid-cols-2 gap-px bg-[var(--herr-border)] mb-12">
-            <div className="bg-[var(--herr-black)] p-8">
-              <p className="herr-label text-[var(--herr-muted)] mb-2">Voice Clone Status</p>
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
+            <div className="p-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+              <p className="herr-label mb-2" style={{ color: '#666666' }}>Voice Clone Status</p>
               <p className={`font-display text-2xl font-light mb-2 ${hasFile ? 'text-[var(--herr-cobalt)]' : 'text-[var(--herr-pink)]'}`}>
                 {hasFile ? 'Sample Uploaded' : 'Pending'}
               </p>
-              <p className="text-[0.8rem] text-[var(--herr-faint)]">
+              <p className="text-[0.8rem]" style={{ color: '#999999' }}>
                 {hasFile ? 'Your voice sample is being processed.' : 'Upload a voice sample to begin.'}
               </p>
             </div>
-            <div className="bg-[var(--herr-black)] p-8">
-              <p className="herr-label text-[var(--herr-muted)] mb-2">Consent</p>
+            <div className="p-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+              <p className="herr-label mb-2" style={{ color: '#666666' }}>Consent</p>
               <p className={`font-display text-2xl font-light mb-2 ${hasConsent ? 'text-[var(--herr-cobalt)]' : 'text-[var(--herr-faint)]'}`}>
                 {hasConsent ? 'Confirmed' : 'Not yet provided'}
               </p>
-              <p className="text-[0.8rem] text-[var(--herr-faint)]">
+              <p className="text-[0.8rem]" style={{ color: '#999999' }}>
                 {hasConsent
                   ? `Consented on ${new Date(consent!.consented_at!).toLocaleDateString()}`
                   : 'Consent is required before voice cloning.'
@@ -68,16 +68,16 @@ export default async function VoicePage() {
           </div>
 
           {/* Re-upload section */}
-          <div className="border border-[var(--herr-border)] p-8">
-            <p className="herr-label text-[var(--herr-muted)] mb-4">
+          <div className="p-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <p className="herr-label mb-4" style={{ color: '#666666' }}>
               {hasFile ? 'Re-upload Voice Sample' : 'Upload Voice Sample'}
             </p>
             <VoiceUploader userId={user!.id} hasExisting={hasFile} />
           </div>
 
           {/* Privacy notice */}
-          <div className="mt-8 p-6 border border-[var(--herr-border)] bg-[var(--herr-surface)]">
-            <p className="text-[0.8rem] text-[var(--herr-faint)] leading-relaxed">
+          <div className="mt-8 p-6 rounded" style={{ background: '#F4F1EB' }}>
+            <p className="text-[0.8rem] leading-relaxed" style={{ color: '#999999' }}>
               Your voice recordings are encrypted, stored securely, and used exclusively to generate
               your personal affirmations. We never share, sell, or use your voice for any other purpose.
             </p>

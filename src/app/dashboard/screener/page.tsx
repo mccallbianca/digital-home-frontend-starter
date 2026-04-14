@@ -6,7 +6,7 @@ import ScreenerClient from './ScreenerClient';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'ECQO Assessment — HERR',
+  title: 'ECQO Assessment | HERR',
   description: 'Complete your existential concerns questionnaire to personalize your HERR experience.',
 };
 

@@ -6,7 +6,7 @@ import SettingsClient from './SettingsClient';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Settings — HERR',
+  title: 'Settings | HERR',
   description: 'Manage your HERR account settings.',
 };
 

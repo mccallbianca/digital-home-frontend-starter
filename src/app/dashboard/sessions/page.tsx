@@ -7,7 +7,7 @@ import SessionsClient from './SessionsClient';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Live Sessions — HERR',
+  title: 'Live Sessions | HERR',
   description: 'Monthly live group sessions with Bianca D. McCall, LMFT.',
 };
 
@@ -27,21 +27,21 @@ export default async function SessionsPage() {
 
   if (!isElite) {
     return (
-      <div style={{ minHeight: '100vh', background: '#0A0A0F', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 24px' }}>
+      <div style={{ minHeight: '100vh', background: '#FAF8F5', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 24px' }}>
         <div style={{ maxWidth: 480, textAlign: 'center' }}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 16px', display: 'block' }}>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C42D8E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 16px', display: 'block' }}>
             <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 24, color: '#FFFFFF', marginBottom: 8 }}>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 24, color: '#1A1A2E', marginBottom: 8 }}>
             Live Sessions are Elite-Only
           </h1>
-          <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, marginBottom: 24 }}>
-            Upgrade to HERR Elite for monthly live group sessions with Bianca D. McCall, LMFT — limited to 25 seats per session.
+          <p style={{ fontSize: 15, color: '#666666', lineHeight: 1.6, marginBottom: 24 }}>
+            Upgrade to HERR Elite for monthly live group sessions with Bianca D. McCall, LMFT. Limited to 25 seats per session.
           </p>
           <Link href="/checkout?tier=elite" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', height: 48, padding: '0 32px', background: '#C42D8E', color: '#FFFFFF', borderRadius: 12, fontSize: 14, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', textDecoration: 'none' }}>
-            Upgrade to Elite — $29/mo
+            Upgrade to Elite: $29/mo
           </Link>
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)', marginTop: 12 }}>Cancel anytime. No contracts.</p>
+          <p style={{ fontSize: 13, color: '#999999', marginTop: 12 }}>Cancel anytime. No contracts.</p>
         </div>
       </div>
     );

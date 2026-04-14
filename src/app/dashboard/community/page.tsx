@@ -6,8 +6,8 @@ import HERRNation from './HERRNation';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'HERR Nation — Community',
-  description: 'HERR Nation — the community for every human doing the reprogramming work.',
+  title: 'HERR Nation | Community',
+  description: 'HERR Nation | the community for every human doing the reprogramming work.',
 };
 
 export default async function CommunityPage() {
@@ -42,7 +42,7 @@ export default async function CommunityPage() {
         </div>
       </section>
 
-      <section className="px-6 py-4">
+      <section className="px-6 py-4" style={{ background: '#FAF8F5' }}>
         <div className="max-w-[1200px] mx-auto">
           <HERRNation
             userId={user!.id}

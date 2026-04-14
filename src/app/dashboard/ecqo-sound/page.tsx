@@ -6,7 +6,7 @@ import ECQOSoundPlayer from './ECQOSoundPlayer';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'ECQO Sound — HERR',
+  title: 'ECQO Sound | HERR',
   description: 'Your personalized therapeutic soundtrack. Three layers. One experience.',
 };
 
@@ -56,12 +56,12 @@ export default async function ECQOSoundDashboardPage() {
             <span className="text-[var(--herr-pink)]">a soundtrack.</span>
           </h1>
           <p className="text-[var(--herr-muted)] max-w-xl leading-relaxed">
-            Three layers of therapeutic sound — your voice affirmation, genre-composed music, and clinically calibrated ambient frequencies — playing simultaneously.
+            Three layers of therapeutic sound: your voice affirmation, genre-composed music, and clinically calibrated ambient frequencies, playing simultaneously.
           </p>
         </div>
       </section>
 
-      <section className="px-6 py-16">
+      <section className="px-6 py-16" style={{ background: '#FAF8F5' }}>
         <div className="max-w-[900px] mx-auto">
           <ECQOSoundPlayer
             genre={selectedGenre}

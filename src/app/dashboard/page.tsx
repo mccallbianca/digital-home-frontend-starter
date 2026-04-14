@@ -5,7 +5,7 @@ import DashboardClient from './DashboardClient';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Dashboard — HERR',
+  title: 'Dashboard | HERR',
   description: 'Your HERR member dashboard.',
 };
 
@@ -80,7 +80,7 @@ export default async function DashboardPage({
       href: isElite ? '/dashboard/sessions' : '/dashboard/billing',
       label: 'Live Events',
       description: 'Monthly live group sessions with Bianca D. McCall, LMFT. Real-time guidance, Q&A, and community healing.',
-      tier: isElite ? 'Elite' : 'Elite Only — Upgrade',
+      tier: isElite ? 'Elite' : 'Elite Only: Upgrade',
       tierColor: 'text-[var(--herr-violet)]',
       status: null,
       statusColor: '',
@@ -97,7 +97,7 @@ export default async function DashboardPage({
     {
       href: '/dashboard/community',
       label: 'Community',
-      description: 'HERR Nation — share wins, ask questions, and grow alongside people committed to reprogramming their inner voice.',
+      description: 'HERR Nation: share wins, ask questions, and grow alongside people committed to reprogramming their inner voice.',
       tier: 'All tiers',
       tierColor: 'text-[var(--herr-muted)]',
       status: null,

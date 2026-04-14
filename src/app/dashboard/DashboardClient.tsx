@@ -126,14 +126,14 @@ export default function DashboardClient({
         </aside>
 
         {/* ── Main Content ──────────────────────────────────────── */}
-        <main style={{ background: '#0A0A0F', padding: 'clamp(24px, 4vw, 32px)', minHeight: '100vh' }}>
+        <main style={{ background: '#FAF8F5', padding: 'clamp(24px, 4vw, 32px)', minHeight: '100vh' }}>
           {/* Greeting */}
           <h1
             style={{
               fontFamily: "'Cormorant Garamond', Georgia, serif",
               fontSize: 'clamp(24px, 3vw, 32px)',
               fontWeight: 600,
-              color: '#FFFFFF',
+              color: '#1A1A2E',
               marginBottom: 8,
             }}
           >
@@ -145,7 +145,7 @@ export default function DashboardClient({
                 fontSize: 12,
                 textTransform: 'uppercase',
                 letterSpacing: '2px',
-                color: plan === 'elite' ? '#2563EB' : plan === 'personalized' ? '#C42D8E' : 'rgba(255,255,255,0.5)',
+                color: plan === 'elite' ? '#2563EB' : plan === 'personalized' ? '#C42D8E' : '#666666',
                 marginBottom: 32,
               }}
             >
@@ -153,13 +153,12 @@ export default function DashboardClient({
             </p>
           )}
 
-          {/* Today's Affirmation Card */}
+          {/* Today's Affirmation Card (dark accent) */}
           <div
             style={{
-              background: '#16161F',
+              background: '#0A0A0F',
               borderRadius: 16,
               padding: 32,
-              border: '1px solid rgba(255,255,255,0.08)',
               marginBottom: 24,
             }}
           >
@@ -235,10 +234,10 @@ export default function DashboardClient({
               <div
                 key={stat.label}
                 style={{
-                  background: '#16161F',
+                  background: '#FFFFFF',
                   borderRadius: 16,
                   padding: 24,
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
                   flex: 1,
                 }}
               >
@@ -247,13 +246,13 @@ export default function DashboardClient({
                     fontFamily: "'Cormorant Garamond', Georgia, serif",
                     fontSize: 32,
                     fontWeight: 600,
-                    color: '#FFFFFF',
+                    color: '#1A1A2E',
                     marginBottom: 4,
                   }}
                 >
                   {stat.value}
                 </p>
-                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>{stat.label}</p>
+                <p style={{ fontSize: 13, color: '#666666' }}>{stat.label}</p>
               </div>
             ))}
           </div>
@@ -265,23 +264,23 @@ export default function DashboardClient({
                 key={card.sectionId}
                 href={card.href}
                 style={{
-                  background: '#16161F',
+                  background: '#FFFFFF',
                   borderRadius: 16,
                   padding: 24,
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
                   textDecoration: 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 8,
-                  transition: 'border-color 200ms ease',
+                  transition: 'box-shadow 200ms ease, transform 200ms ease',
                 }}
                 className="dash-card"
               >
-                <div style={{ color: 'rgba(255,255,255,0.4)', marginBottom: 4 }}>
+                <div style={{ color: '#C42D8E', marginBottom: 4 }}>
                   {card.icon}
                 </div>
-                <p style={{ fontSize: 16, fontWeight: 600, color: '#FFFFFF' }}>{card.label}</p>
-                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5 }}>
+                <p style={{ fontSize: 16, fontWeight: 600, color: '#1A1A2E' }}>{card.label}</p>
+                <p style={{ fontSize: '1rem', color: '#666666', lineHeight: 1.5 }}>
                   {card.description}
                 </p>
                 {card.status && (
@@ -305,7 +304,7 @@ export default function DashboardClient({
             style={{
               background: 'none',
               border: 'none',
-              color: 'rgba(255,255,255,0.25)',
+              color: '#999999',
               fontSize: 11,
               textTransform: 'uppercase',
               letterSpacing: '1.5px',
@@ -317,7 +316,7 @@ export default function DashboardClient({
           </button>
 
           {/* Disclaimer */}
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.25)', marginTop: 24, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 12, color: '#999999', marginTop: 24, lineHeight: 1.6 }}>
             HERR is a wellness tool and is not a substitute for professional mental health treatment.
             Always consult a licensed clinician for clinical concerns. &copy; ECQO Holdings.
           </p>
@@ -387,12 +386,11 @@ export default function DashboardClient({
           gap: 16px;
         }
         .dash-card {
-          transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+          transition: transform 200ms ease, box-shadow 200ms ease;
         }
         .dash-card:hover {
-          border-color: rgba(255,255,255,0.2) !important;
           transform: translateY(-4px);
-          box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
         }
         @keyframes playPulse {
           0%, 100% { box-shadow: 0 0 0 0 rgba(196, 45, 142, 0.4); }

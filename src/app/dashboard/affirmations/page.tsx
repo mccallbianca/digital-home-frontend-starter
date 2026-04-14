@@ -6,7 +6,7 @@ import AffirmationsClient from './AffirmationsClient';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'My Affirmations — HERR',
+  title: 'My Affirmations | HERR',
   description: 'Your daily personalized affirmations.',
 };
 
@@ -27,13 +27,13 @@ export default async function AffirmationsPage() {
   // Free users see tier gate
   if (plan === 'free') {
     return (
-      <div style={{ minHeight: '100vh', background: '#0A0A0F', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 24px' }}>
+      <div style={{ minHeight: '100vh', background: '#FAF8F5', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 24px' }}>
         <div style={{ maxWidth: 480, textAlign: 'center' }}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 16px', display: 'block' }}>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C42D8E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 16px', display: 'block' }}>
             <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 24, color: '#FFFFFF', marginBottom: 8 }}>Unlock Daily Affirmations</h1>
-          <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, marginBottom: 24 }}>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 24, color: '#1A1A2E', marginBottom: 8 }}>Unlock Daily Affirmations</h1>
+          <p style={{ fontSize: 15, color: '#666666', lineHeight: 1.6, marginBottom: 24 }}>
             Upgrade to HERR Collective to receive daily affirmations in Bianca&apos;s voice,
             or HERR Personalized to hear them in your own.
           </p>

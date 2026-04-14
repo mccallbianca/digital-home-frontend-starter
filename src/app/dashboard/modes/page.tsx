@@ -6,7 +6,7 @@ import ModesClient from './ModesClient';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Activity Modes — HERR',
+  title: 'Activity Modes | HERR',
   description: 'Choose which activity modes receive your daily affirmations.',
 };
 
