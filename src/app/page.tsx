@@ -485,10 +485,9 @@ export default function HomePage() {
                   background: '#E8E5DE',
                 }}
               >
-                {/* TODO: When final brand shoot assets arrive, verify bianca-hero.png is optimized (WebP preferred, max 1200px wide). */}
                 <Image
                   src="/images/bianca-hero.png"
-                  alt="Bianca D. McCall, LMFT, Licensed Marriage and Family Therapist, federal advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
+                  alt="Bianca D. McCall, LMFT, Founder of ECQO Holdings and creator of HERR"
                   fill
                   sizes="(max-width: 768px) 100vw, 40vw"
                   className="object-cover"
