@@ -24,6 +24,8 @@ interface DashboardClientProps {
   plan: string | null;
   cards: DashboardCard[];
   isFirstLoad: boolean;
+  isAdmin?: boolean;
+  isProducer?: boolean;
 }
 
 function getGreeting(): string {
@@ -39,6 +41,8 @@ export default function DashboardClient({
   plan,
   cards,
   isFirstLoad,
+  isAdmin = false,
+  isProducer = false,
 }: DashboardClientProps) {
   const [showTutorial, setShowTutorial] = useState(false);
 
@@ -122,7 +126,131 @@ export default function DashboardClient({
                 </Link>
               ))}
             </nav>
+
+            {/* ── Portal Links (role-gated) ─────────────────────── */}
+            {/* TODO: Replace with role-based visibility once roles are implemented in Supabase */}
+            {(isAdmin || isProducer) && (
+              <div style={{ marginTop: 24, paddingTop: 20, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                <p
+                  style={{
+                    fontSize: 10,
+                    textTransform: 'uppercase',
+                    letterSpacing: '2px',
+                    color: 'rgba(255,255,255,0.3)',
+                    padding: '0 24px',
+                    marginBottom: 8,
+                  }}
+                >
+                  Portals
+                </p>
+                {isAdmin && (
+                  <Link
+                    href="/admin"
+                    className="dash-nav-item"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 12,
+                      padding: '12px 24px',
+                      borderRadius: 8,
+                      fontSize: 14,
+                      color: '#E8388A',
+                      textDecoration: 'none',
+                      transition: 'background 200ms ease',
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                    </svg>
+                    Admin Portal
+                  </Link>
+                )}
+                {isProducer && (
+                  <Link
+                    href="/admin/producers"
+                    className="dash-nav-item"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 12,
+                      padding: '12px 24px',
+                      borderRadius: 8,
+                      fontSize: 14,
+                      color: '#8B5CF6',
+                      textDecoration: 'none',
+                      transition: 'background 200ms ease',
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-2.236-1.93l.365-2.514a2.25 2.25 0 011.84-1.921l2.983-.466zM3 15.364V8.25a2.25 2.25 0 011.632-2.163l1.32-.377a1.803 1.803 0 012.236 1.93l-.365 2.514a2.25 2.25 0 01-1.84 1.921L3 12.516v2.848z" />
+                    </svg>
+                    {/* TODO: Create dedicated /producer portal with track upload, earnings, and delivery status */}
+                    Producer Queue
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
+
+          {/* ── Role Indicator (bottom of sidebar) ─────────────── */}
+          {(isAdmin || isProducer) && (
+            <div
+              style={{
+                padding: '16px 24px',
+                borderTop: '1px solid rgba(255,255,255,0.08)',
+                marginTop: 'auto',
+              }}
+            >
+              <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', marginBottom: 6 }}>
+                Current view
+              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                <span
+                  style={{
+                    fontSize: 11,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    color: '#10B981',
+                    background: 'rgba(16, 185, 129, 0.1)',
+                    padding: '3px 10px',
+                    borderRadius: 100,
+                  }}
+                >
+                  Member
+                </span>
+                {isAdmin && (
+                  <span
+                    style={{
+                      fontSize: 11,
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px',
+                      color: '#E8388A',
+                      background: 'rgba(232, 56, 138, 0.1)',
+                      padding: '3px 10px',
+                      borderRadius: 100,
+                    }}
+                  >
+                    Admin
+                  </span>
+                )}
+                {isProducer && (
+                  <span
+                    style={{
+                      fontSize: 11,
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px',
+                      color: '#8B5CF6',
+                      background: 'rgba(139, 92, 246, 0.1)',
+                      padding: '3px 10px',
+                      borderRadius: 100,
+                    }}
+                  >
+                    Producer
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
         </aside>
 
         {/* ── Main Content ──────────────────────────────────────── */}
@@ -369,6 +497,8 @@ export default function DashboardClient({
           top: 0;
           height: 100vh;
           overflow-y: auto;
+          display: flex;
+          flex-direction: column;
         }
         .dash-nav-item:hover {
           background: rgba(255,255,255,0.05);

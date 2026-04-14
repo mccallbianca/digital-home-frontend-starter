@@ -39,6 +39,15 @@ export default async function DashboardPage({
   // Detect first-load via ?welcome=1 query param (set by onboarding redirect)
   const isFirstLoad = params.welcome === '1';
 
+  // ── Role-based portal access ────────────────────────────────
+  // TODO: Replace with role-based visibility once roles are implemented in Supabase
+  // Currently uses hardcoded admin email list (matches /admin layout gate)
+  const ADMIN_EMAILS = ['bianca@h3rr.com', 'bdmccall@gmail.com', 'mccall.bianca@gmail.com'];
+  const userEmail = profile?.email ?? user!.email ?? '';
+  const isAdmin = ADMIN_EMAILS.includes(userEmail);
+  // TODO: Add is_producer column to profiles table and check here
+  const isProducer = isAdmin; // For now, Bianca has all roles
+
   // ── 5-Section Card Configuration ────────────────────────────
   const cards = [
     // Section 1: Inbox / Affirmation Downloads
@@ -136,6 +145,8 @@ export default async function DashboardPage({
       plan={plan ?? null}
       cards={cards}
       isFirstLoad={isFirstLoad}
+      isAdmin={isAdmin}
+      isProducer={isProducer}
     />
   );
 }
