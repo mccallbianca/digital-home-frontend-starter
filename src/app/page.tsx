@@ -120,9 +120,6 @@ export default function HomePage() {
       <JsonLd data={softwareAppSchema} />
 
       {/* ── Section 1: Hero (dark + video background) ────────────── */}
-      {/* TODO: Add hero-loop.mp4 to /public/videos/ — compressed elevateUs.ai highlight reel, <5MB, 10-15 seconds */}
-      {/* TODO: Add hero-mobile.jpg to /public/images/ — still frame from highlight reel */}
-      {/* TODO: Add hero-poster.jpg to /public/images/ — first frame of video for loading state */}
       <section
         style={{
           minHeight: '100vh',
@@ -159,8 +156,14 @@ export default function HomePage() {
           <source src="/videos/hero-loop.mp4" type="video/mp4" />
         </video>
 
-        {/* Mobile fallback image (replaces video below 768px via CSS) */}
-        <div
+        {/* Mobile video (smaller file, shown below 768px via CSS) */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/images/hero-poster.jpg"
           className="hero-mobile-bg"
           style={{
             position: 'absolute',
@@ -168,13 +171,13 @@ export default function HomePage() {
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundImage: 'url(/images/hero-mobile.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            objectFit: 'cover',
             zIndex: 0,
             display: 'none',
           }}
-        />
+        >
+          <source src="/videos/hero-loop-mobile.mp4" type="video/mp4" />
+        </video>
 
         {/* Dark overlay for text legibility */}
         <div
@@ -935,7 +938,7 @@ export default function HomePage() {
 
       {/* ── Responsive Styles ───────────────────────────────────────── */}
       <style>{`
-        /* Hero video: hide on mobile, show mobile fallback image instead */
+        /* Hero video: swap desktop loop for smaller mobile loop below 768px */
         @media (max-width: 767px) {
           .hero-video { display: none !important; }
           .hero-mobile-bg { display: block !important; }
