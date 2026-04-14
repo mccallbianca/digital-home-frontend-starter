@@ -147,9 +147,18 @@ export default function CommunityClient({ displayName, plan }: CommunityClientPr
 
           {/* Messages area */}
           <div style={{ flex: 1, padding: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.3)', textAlign: 'center' }}>
-              Be the first to post in #{channel.name}
-            </p>
+            <div style={{ textAlign: 'center', maxWidth: 400 }}>
+              <p style={{ fontSize: 28, marginBottom: 12 }}>&#x1F331;</p>
+              <p style={{ fontSize: '1.125rem', color: '#FFFFFF', fontWeight: 600, marginBottom: 8 }}>
+                This space is waiting for your voice.
+              </p>
+              <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, marginBottom: 20 }}>
+                You are among the first to be here. Share a thought, a win, or simply introduce yourself.
+              </p>
+              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)' }}>
+                #{channel.name}
+              </p>
+            </div>
           </div>
 
           {/* Message input */}
