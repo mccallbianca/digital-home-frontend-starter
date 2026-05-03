@@ -58,10 +58,7 @@ export async function GET() {
     if (stateErr || !state) {
       console.error("[dss-poll/score] state read error:", stateErr);
       return NextResponse.json(
-        {
-          error: "Session state unavailable.",
-          detail: stateErr?.message ?? "no error returned but state was null",
-        },
+        { error: "Session state unavailable." },
         { status: 500 }
       );
     }
