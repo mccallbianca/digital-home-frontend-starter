@@ -374,7 +374,7 @@ function renderEmailHtml(ctx: EmailContext): string {
             Bianca D. McCall, M.A., LMFT<br>
             Three M&rsquo;s Enterprises (3ME) | ECQO Holdings<br>
             <a href="mailto:hello@go3me.com" style="color:#5C3478;">hello@go3me.com</a> &middot;
-            <a href="https://biancamccall.com" style="color:#5C3478;">biancamccall.com</a>
+            <a href="https://biancadmccall.com" style="color:#5C3478;">biancadmccall.com</a>
           </td>
         </tr>
         <tr>
@@ -432,7 +432,7 @@ Visit https://h3rr.com
 
 Bianca D. McCall, M.A., LMFT
 Three M's Enterprises (3ME) | ECQO Holdings
-hello@go3me.com | biancamccall.com
+hello@go3me.com | biancadmccall.com
 
 You're receiving this because you requested your DSS 2026 personal results.
 Unsubscribe: ${unsubscribeUrl}
