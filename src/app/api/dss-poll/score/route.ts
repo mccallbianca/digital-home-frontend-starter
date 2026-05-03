@@ -58,7 +58,25 @@ export async function GET() {
     if (stateErr || !state) {
       console.error("[dss-poll/score] state read error:", stateErr);
       return NextResponse.json(
-        { error: "Session state unavailable." },
+        {
+          error: "Session state unavailable.",
+          // TEMP DIAGNOSTIC: surface the underlying error + env presence
+          // so we can distinguish missing-secret from RLS from network.
+          // Remove in the next commit once root cause is identified.
+          debug: {
+            stateErr_message: stateErr?.message ?? null,
+            stateErr_code: stateErr?.code ?? null,
+            stateErr_hint: stateErr?.hint ?? null,
+            stateErr_details: stateErr?.details ?? null,
+            env_has_SUPABASE_URL: !!process.env.SUPABASE_URL,
+            env_has_NEXT_PUBLIC_SUPABASE_URL:
+              !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+            env_has_SERVICE_ROLE_KEY:
+              !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+            env_SERVICE_ROLE_KEY_len:
+              process.env.SUPABASE_SERVICE_ROLE_KEY?.length ?? 0,
+          },
+        },
         { status: 500 }
       );
     }
