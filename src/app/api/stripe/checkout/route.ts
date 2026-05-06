@@ -26,7 +26,6 @@ const PRICE_MAP: Record<string, string> = {
   elite:        'STRIPE_PRICE_ELITE',
 };
 
-// Trial days per tier — 0 means no trial, immediate billing
 const TRIAL_DAYS: Record<HERRTier, number> = {
   collective:   0,
   personalized: 7,
@@ -48,41 +47,33 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid tier' }, { status: 400 });
     }
 
-    // Free tier — no Stripe checkout needed
     if (tier === 'free') {
       return NextResponse.json({ url: '/signup' });
     }
 
-    // ── TESTER BYPASS ──────────────────────────────────────────
-    // If the email matches a record in the testers table OR the
-    // signed-in profile has is_tester=true, skip Stripe entirely
-    // and grant them their tester tier directly.
     if (email && SUPABASE_URL && SUPABASE_SERVICE_KEY) {
-      const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+      try {
+        const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+        const { data: testerRecord } = await supabase
+          .from('testers')
+          .select('email, trial_tier, status')
+          .eq('email', email)
+          .in('status', ['invited', 'active'])
+          .maybeSingle();
 
-      const { data: testerRecord } = await supabase
-        .from('testers')
-        .select('email, trial_tier, status')
-        .eq('email', email)
-        .in('status', ['invited', 'active'])
-        .maybeSingle();
-
-      if (testerRecord) {
-        // This email is on the tester invite list.
-        // Send them to /signup with tester flag — the trigger we built
-        // (handle_tester_signup) will set their profile fields automatically
-        // when they create their account.
-        return NextResponse.json({
-          url: `/signup?tester=true&email=${encodeURIComponent(email)}`,
-          tester: true,
-          tier: testerRecord.trial_tier,
-        });
+        if (testerRecord) {
+          return NextResponse.json({
+            url: `/signup?tester=true&email=${encodeURIComponent(email)}`,
+            tester: true,
+            tier: testerRecord.trial_tier,
+          });
+        }
+      } catch (testerErr) {
+        console.error('[stripe/checkout] tester lookup failed (non-fatal):', testerErr);
       }
     }
 
-    // ── PUBLIC STRIPE CHECKOUT FLOW ────────────────────────────
     const stripe = new Stripe(secretKey, {
-      apiVersion: '2026-03-25.dahlia',
       httpClient: Stripe.createFetchHttpClient(),
     });
 
@@ -120,12 +111,10 @@ export async function POST(req: NextRequest) {
       },
     };
 
-    // Pre-fill and lock customer email if provided
     if (email) {
       sessionParams.customer_email = email;
     }
 
-    // Apply trial period for Personalized and Elite tiers
     if (trialDays > 0) {
       sessionParams.subscription_data = {
         trial_period_days: trialDays,
@@ -135,15 +124,27 @@ export async function POST(req: NextRequest) {
           },
         },
       };
-      // Require payment method on the trial since we cancel if missing
       sessionParams.payment_method_collection = 'always';
     }
 
-    const session = await stripe.checkout.sessions.create(sessionParams);
-
-    return NextResponse.json({ url: session.url });
+    try {
+      const session = await stripe.checkout.sessions.create(sessionParams);
+      return NextResponse.json({ url: session.url });
+    } catch (stripeErr) {
+      const errMessage = stripeErr instanceof Error ? stripeErr.message : String(stripeErr);
+      console.error('[stripe/checkout] Stripe API error:', errMessage);
+      console.error('[stripe/checkout] Full error:', JSON.stringify(stripeErr, Object.getOwnPropertyNames(stripeErr)));
+      return NextResponse.json({ 
+        error: 'Failed to create checkout session',
+        debug: errMessage,
+      }, { status: 500 });
+    }
   } catch (err) {
-    console.error('[stripe/checkout]', err);
-    return NextResponse.json({ error: 'Failed to create checkout session' }, { status: 500 });
+    const errMessage = err instanceof Error ? err.message : String(err);
+    console.error('[stripe/checkout] Outer error:', errMessage);
+    return NextResponse.json({ 
+      error: 'Failed to create checkout session',
+      debug: errMessage,
+    }, { status: 500 });
   }
 }
