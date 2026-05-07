@@ -2,10 +2,16 @@
  * POST /api/affirmations/generate
  *
  * Generates a personalized HERR affirmation script via Claude API,
- * converts to MP3 via ElevenLabs, stores in Supabase.
+ * converts to MP3 via ElevenLabs, stores in Supabase Storage (PRIVATE bucket),
+ * returns a 24-hour signed URL for clinical-grade audio delivery.
+ *
+ * ECQO SAFE SOURCE CODE — Clinical Privacy Standard:
+ * The voice-samples bucket is PRIVATE. Audio access is granted via
+ * time-limited signed URLs (24h expiry) compliant with HIPAA, EU AI Act,
+ * and SAMHSA best practices for behavioral health data.
  *
  * Body: { userId: string, activityMode: string }
- * Returns: { scriptId, script, audioUrl }
+ * Returns: { scriptId, script, audioUrl, activityMode }
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -18,7 +24,54 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY || '';
 
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY || '';
-const DEFAULT_VOICE_ID = process.env.ELEVENLABS_DEFAULT_VOICE_ID || 'pNInz6obpgDQGcFmaJgB'; // Adam
+const DEFAULT_VOICE_ID = process.env.ELEVENLABS_DEFAULT_VOICE_ID || 'pNInz6obpgDQGcFmaJgB'; // Adam fallback
+
+// Signed URL expiry — 24 hours in seconds. Cron regenerates daily.
+const SIGNED_URL_EXPIRY_SECONDS = 60 * 60 * 24;
+
+const MODE_CONTEXT: Record<string, string> = {
+  'workout':     'The member is about to train. Focus on physical power, discipline, and embodied strength. Use energizing, commanding cadence.',
+  'driving':     'The member is in their car. Focus on direction, control, and intentional movement. Calm authority.',
+  'sleep':       'The member is preparing for sleep. Use slow, soothing cadence. Focus on safety, release, and subconscious receptivity.',
+  'morning':     'The member is starting their day. Focus on clarity, fresh identity, and the power of first declarations.',
+  'deep-work':   'The member is entering focused creative or intellectual work. Focus on mastery, concentration, and protected output.',
+  'love-family': 'The member is connecting with loved ones. Focus on emotional presence, secure attachment, and heart-centered identity.',
+  'abundance':   'The member is cultivating wealth and career alignment. Focus on worthiness, receiving, and financial identity.',
+  'healing':     'The member is in a healing or recovery process. Focus on grace, patience, and becoming. Gentle, compassionate tone.',
+};
+
+function buildSystemPrompt(mode: string, sc
+cd ~/Desktop/digital-home/digital-home-frontend-starter && cat > src/app/api/affirmations/generate/route.ts << 'EOF'
+/**
+ * POST /api/affirmations/generate
+ *
+ * Generates a personalized HERR affirmation script via Claude API,
+ * converts to MP3 via ElevenLabs, stores in Supabase Storage (PRIVATE bucket),
+ * returns a 24-hour signed URL for clinical-grade audio delivery.
+ *
+ * ECQO SAFE SOURCE CODE — Clinical Privacy Standard:
+ * The voice-samples bucket is PRIVATE. Audio access is granted via
+ * time-limited signed URLs (24h expiry) compliant with HIPAA, EU AI Act,
+ * and SAMHSA best practices for behavioral health data.
+ *
+ * Body: { userId: string, activityMode: string }
+ * Returns: { scriptId, script, audioUrl, activityMode }
+ */
+
+import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
+import { logAgentInteraction } from '@/lib/security/audit-log';
+
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY || '';
+
+const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY || '';
+const DEFAULT_VOICE_ID = process.env.ELEVENLABS_DEFAULT_VOICE_ID || 'pNInz6obpgDQGcFmaJgB'; // Adam fallback
+
+// Signed URL expiry — 24 hours in seconds. Cron regenerates daily.
+const SIGNED_URL_EXPIRY_SECONDS = 60 * 60 * 24;
 
 const MODE_CONTEXT: Record<string, string> = {
   'workout':     'The member is about to train. Focus on physical power, discipline, and embodied strength. Use energizing, commanding cadence.',
@@ -192,7 +245,7 @@ export async function POST(req: NextRequest) {
           const audioBuffer = await ttsRes.arrayBuffer();
           const fileName = `affirmations/${userId}/${scriptRow.id}.mp3`;
 
-          // Upload to Supabase Storage
+          // Upload to Supabase Storage (PRIVATE bucket)
           const { error: uploadErr } = await supabase.storage
             .from('voice-samples')
             .upload(fileName, audioBuffer, {
@@ -201,10 +254,18 @@ export async function POST(req: NextRequest) {
             });
 
           if (!uploadErr) {
-            const { data: urlData } = supabase.storage
+            // ── ECQO SAFE SOURCE CODE: Clinical-grade signed URL ──
+            // Bucket is PRIVATE. Generate time-limited signed URL (24h)
+            // for HIPAA / EU AI Act / SAMHSA compliance.
+            const { data: signedUrlData, error: signErr } = await supabase.storage
               .from('voice-samples')
-              .getPublicUrl(fileName);
-            audioUrl = urlData.publicUrl;
+              .createSignedUrl(fileName, SIGNED_URL_EXPIRY_SECONDS);
+
+            if (!signErr && signedUrlData?.signedUrl) {
+              audioUrl = signedUrlData.signedUrl;
+            } else {
+              console.error('[affirmations/generate] Signed URL error:', signErr);
+            }
           }
         }
       } catch (audioErr) {
@@ -213,7 +274,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Update script with audio URL
+    // Update script with audio URL (signed, 24h expiry)
     if (audioUrl) {
       await supabase
         .from('affirmation_scripts')
