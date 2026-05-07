@@ -61,6 +61,16 @@ export default function NavBar() {
                 {link.label}
               </Link>
             ))}
+
+            {/* Re-Enter button (returning members) */}
+            <Link
+              href="/login"
+              className="text-[0.75rem] font-semibold tracking-[0.15em] uppercase px-5 py-2.5 rounded-xl border border-[var(--herr-pink)] text-[var(--herr-pink)] hover:bg-[var(--herr-pink)] hover:text-[var(--herr-white)] transition-all duration-200"
+            >
+              Re-Enter
+            </Link>
+
+            {/* Begin button (new members) */}
             <Link
               href="/checkout"
               className="btn-herr-primary text-[0.75rem]"
@@ -96,6 +106,16 @@ export default function NavBar() {
                 {link.label}
               </Link>
             ))}
+
+            {/* Re-Enter (mobile) */}
+            <Link
+              href="/login"
+              className="font-display text-4xl font-light text-[var(--herr-white)] hover:text-[var(--herr-pink)] transition-colors"
+            >
+              Re-Enter
+            </Link>
+
+            {/* Begin (mobile) */}
             <Link
               href="/checkout"
               className="font-display text-4xl font-light text-[var(--herr-pink)]"
