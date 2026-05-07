@@ -334,35 +334,6 @@ export default function CheckoutFlow() {
               </span>
             )}
 
-            {/* "7-DAY FREE TRIAL" banner (Personalized + Elite) */}
-            {plan.trialBadge && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: plan.featured ? 16 : -14,
-                  left: plan.featured ? 16 : '50%',
-                  transform: plan.featured ? 'none' : 'translateX(-50%)',
-                  background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-                  color: '#0A0A0F',
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: 1.5,
-                  textTransform: 'uppercase',
-                  padding: '5px 12px',
-                  borderRadius: 14,
-                  whiteSpace: 'nowrap',
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
-                  boxShadow: '0 2px 8px rgba(255, 165, 0, 0.4)',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 4,
-                }}
-              >
-                <IconGift />
-                {plan.trialBadge}
-              </div>
-            )}
-
             {/* Tier label */}
             <p
               style={{
