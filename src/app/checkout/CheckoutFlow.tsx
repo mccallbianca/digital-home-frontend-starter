@@ -9,22 +9,22 @@ type Tier = 'free' | 'collective' | 'personalized' | 'elite';
 
 interface Feature {
   text: string;
-  /** true → white / bold (key differentiator), false → dimmed (inherited) */
   highlight: boolean;
   bold?: boolean;
 }
 
 interface Plan {
   tier: Tier;
-  label: string;        // EXPLORE, COLLECTIVE, etc.
+  label: string;
   name: string;
   price: string;
   period: string;
-  freeNote?: string;    // "Forever free" for the $0 tier
+  freeNote?: string;
   tagline: string;
   features: Feature[];
   cta: string;
   featured: boolean;
+  trialBadge?: string;       // NEW: trial banner copy (only set for trial tiers)
 }
 
 /* ── Plan Data ─────────────────────────────────────────────────────────────── */
@@ -74,6 +74,7 @@ const PLANS: Plan[] = [
     price: '$19',
     period: '/month',
     tagline: 'Your voice. Your reprogramming.',
+    trialBadge: '7-DAY FREE TRIAL',
     features: [
       { text: 'Everything in Collective', highlight: false },
       { text: 'Daily affirmations in your own cloned voice', highlight: true, bold: true },
@@ -84,7 +85,7 @@ const PLANS: Plan[] = [
       { text: 'Personalized community channels', highlight: false },
       { text: 'Priority support', highlight: false },
     ],
-    cta: 'Get Personalized',
+    cta: 'Begin Your Free Trial',
     featured: true,
   },
   {
@@ -94,6 +95,7 @@ const PLANS: Plan[] = [
     price: '$29',
     period: '/month',
     tagline: 'Clinical-grade. The full protocol.',
+    trialBadge: '7-DAY FREE TRIAL',
     features: [
       { text: 'Everything in Personalized', highlight: false },
       { text: 'Up to 5 activity modes', highlight: true },
@@ -104,7 +106,7 @@ const PLANS: Plan[] = [
       { text: 'Quarterly 1-on-1 check-in (15 min)', highlight: true },
       { text: 'Early access to ECQO features', highlight: false },
     ],
-    cta: 'Go Elite',
+    cta: 'Begin Your Free Trial',
     featured: false,
   },
 ];
@@ -120,7 +122,7 @@ function Dot() {
   );
 }
 
-/* ── Trust signal icons (simple SVG, no emoji) ─────────────────────────────── */
+/* ── Trust signal icons ─────────────────────────────────────────────────────── */
 
 function IconLock() {
   return (
@@ -149,6 +151,17 @@ function IconHeart() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    </svg>
+  );
+}
+function IconGift() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 12 20 22 4 22 4 12" />
+      <rect x="2" y="7" width="20" height="5" />
+      <line x1="12" y1="22" x2="12" y2="7" />
+      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
     </svg>
   );
 }
@@ -191,8 +204,6 @@ export default function CheckoutFlow() {
     }
   }
 
-  /* ── Button style per tier ─────────────────────────────────────────────── */
-
   function ctaStyle(tier: Tier): React.CSSProperties {
     const base: React.CSSProperties = {
       width: '100%',
@@ -219,8 +230,6 @@ export default function CheckoutFlow() {
         return { ...base, background: 'linear-gradient(135deg, #C42D8E, #8B1A5E)', color: '#FFFFFF' };
     }
   }
-
-  /* ── Card style per tier ───────────────────────────────────────────────── */
 
   function cardStyle(featured: boolean): React.CSSProperties {
     if (featured) {
@@ -249,8 +258,6 @@ export default function CheckoutFlow() {
       transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
     };
   }
-
-  /* ── Render ────────────────────────────────────────────────────────────── */
 
   return (
     <>
@@ -300,10 +307,10 @@ export default function CheckoutFlow() {
         {PLANS.map((plan) => (
           <div
             key={plan.tier}
-            className={`checkout-card${plan.featured ? ' checkout-card--featured' : ''}`}
+            className={`checkout-card${plan.featured ? ' checkout-card--featured' : ''}${plan.trialBadge ? ' checkout-card--trial' : ''}`}
             style={cardStyle(plan.featured)}
           >
-            {/* "MOST POPULAR" pill */}
+            {/* "MOST POPULAR" pill (Personalized only) */}
             {plan.featured && (
               <span
                 style={{
@@ -327,6 +334,35 @@ export default function CheckoutFlow() {
               </span>
             )}
 
+            {/* "7-DAY FREE TRIAL" banner (Personalized + Elite) */}
+            {plan.trialBadge && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: plan.featured ? 16 : -14,
+                  left: plan.featured ? 16 : '50%',
+                  transform: plan.featured ? 'none' : 'translateX(-50%)',
+                  background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+                  color: '#0A0A0F',
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: 1.5,
+                  textTransform: 'uppercase',
+                  padding: '5px 12px',
+                  borderRadius: 14,
+                  whiteSpace: 'nowrap',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  boxShadow: '0 2px 8px rgba(255, 165, 0, 0.4)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                }}
+              >
+                <IconGift />
+                {plan.trialBadge}
+              </div>
+            )}
+
             {/* Tier label */}
             <p
               style={{
@@ -336,7 +372,7 @@ export default function CheckoutFlow() {
                 letterSpacing: 2.5,
                 textTransform: 'uppercase',
                 color: plan.featured ? '#C42D8E' : 'rgba(255,255,255,0.5)',
-                marginTop: plan.featured ? 12 : 0,
+                marginTop: plan.featured ? 12 : (plan.trialBadge ? 8 : 0),
                 marginBottom: 8,
               }}
             >
@@ -357,7 +393,7 @@ export default function CheckoutFlow() {
             </h2>
 
             {/* Price */}
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginTop: 24 }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginTop: 24, flexWrap: 'wrap' }}>
               <span
                 style={{
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
@@ -381,6 +417,33 @@ export default function CheckoutFlow() {
                 </span>
               )}
             </div>
+
+            {/* "after 7 days free" pill under price */}
+            {plan.trialBadge && (
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  marginTop: 8,
+                  padding: '4px 10px',
+                  borderRadius: 12,
+                  border: '1px solid rgba(255, 215, 0, 0.5)',
+                  background: 'rgba(255, 215, 0, 0.08)',
+                  color: '#FFD700',
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: 0.5,
+                  textTransform: 'uppercase',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  alignSelf: 'flex-start',
+                }}
+              >
+                <IconGift />
+                Free for 7 Days
+              </div>
+            )}
+
             {plan.freeNote && (
               <p
                 style={{
@@ -446,6 +509,23 @@ export default function CheckoutFlow() {
             >
               {loading === plan.tier ? 'Redirecting\u2026' : plan.cta}
             </button>
+
+            {/* Subtle trial reassurance below CTA */}
+            {plan.trialBadge && (
+              <p
+                style={{
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  fontSize: 11,
+                  color: 'rgba(255,255,255,0.45)',
+                  textAlign: 'center',
+                  marginTop: 10,
+                  marginBottom: 0,
+                  lineHeight: 1.5,
+                }}
+              >
+                No charge for 7 days. Cancel anytime.
+              </p>
+            )}
           </div>
         ))}
       </div>
@@ -508,7 +588,7 @@ export default function CheckoutFlow() {
         }}
       >
         <p style={{ margin: 0 }}>
-          Subscriptions auto-renew monthly. Cancel anytime from your account settings.
+          Personalized and Elite tiers include a 7-day free trial. Subscriptions auto-renew monthly. Cancel anytime from your account settings.
         </p>
         <p style={{ margin: '4px 0 0' }}>
           By subscribing, you agree to our{' '}
