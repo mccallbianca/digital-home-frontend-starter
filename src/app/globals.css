@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================================
-   HERR — Human Existential Response and Reprogramming
+   HERR — Human Existential Regulator and Reprogramming
    Design System — h3rr.com
    © ECQO Holdings
    ============================================ */
@@ -28,6 +28,12 @@
   --herr-violet-dim:  rgba(124, 58, 237, 0.15);
   --herr-success:     #00C853;
   --herr-warning:     #FFB300;
+
+  /* Member portal palette — light-on-cream with strategic dark sections.
+     Use --herr-magenta (#C42D8E) above as the magenta accent, not --herr-pink. */
+  --herr-cream:       #F4F1EB;
+  --herr-ink:         #1A0F1A;
+  --herr-gold:        #D4A82C;
 
   /* Semantic */
   --background: var(--herr-black);

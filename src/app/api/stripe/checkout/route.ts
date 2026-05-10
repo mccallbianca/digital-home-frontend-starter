@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
       metadata: {
         tier,
         source: 'website',
-        founder: 'Bianca D. McCall LMFT',
+        founder: 'Bianca D. McCall, M.A., LMFT',
         trial_days: String(trialDays),
       },
     };

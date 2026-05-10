@@ -24,7 +24,7 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY || '';
 
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY || '';
-const DEFAULT_VOICE_ID = process.env.ELEVENLABS_DEFAULT_VOICE_ID || 'pNInz6obpgDQGcFmaJgB';
+// DEFAULT_VOICE_ID moved into handler for runtime env access
 
 const SIGNED_URL_EXPIRY_SECONDS = 60 * 60 * 24;
 
@@ -41,7 +41,7 @@ const MODE_CONTEXT: Record<string, string> = {
 
 function buildSystemPrompt(mode: string, screenerData: string): string {
   const modeCtx = MODE_CONTEXT[mode] || MODE_CONTEXT['morning'];
-  return `You are HERR - Human Existential Response and Reprogramming. You generate personalized affirmation scripts.
+  return `You are HERR - Human Existential Regulator and Reprogramming. You generate personalized affirmation scripts.
 
 HERR PROTOCOL - TWO PHASES:
 
@@ -158,6 +158,7 @@ export async function POST(req: NextRequest) {
     let audioUrl: string | null = null;
 
     if (ELEVENLABS_API_KEY) {
+      const DEFAULT_VOICE_ID = process.env.ELEVENLABS_DEFAULT_VOICE_ID || "pNInz6obpgDQGcFmaJgB";
       const { data: voiceConsent } = await supabase
         .from('voice_consents')
         .select('voice_clone_id')

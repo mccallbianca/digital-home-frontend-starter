@@ -168,7 +168,7 @@ Return a brief (3-5 paragraph) progress report. If no previous data, frame as a 
               <div style="margin-top:32px;padding-top:20px;border-top:1px solid rgba(244,241,235,0.1);">
                 <a href="https://www.h3rr.com/dashboard/assessment" style="color:#C42D8E;text-decoration:none;">View Full Report &rarr;</a>
               </div>
-              <p style="margin-top:24px;font-size:11px;color:rgba(244,241,235,0.3);">HERR &mdash; Human Existential Response and Reprogramming &copy; ECQO Holdings</p>
+              <p style="margin-top:24px;font-size:11px;color:rgba(244,241,235,0.3);">HERR &mdash; Human Existential Regulator and Reprogramming &copy; ECQO Holdings</p>
             </div>
           `,
         });
