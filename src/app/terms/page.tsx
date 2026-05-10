@@ -97,7 +97,7 @@ export default function TermsPage() {
             <div id="t-section-2" className="flex flex-col gap-4">
               <h2 className="font-display text-2xl font-light text-[var(--herr-white)]">2. The Service</h2>
               <p className="text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">
-                {BRAND} (Human Existential Response and Reprogramming™) is a clinical wellness platform that provides:
+                {BRAND} (Human Existential Regulator and Reprogramming™) is a clinical wellness platform that provides:
               </p>
               <ul className="flex flex-col gap-2 text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">
                 <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>Existential wellness assessment and personalization</span></li>
@@ -237,7 +237,7 @@ export default function TermsPage() {
                 All content, features, and functionality of the Service, including but not limited to text, audio, images, the {BRAND} clinical framework, the Progressive Reprogramming System (Patent Pending), software, and design, are owned by {COMPANY} and protected by United States and international copyright, trademark, patent, trade secret, and other intellectual property laws.
               </p>
               <p className="text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">
-                {BRAND}™ and Human Existential Response and Reprogramming™ are trademarks of {COMPANY}. Unauthorized use of our trademarks is prohibited. Nothing in these Terms grants you any right to use our trademarks, logos, or brand elements without prior written consent.
+                {BRAND}™ and Human Existential Regulator and Reprogramming™ are trademarks of {COMPANY}. Unauthorized use of our trademarks is prohibited. Nothing in these Terms grants you any right to use our trademarks, logos, or brand elements without prior written consent.
               </p>
               <p className="text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">
                 Your subscription grants you a limited, personal, non-exclusive, non-transferable license to access and use the Service for your own personal, non-commercial wellness purposes.
@@ -335,7 +335,7 @@ export default function TermsPage() {
                 {BRAND} is a wellness tool and is not a substitute for professional mental health treatment. Always consult a licensed clinician for clinical concerns. If you are in mental health crisis, contact the 988 Suicide and Crisis Lifeline by calling or texting 988.
               </p>
               <p className="text-[0.72rem] text-[var(--herr-faint)]">
-                © {new Date().getFullYear()} {COMPANY}. All rights reserved. {BRAND} and Human Existential Response and Reprogramming™ are trademarks of {COMPANY}. The {BRAND} Progressive Reprogramming System, Patent Pending.
+                © {new Date().getFullYear()} {COMPANY}. All rights reserved. {BRAND} and Human Existential Regulator and Reprogramming™ are trademarks of {COMPANY}. The {BRAND} Progressive Reprogramming System, Patent Pending.
               </p>
               <div className="flex flex-wrap gap-6 text-[0.78rem]">
                 <Link href="/privacy" className="text-[var(--herr-muted)] hover:text-[var(--herr-white)] transition-colors">Privacy Policy</Link>

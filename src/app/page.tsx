@@ -8,7 +8,7 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import CrisisResource from '@/components/ui/CrisisResource';
 
 export const metadata: Metadata = {
-  title: 'HERR | Human Existential Response and Reprogramming',
+  title: 'HERR | Human Existential Regulator and Reprogramming',
   description:
     'A clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice. Regulate first. Reprogram second. Founded by Bianca D. McCall, LMFT.',
 };
@@ -96,7 +96,7 @@ export default function HomePage() {
   const softwareAppSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'HERR | Human Existential Response and Reprogramming',
+    name: 'HERR | Human Existential Regulator and Reprogramming',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Web',
     url: 'https://h3rr.com',

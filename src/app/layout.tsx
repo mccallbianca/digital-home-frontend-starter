@@ -18,7 +18,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: 'HERR | Human Existential Response and Reprogramming',
+    default: 'HERR | Human Existential Regulator and Reprogramming',
     template: '%s | HERR',
   },
   description:

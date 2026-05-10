@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
             <p style="margin:4px 0;"><strong>Host:</strong> Bianca D. McCall, LMFT</p>
           </div>
           <p style="font-size:13px;color:rgba(244,241,235,0.4);">Your Zoom join link will be sent 24 hours before the session.</p>
-          <p style="margin-top:24px;font-size:11px;color:rgba(244,241,235,0.3);">HERR &mdash; Human Existential Response and Reprogramming &copy; ECQO Holdings</p>
+          <p style="margin-top:24px;font-size:11px;color:rgba(244,241,235,0.3);">HERR &mdash; Human Existential Regulator and Reprogramming &copy; ECQO Holdings</p>
         </div>
       `,
     });

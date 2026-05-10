@@ -46,7 +46,7 @@ export default function HipaaPage() {
         <div style={sectionStyle}>
           <h2 style={h2Style}>1. HIPAA Alignment Approach</h2>
           <p style={pStyle}>
-            {BRAND} (Human Existential Response and Reprogramming{'\u2122'}) by {COMPANY} is a <strong style={{ color: '#FFFFFF' }}>wellness platform, not a healthcare provider</strong>. As such, {COMPANY} is not a HIPAA covered entity and is not subject to the Health Insurance Portability and Accountability Act (HIPAA) as defined under 45 CFR Part 160.
+            {BRAND} (Human Existential Regulator and Reprogramming{'\u2122'}) by {COMPANY} is a <strong style={{ color: '#FFFFFF' }}>wellness platform, not a healthcare provider</strong>. As such, {COMPANY} is not a HIPAA covered entity and is not subject to the Health Insurance Portability and Accountability Act (HIPAA) as defined under 45 CFR Part 160.
           </p>
           <p style={pStyle}>
             However, because {BRAND} collects sensitive personal information, including existential wellness assessments, voice recordings, and behavioral data, we voluntarily align our data practices with HIPAA principles to provide our members with the highest standard of data protection.

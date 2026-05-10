@@ -280,7 +280,7 @@ export default function PrivacyPage() {
                 {BRAND} is a wellness tool and is not a substitute for professional mental health treatment. Clinical assessment data collected through {BRAND} is not protected health information (PHI) under HIPAA, as {BRAND} is not a covered entity or business associate under HIPAA. Always consult a licensed clinician for clinical concerns.
               </p>
               <p className="text-[0.72rem] text-[var(--herr-faint)]">
-                © {new Date().getFullYear()} {COMPANY}. All rights reserved. {BRAND} and Human Existential Response and Reprogramming™ are trademarks of {COMPANY}. The {BRAND} Progressive Reprogramming System, Patent Pending.
+                © {new Date().getFullYear()} {COMPANY}. All rights reserved. {BRAND} and Human Existential Regulator and Reprogramming™ are trademarks of {COMPANY}. The {BRAND} Progressive Reprogramming System, Patent Pending.
               </p>
               <div className="flex flex-wrap gap-6 text-[0.78rem]">
                 <Link href="/terms" className="text-[var(--herr-muted)] hover:text-[var(--herr-white)] transition-colors">Terms of Service</Link>

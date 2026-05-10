@@ -253,7 +253,7 @@ export default function SubscribePage() {
           </div>
 
           <p className="mt-8 text-[0.72rem] text-[var(--herr-faint)] leading-relaxed">
-            HERR™ is a wellness tool and is not a substitute for professional mental health treatment. Always consult a licensed clinician for clinical concerns. HERR™ and Human Existential Response and Reprogramming™ are trademarks of ECQO Holdings™. The HERR™ Progressive Reprogramming System, Patent Pending. © ECQO Holdings™. All rights reserved.
+            HERR™ is a wellness tool and is not a substitute for professional mental health treatment. Always consult a licensed clinician for clinical concerns. HERR™ and Human Existential Regulator and Reprogramming™ are trademarks of ECQO Holdings™. The HERR™ Progressive Reprogramming System, Patent Pending. © ECQO Holdings™. All rights reserved.
           </p>
 
         </div>

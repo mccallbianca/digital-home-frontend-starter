@@ -41,7 +41,7 @@ const MODE_CONTEXT: Record<string, string> = {
 
 function buildSystemPrompt(mode: string, screenerData: string): string {
   const modeCtx = MODE_CONTEXT[mode] || MODE_CONTEXT['morning'];
-  return `You are HERR - Human Existential Response and Reprogramming. You generate personalized affirmation scripts.
+  return `You are HERR - Human Existential Regulator and Reprogramming. You generate personalized affirmation scripts.
 
 HERR PROTOCOL - TWO PHASES:
 
