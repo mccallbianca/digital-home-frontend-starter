@@ -4,7 +4,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'For Practitioners | HERR',
   description:
-    'HERR for behavioral health practitioners, coaches, and institutional partners. A clinical wellness operating system built by Bianca D. McCall, LMFT, Federal SAMHSA Advisor. Inquire about group licensing and enterprise integration.',
+    'HERR for behavioral health practitioners, coaches, and institutional partners. A clinical wellness operating system built by Bianca D. McCall, M.A., LMFT, Federal SAMHSA Advisor. Inquire about group licensing and enterprise integration.',
 };
 
 const USE_CASES = [
@@ -96,7 +96,7 @@ export default function PractitionersPage() {
                 Designed for the field.
               </h2>
               <p className="text-[var(--herr-muted)] leading-relaxed">
-                HERR was designed by Bianca D. McCall, LMFT, a Licensed Marriage and Family Therapist, federal SAMHSA advisor, and existential psychology subject matter expert. It is not a wellness consumer app that borrowed clinical language. It is a clinical framework delivered through technology.
+                HERR was designed by Bianca D. McCall, M.A., LMFT, a Licensed Marriage and Family Therapist, federal SAMHSA advisor, and existential psychology subject matter expert. It is not a wellness consumer app that borrowed clinical language. It is a clinical framework delivered through technology.
               </p>
             </div>
 

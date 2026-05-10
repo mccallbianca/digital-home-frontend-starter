@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Live Sessions | HERR',
-  description: 'Monthly live group sessions with Bianca D. McCall, LMFT.',
+  description: 'Monthly live group sessions with Bianca D. McCall, M.A., LMFT.',
 };
 
 export default async function SessionsPage() {
@@ -36,7 +36,7 @@ export default async function SessionsPage() {
             Live Sessions are Elite-Only
           </h1>
           <p style={{ fontSize: 15, color: '#666666', lineHeight: 1.6, marginBottom: 24 }}>
-            Upgrade to HERR Elite for monthly live group sessions with Bianca D. McCall, LMFT. Limited to 25 seats per session.
+            Upgrade to HERR Elite for monthly live group sessions with Bianca D. McCall, M.A., LMFT. Limited to 25 seats per session.
           </p>
           <Link href="/checkout?tier=elite" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', height: 48, padding: '0 32px', background: '#C42D8E', color: '#FFFFFF', borderRadius: 12, fontSize: 14, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', textDecoration: 'none' }}>
             Upgrade to Elite: $29/mo

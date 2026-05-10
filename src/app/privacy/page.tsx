@@ -85,7 +85,7 @@ export default function PrivacyPage() {
                 {BRAND} is a clinical wellness platform operated by {COMPANY}, a Delaware corporation. {BRAND} ("we," "us," or "our") provides personalized voice affirmation and identity reprogramming services through the website {SITE} and any related applications or services (collectively, the "Service").
               </p>
               <p className="text-[var(--herr-muted)] leading-relaxed text-[0.95rem]">
-                {BRAND} was founded by Bianca D. McCall, LMFT, a Licensed Marriage and Family Therapist and clinical wellness expert. Questions about this policy may be directed to <a href={`mailto:${CONTACT_EMAIL}`} className="text-[var(--herr-pink)] hover:underline">{CONTACT_EMAIL}</a>.
+                {BRAND} was founded by Bianca D. McCall, M.A., LMFT, a Licensed Marriage and Family Therapist and clinical wellness expert. Questions about this policy may be directed to <a href={`mailto:${CONTACT_EMAIL}`} className="text-[var(--herr-pink)] hover:underline">{CONTACT_EMAIL}</a>.
               </p>
             </div>
 

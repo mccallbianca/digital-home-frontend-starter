@@ -83,7 +83,7 @@ export default function HipaaPage() {
             {[
               'Data collected by {BRAND} is not Protected Health Information (PHI) under HIPAA',
               '{BRAND} does not establish a provider-patient relationship',
-              'Live sessions with Bianca D. McCall, LMFT are group wellness sessions, not psychotherapy',
+              'Live sessions with Bianca D. McCall, M.A., LMFT are group wellness sessions, not psychotherapy',
               '{BRAND} does not submit claims to insurance providers',
             ].map((item, i) => (
               <li key={i} style={{ display: 'flex', gap: 12, marginBottom: 8, fontSize: 16, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6 }}>
@@ -115,7 +115,7 @@ export default function HipaaPage() {
             {[
               'Members can only access their own data through authenticated sessions',
               'Row-Level Security (RLS) policies enforce data isolation at the database level',
-              'Administrative access is limited to Bianca D. McCall, LMFT (founder) and authorized technical personnel',
+              'Administrative access is limited to Bianca D. McCall, M.A., LMFT (founder) and authorized technical personnel',
               'All administrative access is logged and auditable',
               'Third-party service providers (Stripe, ElevenLabs, Supabase) are selected for their own compliance standards',
             ].map((item, i) => (

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Contact | HERR',
   description:
-    'Contact HERR by ECQO Holdings. General inquiries, media requests, and practitioner partnerships. Founded by Bianca D. McCall, LMFT.',
+    'Contact HERR by ECQO Holdings. General inquiries, media requests, and practitioner partnerships. Founded by Bianca D. McCall, M.A., LMFT.',
 };
 
 const CONTACT_TYPES = [
@@ -14,7 +14,7 @@ const CONTACT_TYPES = [
   },
   {
     type: 'Media & Press',
-    description: 'Interview requests, media kits, and press inquiries about Bianca D. McCall, LMFT or ECQO Holdings.',
+    description: 'Interview requests, media kits, and press inquiries about Bianca D. McCall, M.A., LMFT or ECQO Holdings.',
     email: 'media@h3rr.com',
   },
   {
@@ -82,7 +82,7 @@ export default function ContactPage() {
             <div>
               <p className="herr-label text-[var(--herr-muted)] mb-4">ECQO Holdings</p>
               <p className="text-[var(--herr-muted)] leading-relaxed text-[0.9rem]">
-                HERR is the market entry product of ECQO Holdings, the clinical AI platform founded by Bianca D. McCall, LMFT. ECQO Holdings is committed to building clinical intelligence that serves every version of every human.
+                HERR is the market entry product of ECQO Holdings, the clinical AI platform founded by Bianca D. McCall, M.A., LMFT. ECQO Holdings is committed to building clinical intelligence that serves every version of every human.
               </p>
             </div>
             <div>

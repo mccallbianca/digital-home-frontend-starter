@@ -63,7 +63,7 @@ export default async function ArticlePage({
 
   const readingTime = estimateReadingTime(article.body);
   const publishedAt = article.published_at || article.created_at;
-  const authorName = article.author_name || 'Bianca D. McCall, LMFT';
+  const authorName = article.author_name || 'Bianca D. McCall, M.A., LMFT';
 
   // Fetch related articles
   const { data: related } = await supabase

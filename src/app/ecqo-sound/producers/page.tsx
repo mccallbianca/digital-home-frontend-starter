@@ -77,7 +77,7 @@ export default function ProducersPage() {
             Produce music once. Earn on every play, forever.
           </p>
           <p className="text-[var(--herr-muted)] leading-relaxed mb-10 max-w-xl">
-            A personal invitation from Bianca D. McCall, LMFT, ECQO Sound is building the world&apos;s first clinically designed, genre-personalized therapeutic music catalog. We need independent producers who can create original compositions that become the delivery mechanism for real therapeutic change.
+            A personal invitation from Bianca D. McCall, M.A., LMFT, ECQO Sound is building the world&apos;s first clinically designed, genre-personalized therapeutic music catalog. We need independent producers who can create original compositions that become the delivery mechanism for real therapeutic change.
           </p>
           <a href="#apply" className="btn-herr-primary">Apply Now</a>
         </div>

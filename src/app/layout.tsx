@@ -22,14 +22,14 @@ export const metadata: Metadata = {
     template: '%s | HERR',
   },
   description:
-    'HERR is a clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice. Regulate your nervous system. Reprogram your inner voice. Founded by Bianca D. McCall, LMFT.',
+    'HERR is a clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice. Regulate your nervous system. Reprogram your inner voice. Founded by Bianca D. McCall, M.A., LMFT.',
   metadataBase: new URL('https://www.h3rr.com'),
   openGraph: {
     siteName: 'HERR by ECQO Holdings',
     url: 'https://www.h3rr.com',
     type: 'website',
   },
-  authors: [{ name: 'Bianca D. McCall, LMFT' }],
+  authors: [{ name: 'Bianca D. McCall, M.A., LMFT' }],
 };
 
 // Catches Supabase implicit-flow tokens that land on any page (e.g. homepage)

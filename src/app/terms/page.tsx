@@ -89,7 +89,7 @@ export default function TermsPage() {
                 By accessing or using {BRAND} at {SITE}, creating an account, or subscribing to any {BRAND} plan, you agree to be bound by these Terms of Service ("Terms") and our <Link href="/privacy" className="text-[var(--herr-pink)] hover:underline">Privacy Policy</Link>, which is incorporated by reference. If you do not agree to these Terms, do not use the Service.
               </p>
               <p className="text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">
-                These Terms constitute a legally binding agreement between you and {COMPANY} ("Company," "we," "us," or "our"). {BRAND} was founded by Bianca D. McCall, LMFT, a Licensed Marriage and Family Therapist.
+                These Terms constitute a legally binding agreement between you and {COMPANY} ("Company," "we," "us," or "our"). {BRAND} was founded by Bianca D. McCall, M.A., LMFT, a Licensed Marriage and Family Therapist.
               </p>
             </div>
 
@@ -101,10 +101,10 @@ export default function TermsPage() {
               </p>
               <ul className="flex flex-col gap-2 text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">
                 <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>Existential wellness assessment and personalization</span></li>
-                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>Personalized I AM declarations and voice affirmations delivered in your own cloned voice or in the voice of Bianca D. McCall, LMFT</span></li>
+                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>Personalized I AM declarations and voice affirmations delivered in your own cloned voice or in the voice of Bianca D. McCall, M.A., LMFT</span></li>
                 <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>Nervous system regulation audio content</span></li>
                 <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>Eight activity-mode delivery formats (Workout, Driving, Sleep, Morning, Deep Work, Love & Family, Abundance, Healing)</span></li>
-                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>Live group sessions with Bianca D. McCall, LMFT (HERR Elite tier only)</span></li>
+                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>Live group sessions with Bianca D. McCall, M.A., LMFT (HERR Elite tier only)</span></li>
                 <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>Journal content and clinical educational resources</span></li>
               </ul>
               <p className="text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">
@@ -148,9 +148,9 @@ export default function TermsPage() {
                 {BRAND} offers three subscription tiers billed monthly:
               </p>
               <ul className="flex flex-col gap-2 text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">
-                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">HERR™ Collective: $9/month:</strong> Affirmation library delivered in Bianca D. McCall, LMFT's cloned voice.</span></li>
+                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">HERR™ Collective: $9/month:</strong> Affirmation library delivered in Bianca D. McCall, M.A., LMFT's cloned voice.</span></li>
                 <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">HERR™ Personalized: $19/month:</strong> Personalized affirmations delivered in your own cloned voice, with clinical assessment.</span></li>
-                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">HERR™ Elite: $29/month:</strong> Full clinical protocol with monthly live group sessions with Bianca D. McCall, LMFT.</span></li>
+                <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span><strong className="text-[var(--herr-white)]">HERR™ Elite: $29/month:</strong> Full clinical protocol with monthly live group sessions with Bianca D. McCall, M.A., LMFT.</span></li>
               </ul>
               <p className="text-[0.9rem] text-[var(--herr-muted)] leading-relaxed">Pricing is subject to change. We will provide at least 30 days' notice before any price increase takes effect for existing subscribers.</p>
 
@@ -204,7 +204,7 @@ export default function TermsPage() {
                   <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>{BRAND} does not diagnose, treat, cure, or prevent any mental health condition, medical condition, or psychiatric disorder.</span></li>
                   <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>{BRAND} is not a substitute for professional mental health treatment, psychotherapy, psychiatric care, or medical advice.</span></li>
                   <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>The existential assessments provided through {BRAND} are wellness screeners, not clinical diagnostic instruments.</span></li>
-                  <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>Live sessions with Bianca D. McCall, LMFT, offered through HERR™ Elite, are group wellness sessions and do not constitute individual psychotherapy or the establishment of a therapist-client relationship.</span></li>
+                  <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>Live sessions with Bianca D. McCall, M.A., LMFT, offered through HERR™ Elite, are group wellness sessions and do not constitute individual psychotherapy or the establishment of a therapist-client relationship.</span></li>
                   <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>Data shared through {BRAND} is not protected health information (PHI) under HIPAA. {COMPANY} is not a HIPAA covered entity.</span></li>
                   <li className="flex gap-3"><span className="text-[var(--herr-pink)] shrink-0">+</span><span>If you are experiencing a mental health emergency, please call 911 or the 988 Suicide and Crisis Lifeline (call or text 988).</span></li>
                 </ul>

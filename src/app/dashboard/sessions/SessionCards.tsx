@@ -163,7 +163,7 @@ export default function SessionCards({ sessions, userEmail, userName, userTier }
       {/* Session info */}
       <div className="mt-12 grid md:grid-cols-2 gap-px bg-[var(--herr-border)]">
         {[
-          { title: 'Format', body: 'Monthly live group session via Zoom. Hosted by Bianca D. McCall, LMFT.' },
+          { title: 'Format', body: 'Monthly live group session via Zoom. Hosted by Bianca D. McCall, M.A., LMFT.' },
           { title: 'What to Expect', body: 'Deep existential framework work. Q&A. Group processing and identity work.' },
           { title: 'HERR Certified Moderators', body: 'Access to trained HERR moderators between sessions for ongoing protocol support.' },
           { title: 'Beta Access', body: 'Elite members receive first access to all new HERR features and beta testing.' },

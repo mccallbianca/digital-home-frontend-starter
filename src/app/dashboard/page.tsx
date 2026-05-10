@@ -88,7 +88,7 @@ export default async function DashboardPage({
     {
       href: isElite ? '/dashboard/sessions' : '/dashboard/billing',
       label: 'Live Events',
-      description: 'Monthly live group sessions with Bianca D. McCall, LMFT. Real-time guidance, Q&A, and community healing.',
+      description: 'Monthly live group sessions with Bianca D. McCall, M.A., LMFT. Real-time guidance, Q&A, and community healing.',
       tier: isElite ? 'Elite' : 'Elite Only: Upgrade',
       tierColor: 'text-[var(--herr-violet)]',
       status: null,

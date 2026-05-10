@@ -100,7 +100,7 @@ export default function TheSciencePage() {
               lineHeight: 1.6,
             }}
           >
-            Designed by Bianca D. McCall, LMFT | Licensed Marriage and Family Therapist | Federal SAMHSA Advisor
+            Designed by Bianca D. McCall, M.A., LMFT | Licensed Marriage and Family Therapist | Federal SAMHSA Advisor
           </p>
         </ScrollFadeIn>
       </section>
@@ -134,7 +134,7 @@ export default function TheSciencePage() {
           </ScrollFadeIn>
           <ScrollFadeIn delay={300}>
             <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.8 }}>
-              The creator, <span style={{ fontWeight: 600 }}>Bianca D. McCall, LMFT</span>, brought her background in systems therapies, existential psychology, and trauma-informed care to every design decision. The result is a product that respects the complexity of the human experience while remaining accessible to anyone seeking to take command of their inner voice.
+              The creator, <span style={{ fontWeight: 600 }}>Bianca D. McCall, M.A., LMFT</span>, brought her background in systems therapies, existential psychology, and trauma-informed care to every design decision. The result is a product that respects the complexity of the human experience while remaining accessible to anyone seeking to take command of their inner voice.
             </p>
           </ScrollFadeIn>
         </div>

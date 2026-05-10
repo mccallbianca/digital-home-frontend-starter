@@ -5,9 +5,9 @@ import ScrollFadeIn from '@/components/home/ScrollFadeIn';
 import CrisisResource from '@/components/ui/CrisisResource';
 
 export const metadata: Metadata = {
-  title: 'About | Bianca D. McCall, LMFT',
+  title: 'About | Bianca D. McCall, M.A., LMFT',
   description:
-    'Licensed clinician. Federal advisor. Retired professional athlete. Bianca D. McCall, LMFT built HERR from the intersection of existential psychology, performance science, and personal transformation.',
+    'Licensed clinician. Federal advisor. Retired professional athlete. Bianca D. McCall, M.A., LMFT built HERR from the intersection of existential psychology, performance science, and personal transformation.',
 };
 
 const CREDENTIALS = [
@@ -62,7 +62,7 @@ export default function AboutPage() {
       >
         <Image
           src="/images/about-banner.jpg"
-          alt="Bianca D. McCall, LMFT, Licensed Marriage and Family Therapist, federal advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
+          alt="Bianca D. McCall, M.A., LMFT, Licensed Marriage and Family Therapist, federal advisor, existential psychology expert, and founder of HERR and ECQO Holdings."
           fill
           sizes="100vw"
           className="object-cover"
@@ -95,7 +95,7 @@ export default function AboutPage() {
               lineHeight: 1.2,
             }}
           >
-            Bianca D. McCall, LMFT
+            Bianca D. McCall, M.A., LMFT
           </h1>
           <p style={{ fontSize: 16, color: '#E8388A' }}>
             Clinician · Federal Advisor · Founder · The IP Behind HERR
@@ -122,7 +122,7 @@ export default function AboutPage() {
           <ScrollFadeIn>
             <p style={{ fontSize: '1.125rem', color: '#1A1A2E', lineHeight: 1.75 }}>
               The connection between the self, and whatever sense, or being, or power we surrender to and share inner-dialogue with is the voice, the gatekeeper which we leave it all up to interpretation, internalization, and executive judgement.{' '}
-              <span style={{ fontWeight: 600 }}>Bianca D. McCall, LMFT</span> has spent her entire career studying that voice and the relationship between it, and every performer in sports, music, entertainment, academia, and special workforces, during transitions - the separation events that are most significant in a lifetime.
+              <span style={{ fontWeight: 600 }}>Bianca D. McCall, M.A., LMFT</span> has spent her entire career studying that voice and the relationship between it, and every performer in sports, music, entertainment, academia, and special workforces, during transitions - the separation events that are most significant in a lifetime.
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={100}>

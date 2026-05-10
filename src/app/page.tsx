@@ -10,7 +10,7 @@ import CrisisResource from '@/components/ui/CrisisResource';
 export const metadata: Metadata = {
   title: 'HERR | Human Existential Regulator and Reprogramming',
   description:
-    'A clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice. Regulate first. Reprogram second. Founded by Bianca D. McCall, LMFT.',
+    'A clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice. Regulate first. Reprogram second. Founded by Bianca D. McCall, M.A., LMFT.',
 };
 
 /* ── Static data ─────────────────────────────────────────────────────── */
@@ -57,7 +57,7 @@ const TIERS = [
 
 const CREDENTIALS = [
   'SAMHSA Advisor',
-  'LMFT',
+  'M.A., LMFT',
   'TEDx Speaker',
   'Pro Athlete',
   'NFL/MLB Consultant',
@@ -104,7 +104,7 @@ export default function HomePage() {
       'A clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice.',
     creator: {
       '@type': 'Person',
-      name: 'Bianca D. McCall, LMFT',
+      name: 'Bianca D. McCall, M.A., LMFT',
       jobTitle: 'Licensed Marriage and Family Therapist',
     },
     offers: [
@@ -487,7 +487,7 @@ export default function HomePage() {
               >
                 <Image
                   src="/images/bianca-hero.png"
-                  alt="Bianca D. McCall, LMFT, Founder of ECQO Holdings and creator of HERR"
+                  alt="Bianca D. McCall, M.A., LMFT, Founder of ECQO Holdings and creator of HERR"
                   fill
                   sizes="(max-width: 768px) 100vw, 40vw"
                   className="object-cover"
@@ -521,7 +521,7 @@ export default function HomePage() {
                   lineHeight: 1.3,
                 }}
               >
-                Bianca D. McCall, LMFT
+                Bianca D. McCall, M.A., LMFT
               </h2>
               <p
                 style={{

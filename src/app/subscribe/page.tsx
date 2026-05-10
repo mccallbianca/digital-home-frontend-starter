@@ -31,7 +31,7 @@ const PLANS = [
     price:       '$9',
     period:      '/month',
     tagline:     'Bianca\u2019s voice. Your daily reprogramming.',
-    description: 'Daily affirmations delivered in the voice of Bianca D. McCall, LMFT \u2014 the clinician behind the framework.',
+    description: 'Daily affirmations delivered in the voice of Bianca D. McCall, M.A., LMFT \u2014 the clinician behind the framework.',
     badge:       null,
     badgeColor:  '',
     features: [
@@ -78,7 +78,7 @@ const PLANS = [
     features: [
       'Everything in HERR Personalized',
       'Up to 5 activity modes',
-      'Monthly live group session with Bianca D. McCall, LMFT (25 seats)',
+      'Monthly live group session with Bianca D. McCall, M.A., LMFT (25 seats)',
       'Elite-only community channels',
       'Access to beta testing areas',
       'Monthly therapeutic progression: reprogramming \u2192 support \u2192 maintenance',

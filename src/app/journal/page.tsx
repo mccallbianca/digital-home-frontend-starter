@@ -19,7 +19,7 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'The HERR Journal | Clinical Insights for the Inner Voice',
   description:
-    'Clinical insight, existential psychology, and the science of the inner voice. Thought leadership from Bianca D. McCall, LMFT, Founder of HERR and ECQO Holdings.',
+    'Clinical insight, existential psychology, and the science of the inner voice. Thought leadership from Bianca D. McCall, M.A., LMFT, Founder of HERR and ECQO Holdings.',
 };
 
 /* ── Static articles (must match Home page JOURNAL_PREVIEW) ──────────── */
@@ -32,7 +32,7 @@ const STATIC_ARTICLES = [
     title: 'Understanding Your Inner Conductor',
     excerpt: 'The conductor of your life is not your talent, your training, or your discipline. It is the voice only you can hear.',
     readTime: '5 min read',
-    author: 'Bianca D. McCall, LMFT',
+    author: 'Bianca D. McCall, M.A., LMFT',
   },
   {
     slug: 'science-of-voice-based-reprogramming',
@@ -41,7 +41,7 @@ const STATIC_ARTICLES = [
     title: 'The Science of Voice-Based Reprogramming',
     excerpt: 'Why every attempt to install new beliefs fails without first calming the nervous system.',
     readTime: '4 min read',
-    author: 'Bianca D. McCall, LMFT',
+    author: 'Bianca D. McCall, M.A., LMFT',
   },
   {
     slug: 'why-your-voice-is-your-most-powerful-tool',
@@ -50,7 +50,7 @@ const STATIC_ARTICLES = [
     title: 'Why Your Voice Is Your Most Powerful Tool',
     excerpt: 'Self-referential processing is not a theory. It is the mechanism that makes HERR different.',
     readTime: '6 min read',
-    author: 'Bianca D. McCall, LMFT',
+    author: 'Bianca D. McCall, M.A., LMFT',
   },
 ];
 
@@ -96,7 +96,7 @@ export default async function JournalPage() {
       published_at: a.published_at || '',
       readTime: `${estimateReadingTime(a.body)} min read`,
       image: a.featured_image_url || '',
-      author: a.author_name || 'Bianca D. McCall, LMFT',
+      author: a.author_name || 'Bianca D. McCall, M.A., LMFT',
     }));
 
   /* Merge: DB articles first, then static articles not already present */
@@ -146,7 +146,7 @@ export default async function JournalPage() {
             </h1>
             <p style={{ fontSize: '1.125rem', color: 'rgba(255,255,255,0.6)', marginBottom: 32, lineHeight: 1.6 }}>
               The HERR Journal publishes thought leadership on existential psychology, the inner voice,
-              elite performance, and behavioral wellness. Written by Bianca D. McCall, LMFT. Articles coming soon.
+              elite performance, and behavioral wellness. Written by Bianca D. McCall, M.A., LMFT. Articles coming soon.
             </p>
             <Link
               href="/signup"
