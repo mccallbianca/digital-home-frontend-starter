@@ -47,9 +47,10 @@ export default function ECQOSoundPlayer({
 }) {
   const [activeMode, setActiveMode] = useState<string>(modes[0] || 'morning');
   const [isPlaying, setIsPlaying] = useState(false);
-  const [voiceVolume, setVoiceVolume] = useState(0.8);
-  const [musicVolume, setMusicVolume] = useState(0.5);
-  const [ambientVolume, setAmbientVolume] = useState(0.3);
+  // ECQO Sound v3 gain spec: voice -30dB, Solfeggio (ambient) -18dB, music 0dB.
+  const [voiceVolume, setVoiceVolume] = useState(0.0316);
+  const [musicVolume, setMusicVolume] = useState(1.0);
+  const [ambientVolume, setAmbientVolume] = useState(0.126);
   const [generating, setGenerating] = useState(false);
 
   const voiceRef = useRef<HTMLAudioElement | null>(null);
