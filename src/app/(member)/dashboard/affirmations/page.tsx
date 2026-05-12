@@ -45,13 +45,26 @@ export default async function AffirmationsPage() {
     );
   }
 
+  // Phase 1 v2 EPIC B2: read activity modes from member_activity_modes; fall back
+  // to user_preferences.activity_modes for legacy onboarded members.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: modeRows } = await (supabase as any)
+    .from('member_activity_modes')
+    .select('mode')
+    .eq('member_id', user.id)
+    .eq('active', true);
+
+  let selectedModes: string[] = (modeRows ?? []).map((r: { mode: string }) => r.mode);
+
   const { data: prefs } = await supabase
     .from('user_preferences')
     .select('activity_modes, genre_preference')
     .eq('user_id', user.id)
     .single();
 
-  const selectedModes = prefs?.activity_modes ?? ['morning'];
+  if (selectedModes.length === 0) {
+    selectedModes = (prefs?.activity_modes ?? ['morning']) as string[];
+  }
   const selectedGenre = (prefs as { genre_preference?: string } | null)?.genre_preference ?? 'Hip Hop';
 
   // Phase 1 v2 fix: filter soft-deleted rows so the May 7 demo cards don't leak through.

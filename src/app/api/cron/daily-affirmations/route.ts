@@ -47,14 +47,24 @@ export async function POST(req: NextRequest) {
 
       if (!profile) continue;
 
-      // Get user's activity modes
-      const { data: prefs } = await supabase
-        .from('user_preferences')
-        .select('activity_modes')
-        .eq('user_id', profile.id)
-        .single();
+      // Phase 1 v2 EPIC B2: read modes from member_activity_modes; fall back to legacy user_preferences.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: modeRows } = await (supabase as any)
+        .from('member_activity_modes')
+        .select('mode')
+        .eq('member_id', profile.id)
+        .eq('active', true);
 
-      const modes: string[] = prefs?.activity_modes || ['morning'];
+      let modes: string[] = (modeRows ?? []).map((r: { mode: string }) => r.mode);
+
+      if (modes.length === 0) {
+        const { data: prefs } = await supabase
+          .from('user_preferences')
+          .select('activity_modes')
+          .eq('user_id', profile.id)
+          .single();
+        modes = (prefs?.activity_modes || ['morning']) as string[];
+      }
       // Pick one mode for today's delivery (rotate through modes)
       const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
       const todayMode = modes[dayOfYear % modes.length];
