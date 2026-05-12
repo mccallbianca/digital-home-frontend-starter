@@ -79,10 +79,10 @@ export default function AffirmationsClient({ hasVoice, selectedModes, tracks }: 
       <div
         key={track.id}
         style={{
-          background: '#16161F',
+          background: '#FFFFFF',
           borderRadius: 16,
           padding: 32,
-          border: '1px solid rgba(255,255,255,0.08)',
+          border: '1px solid rgba(26,15,26,0.08)',
           marginBottom: 16,
         }}
       >
@@ -90,18 +90,18 @@ export default function AffirmationsClient({ hasVoice, selectedModes, tracks }: 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
           <span style={{
             fontSize: 11, textTransform: 'uppercase', letterSpacing: '1px',
-            color: '#C42D8E', border: '1px solid #C42D8E', padding: '4px 12px', borderRadius: 12,
+            color: 'var(--herr-magenta)', border: '1px solid #C42D8E', padding: '4px 12px', borderRadius: 12,
           }}>
             {mode}
           </span>
-          <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)' }}>{voiceLabel}</span>
+          <span style={{ fontSize: 11, color: 'rgba(26,15,26,0.3)' }}>{voiceLabel}</span>
         </div>
 
         {/* Text */}
         <p
           onClick={() => setExpandedId(isExpanded ? null : track.id)}
           style={{
-            fontSize: 16, color: 'rgba(255,255,255,0.7)', fontStyle: 'italic',
+            fontSize: 16, color: 'rgba(26,15,26,0.7)', fontStyle: 'italic',
             fontFamily: "'Cormorant Garamond', Georgia, serif", lineHeight: 1.6,
             marginBottom: 16, cursor: 'pointer',
           }}
@@ -116,7 +116,7 @@ export default function AffirmationsClient({ hasVoice, selectedModes, tracks }: 
             disabled={!track.audio_url}
             style={{
               width: 48, height: 48, borderRadius: '50%',
-              background: track.audio_url ? '#C42D8E' : 'rgba(196,45,142,0.3)',
+              background: track.audio_url ? 'var(--herr-magenta)' : 'rgba(196,45,142,0.3)',
               border: 'none', cursor: track.audio_url ? 'pointer' : 'default',
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
             }}
@@ -128,11 +128,11 @@ export default function AffirmationsClient({ hasVoice, selectedModes, tracks }: 
             )}
           </button>
           <div style={{ flex: 1 }}>
-            <div style={{ width: '100%', height: 4, background: 'rgba(255,255,255,0.1)', borderRadius: 2, overflow: 'hidden' }}>
-              <div style={{ height: '100%', background: '#C42D8E', borderRadius: 2, width: isPlaying ? `${progress}%` : '0%', transition: 'width 200ms linear' }} />
+            <div style={{ width: '100%', height: 4, background: 'rgba(26,15,26,0.1)', borderRadius: 2, overflow: 'hidden' }}>
+              <div style={{ height: '100%', background: 'var(--herr-magenta)', borderRadius: 2, width: isPlaying ? `${progress}%` : '0%', transition: 'width 200ms linear' }} />
             </div>
           </div>
-          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', flexShrink: 0 }}>
+          <span style={{ fontSize: 12, color: 'rgba(26,15,26,0.4)', flexShrink: 0 }}>
             {isPlaying ? `${formatTime(currentTime)} / ${formatTime(totalTime)}` : formatTime(totalTime)}
           </span>
         </div>
@@ -141,26 +141,26 @@ export default function AffirmationsClient({ hasVoice, selectedModes, tracks }: 
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0A0A0F', padding: '80px 24px 60px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--herr-cream)', padding: '80px 24px 60px' }}>
       <div style={{ maxWidth: 720, margin: '0 auto' }}>
         {/* Header */}
-        <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '2px', color: '#C42D8E', marginBottom: 8 }}>
+        <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--herr-magenta)', marginBottom: 8 }}>
           MY AFFIRMATIONS
         </p>
         <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 28, fontWeight: 600, color: '#FFFFFF', marginBottom: 4 }}>
           Today&apos;s Reprogramming
         </h1>
-        <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', marginBottom: 32 }}>{dateStr}</p>
+        <p style={{ fontSize: 14, color: 'rgba(26,15,26,0.5)', marginBottom: 32 }}>{dateStr}</p>
 
         {/* Today's tracks */}
         {todayTracks.length > 0 ? (
           todayTracks.map(renderPlayer)
         ) : (
-          <div style={{ background: '#16161F', borderRadius: 16, padding: 32, border: '1px solid rgba(255,255,255,0.08)', textAlign: 'center', marginBottom: 32 }}>
-            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.5)' }}>
+          <div style={{ background: '#FFFFFF', borderRadius: 16, padding: 32, border: '1px solid rgba(26,15,26,0.08)', textAlign: 'center', marginBottom: 32 }}>
+            <p style={{ fontSize: 16, color: 'rgba(26,15,26,0.5)' }}>
               Your affirmations for today are being generated...
             </p>
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)', marginTop: 8 }}>
+            <p style={{ fontSize: 13, color: 'rgba(26,15,26,0.3)', marginTop: 8 }}>
               Check back soon. New affirmations are delivered daily based on your assessment and activity modes.
             </p>
           </div>
@@ -169,17 +169,17 @@ export default function AffirmationsClient({ hasVoice, selectedModes, tracks }: 
         {/* Archive */}
         {archiveTracks.length > 0 && (
           <>
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 32, marginTop: 16 }}>
+            <div style={{ borderTop: '1px solid rgba(26,15,26,0.08)', paddingTop: 32, marginTop: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-                <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '2px', color: 'rgba(255,255,255,0.4)' }}>
+                <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '2px', color: 'rgba(26,15,26,0.4)' }}>
                   ARCHIVE
                 </p>
                 <select
                   value={filter}
                   onChange={(e) => setFilter(e.target.value)}
                   style={{
-                    background: '#16161F', border: '1px solid rgba(255,255,255,0.15)',
-                    borderRadius: 8, padding: '6px 12px', color: 'rgba(255,255,255,0.6)',
+                    background: '#FFFFFF', border: '1px solid rgba(26,15,26,0.15)',
+                    borderRadius: 8, padding: '6px 12px', color: 'rgba(26,15,26,0.6)',
                     fontSize: 13, cursor: 'pointer',
                   }}
                 >
@@ -198,24 +198,24 @@ export default function AffirmationsClient({ hasVoice, selectedModes, tracks }: 
                   <div
                     key={track.id}
                     style={{
-                      background: '#16161F', borderRadius: 12, padding: '16px 24px',
-                      border: '1px solid rgba(255,255,255,0.08)', marginBottom: 8,
+                      background: '#FFFFFF', borderRadius: 12, padding: '16px 24px',
+                      border: '1px solid rgba(26,15,26,0.08)', marginBottom: 8,
                       display: 'flex', alignItems: 'center', gap: 16,
                     }}
                   >
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                        <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>{date}</span>
-                        <span style={{ fontSize: 11, color: '#C42D8E', border: '1px solid #C42D8E', padding: '2px 8px', borderRadius: 8 }}>{mode}</span>
+                        <span style={{ fontSize: 14, color: 'rgba(26,15,26,0.5)' }}>{date}</span>
+                        <span style={{ fontSize: 11, color: 'var(--herr-magenta)', border: '1px solid #C42D8E', padding: '2px 8px', borderRadius: 8 }}>{mode}</span>
                       </div>
-                      <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{excerpt}</p>
+                      <p style={{ fontSize: 14, color: 'rgba(26,15,26,0.6)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{excerpt}</p>
                     </div>
                     <button
                       onClick={() => playTrack(track)}
                       disabled={!track.audio_url}
                       style={{
                         width: 32, height: 32, borderRadius: '50%',
-                        background: track.audio_url ? '#C42D8E' : 'rgba(196,45,142,0.3)',
+                        background: track.audio_url ? 'var(--herr-magenta)' : 'rgba(196,45,142,0.3)',
                         border: 'none', cursor: track.audio_url ? 'pointer' : 'default',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                       }}
@@ -232,7 +232,7 @@ export default function AffirmationsClient({ hasVoice, selectedModes, tracks }: 
                   style={{
                     display: 'block', margin: '16px auto', height: 40, padding: '0 24px',
                     background: 'transparent', color: '#FFFFFF', borderRadius: 12,
-                    border: '1px solid rgba(255,255,255,0.3)', fontSize: 13, fontWeight: 600,
+                    border: '1px solid rgba(26,15,26,0.3)', fontSize: 13, fontWeight: 600,
                     textTransform: 'uppercase', letterSpacing: '1px', cursor: 'pointer',
                   }}
                 >

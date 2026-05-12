@@ -29,6 +29,18 @@
   --herr-success:     #00C853;
   --herr-warning:     #FFB300;
 
+  /* Member portal palette — light-on-cream default with strategic dark sections.
+     Public marketing pages keep the dark theme above; do not introduce cream
+     tokens to (marketing)/*. */
+  --herr-cream:        #F4F1EB;
+  --herr-cream-warm:   #FAF7F0;
+  --herr-ink:          #1A0F1A;
+  --herr-ink-soft:     #3D2B3D;
+  --herr-magenta-deep: #8E1A66;
+  --herr-magenta-soft: #FCE5F0;
+  --herr-gold:         #D4A82C;
+  --herr-line:         rgba(26, 15, 26, 0.12);
+
   /* Semantic */
   --background: var(--herr-black);
   --foreground: var(--herr-white);
@@ -50,6 +62,14 @@
   --color-herr-violet:    var(--herr-violet);
   --color-herr-success:   var(--herr-success);
   --color-herr-warning:   var(--herr-warning);
+  --color-herr-cream:        var(--herr-cream);
+  --color-herr-cream-warm:   var(--herr-cream-warm);
+  --color-herr-ink:          var(--herr-ink);
+  --color-herr-ink-soft:     var(--herr-ink-soft);
+  --color-herr-magenta-deep: var(--herr-magenta-deep);
+  --color-herr-magenta-soft: var(--herr-magenta-soft);
+  --color-herr-gold:         var(--herr-gold);
+  --color-herr-line:         var(--herr-line);
 
   /* Typography */
   --font-display: var(--font-display), 'Georgia', 'Times New Roman', serif;

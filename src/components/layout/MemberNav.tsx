@@ -112,7 +112,7 @@ export default function MemberNav({
                 fontWeight: active ? 600 : 500,
                 opacity: locked ? 0.55 : 1,
                 color: locked ? 'rgba(26,15,26,0.6)' : 'var(--herr-ink)',
-                background: active ? 'rgba(196,45,142,0.08)' : 'transparent',
+                background: active ? 'var(--herr-magenta-soft)' : 'transparent',
                 borderLeft: active ? '2px solid var(--herr-magenta)' : '2px solid transparent',
                 textDecoration: 'none',
                 transition: 'background 150ms, color 150ms',
@@ -224,7 +224,7 @@ export default function MemberNav({
           justifyContent: 'space-between',
           padding: '12px 20px',
           background: 'var(--herr-cream)',
-          borderBottom: '1px solid rgba(26,15,26,0.1)',
+          borderBottom: '1px solid var(--herr-line)',
         }}
       >
         <Brand />
@@ -285,7 +285,7 @@ export default function MemberNav({
           width: 240,
           padding: '32px 20px 24px',
           background: 'var(--herr-cream)',
-          borderRight: '1px solid rgba(26,15,26,0.1)',
+          borderRight: '1px solid var(--herr-line)',
           flexDirection: 'column',
           gap: 28,
           zIndex: 30,
