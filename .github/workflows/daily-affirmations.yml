@@ -1,0 +1,40 @@
+name: Daily Affirmations Cron
+
+on:
+  schedule:
+    # 9:00 UTC daily = 4:00 AM ET (per the cron route docstring)
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  trigger-daily-affirmations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: POST /api/cron/daily-affirmations
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::CRON_SECRET is not set in repo secrets. Add it via Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+
+          RESPONSE=$(curl -sS -w "\nHTTP_STATUS:%{http_code}" \
+            -X POST https://www.h3rr.com/api/cron/daily-affirmations \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            -H "Content-Type: application/json")
+
+          HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS:" | cut -d: -f2)
+          BODY=$(echo "$RESPONSE" | sed '/HTTP_STATUS:/d')
+
+          echo "HTTP status: $HTTP_STATUS"
+          echo "Response body:"
+          echo "$BODY"
+
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "::error::daily-affirmations route returned non-200 status"
+            exit 1
+          fi
+
+          echo "::notice::Daily affirmations triggered successfully at $(date -u +%FT%TZ)"
