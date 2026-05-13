@@ -25,6 +25,7 @@ type NavItem = {
   href: string;
   label: string;
   requires: MemberPlan;
+  testerOnly?: boolean;
 };
 
 // All hrefs are internal /dashboard/* routes only.
@@ -37,6 +38,9 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard/assessment',   label: 'My Progress',     requires: 'collective' },
   { href: '/dashboard/sessions',     label: 'Live w/ Bianca',  requires: 'collective' },
   { href: '/dashboard/community',    label: 'HERR Nation',     requires: 'collective' },
+  { href: '/dashboard/journey',      label: 'HERR Journey',    requires: 'collective' },
+  { href: '/dashboard/peer-review',  label: 'Peer Review',     requires: 'collective' },
+  { href: '/dashboard/beta-testers', label: 'Beta Lab',        requires: 'free', testerOnly: true },
   { href: '/dashboard/billing',      label: 'Billing',         requires: 'collective' },
   { href: '/dashboard/settings',     label: 'Settings',        requires: 'free' },
 ];
@@ -44,9 +48,11 @@ const NAV_ITEMS: NavItem[] = [
 export default function MemberNav({
   plan,
   displayName,
+  isTester = false,
 }: {
   plan: MemberPlan;
   displayName: string;
+  isTester?: boolean;
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -92,7 +98,7 @@ export default function MemberNav({
 
   const NavList = () => (
     <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
-      {NAV_ITEMS.map((item) => {
+      {NAV_ITEMS.filter((item) => !item.testerOnly || isTester).map((item) => {
         const active = isActive(item.href);
         const locked = isLocked(item);
         const href = locked ? upsellHref(item) : item.href;

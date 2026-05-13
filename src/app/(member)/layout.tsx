@@ -12,9 +12,10 @@ export default async function MemberLayout({
 
   if (!user) redirect('/login');
 
-  const { data: profile } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: profile } = await (supabase as any)
     .from('profiles')
-    .select('plan, onboarding_complete, preferred_name, first_name')
+    .select('plan, onboarding_complete, preferred_name, first_name, is_tester')
     .eq('id', user.id)
     .single();
 
@@ -23,10 +24,11 @@ export default async function MemberLayout({
   // Canonical tier source = profile.plan, null treated as 'free'.
   const plan = ((profile?.plan ?? 'free') as MemberPlan);
   const displayName = profile?.preferred_name || profile?.first_name || 'Member';
+  const isTester = profile?.is_tester === true;
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--herr-cream)', color: 'var(--herr-ink)' }}>
-      <MemberNav plan={plan} displayName={displayName} />
+      <MemberNav plan={plan} displayName={displayName} isTester={isTester} />
       <main className="md:ml-60" style={{ minHeight: '100vh' }}>
         {children}
       </main>
