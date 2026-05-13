@@ -94,7 +94,7 @@ export default async function CommunityPage() {
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontSize: 'clamp(28px, 5vw, 44px)',
                 fontWeight: 700,
-                color: '#1A1A2E',
+                color: 'var(--herr-ink)',
                 marginBottom: 16,
                 lineHeight: 1.2,
               }}
@@ -104,7 +104,7 @@ export default async function CommunityPage() {
             <p
               style={{
                 fontSize: '1.125rem',
-                color: '#1A1A2E',
+                color: 'var(--herr-ink)',
                 lineHeight: 1.7,
                 maxWidth: 600,
                 margin: '0 auto',
@@ -139,7 +139,7 @@ export default async function CommunityPage() {
                   animation: 'communityPulse 2s ease-in-out infinite',
                 }}
               />
-              <span style={{ fontSize: 14, color: '#1A1A2E', fontWeight: 500 }}>
+              <span style={{ fontSize: 14, color: 'var(--herr-ink)', fontWeight: 500 }}>
                 {pioneers} pioneer{pioneers !== 1 ? 's' : ''} building this community
               </span>
             </div>
@@ -353,14 +353,14 @@ export default async function CommunityPage() {
                 fontSize: 'clamp(22px, 3.5vw, 30px)',
                 fontWeight: 600,
                 fontStyle: 'italic',
-                color: '#1A1A2E',
+                color: 'var(--herr-ink)',
                 lineHeight: 1.4,
                 marginBottom: 8,
               }}
             >
               &ldquo;I AM becoming the version of myself I was always meant to be.&rdquo;
             </p>
-            <p style={{ fontSize: 13, color: '#666666' }}>
+            <p style={{ fontSize: 13, color: 'var(--herr-ink-soft)' }}>
               Spoken in your own voice. Delivered every morning.
             </p>
           </ScrollFadeIn>

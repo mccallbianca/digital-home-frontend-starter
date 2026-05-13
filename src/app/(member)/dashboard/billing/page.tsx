@@ -59,8 +59,8 @@ export default async function BillingPage() {
           {/* Current plan */}
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             <div className="p-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-              <p className="herr-label mb-2" style={{ color: '#666666' }}>Current Plan</p>
-              <p className="font-display text-2xl font-light mb-2" style={{ color: '#1A1A2E' }}>
+              <p className="herr-label mb-2" style={{ color: 'var(--herr-ink-soft)' }}>Current Plan</p>
+              <p className="font-display text-2xl font-light mb-2" style={{ color: 'var(--herr-ink)' }}>
                 {plan ? (PLAN_LABELS[plan] ?? plan) : 'No active plan'}
               </p>
               <p className={`text-[0.8rem] ${status === 'active' ? 'text-[var(--herr-cobalt)]' : 'text-[var(--herr-pink)]'}`}>
@@ -68,14 +68,14 @@ export default async function BillingPage() {
               </p>
             </div>
             <div className="p-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-              <p className="herr-label mb-2" style={{ color: '#666666' }}>Billing</p>
+              <p className="herr-label mb-2" style={{ color: 'var(--herr-ink-soft)' }}>Billing</p>
               {periodEnd && (
-                <p className="mb-1" style={{ color: '#1A1A2E' }}>
-                  Next billing: <span style={{ color: '#666666' }}>{periodEnd}</span>
+                <p className="mb-1" style={{ color: 'var(--herr-ink)' }}>
+                  Next billing: <span style={{ color: 'var(--herr-ink-soft)' }}>{periodEnd}</span>
                 </p>
               )}
               {subscribedAt && (
-                <p className="text-sm" style={{ color: '#666666' }}>
+                <p className="text-sm" style={{ color: 'var(--herr-ink-soft)' }}>
                   Member since {subscribedAt}
                 </p>
               )}
@@ -84,8 +84,8 @@ export default async function BillingPage() {
 
           {/* Manage subscription */}
           <div className="p-8 mb-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <p className="herr-label mb-4" style={{ color: '#666666' }}>Manage Subscription</p>
-            <p className="text-sm leading-relaxed mb-6" style={{ color: '#666666', fontSize: '1rem' }}>
+            <p className="herr-label mb-4" style={{ color: 'var(--herr-ink-soft)' }}>Manage Subscription</p>
+            <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--herr-ink-soft)', fontSize: '1rem' }}>
               View invoices, update your payment method, upgrade or downgrade your tier, or cancel your subscription through the secure billing portal.
             </p>
             <BillingPortalButton />
@@ -93,20 +93,20 @@ export default async function BillingPage() {
 
           {/* Account details */}
           <div className="p-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <p className="herr-label mb-4" style={{ color: '#666666' }}>Account</p>
+            <p className="herr-label mb-4" style={{ color: 'var(--herr-ink-soft)' }}>Account</p>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span style={{ color: '#999999' }}>Email</span>
-                <span style={{ color: '#1A1A2E' }}>{profile?.email ?? user!.email}</span>
+                <span style={{ color: 'rgba(26,15,26,0.5)' }}>Email</span>
+                <span style={{ color: 'var(--herr-ink)' }}>{profile?.email ?? user!.email}</span>
               </div>
               <div className="flex justify-between">
-                <span style={{ color: '#999999' }}>Member ID</span>
-                <span className="font-mono text-[0.75rem]" style={{ color: '#666666' }}>{user!.id.slice(0, 8)}…</span>
+                <span style={{ color: 'rgba(26,15,26,0.5)' }}>Member ID</span>
+                <span className="font-mono text-[0.75rem]" style={{ color: 'var(--herr-ink-soft)' }}>{user!.id.slice(0, 8)}…</span>
               </div>
             </div>
           </div>
 
-          <p className="mt-8 text-[0.72rem] leading-relaxed" style={{ color: '#999999' }}>
+          <p className="mt-8 text-[0.72rem] leading-relaxed" style={{ color: 'rgba(26,15,26,0.5)' }}>
             HERR is a wellness tool and is not a substitute for professional mental health treatment.
             Always consult a licensed clinician for clinical concerns. © ECQO Holdings.
           </p>

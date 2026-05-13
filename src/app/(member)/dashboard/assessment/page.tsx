@@ -103,7 +103,7 @@ export default async function AssessmentPage() {
           {/* Current responses */}
           {hasResponses ? (
             <>
-              <p className="herr-label mb-6" style={{ color: '#666666' }}>Current Assessment</p>
+              <p className="herr-label mb-6" style={{ color: 'var(--herr-ink-soft)' }}>Current Assessment</p>
 
               {/* Domain summary bars */}
               <div className="grid md:grid-cols-2 gap-6 mb-12">
@@ -114,14 +114,14 @@ export default async function AssessmentPage() {
 
                   return (
                     <div key={domain.label} className="p-6 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-                      <p className="font-medium text-sm mb-3" style={{ color: '#1A1A2E' }}>{domain.label}</p>
+                      <p className="font-medium text-sm mb-3" style={{ color: 'var(--herr-ink)' }}>{domain.label}</p>
                       <div className="w-full h-2 overflow-hidden mb-2" style={{ background: '#E8E4DE', borderRadius: '4px' }}>
                         <div
                           className="h-full bg-[var(--herr-pink)] transition-all duration-700"
                           style={{ width: `${pct}%`, borderRadius: '4px' }}
                         />
                       </div>
-                      <p className="text-[0.75rem]" style={{ color: '#999999' }}>
+                      <p className="text-[0.75rem]" style={{ color: 'rgba(26,15,26,0.5)' }}>
                         Average: {avg.toFixed(1)} / 5
                       </p>
                     </div>
@@ -130,16 +130,16 @@ export default async function AssessmentPage() {
               </div>
 
               {/* Individual responses */}
-              <p className="herr-label mb-6" style={{ color: '#666666' }}>Your Responses</p>
+              <p className="herr-label mb-6" style={{ color: 'var(--herr-ink-soft)' }}>Your Responses</p>
               <div className="space-y-6">
                 {QUESTIONS.map((q, idx) => (
                   <div key={idx} className="pb-6" style={{ borderBottom: '1px solid #E8E4DE' }}>
-                    <p className="mb-2 leading-relaxed" style={{ color: '#1A1A2E', fontSize: '1rem' }}>
+                    <p className="mb-2 leading-relaxed" style={{ color: 'var(--herr-ink)', fontSize: '1rem' }}>
                       <span className="text-[var(--herr-pink)] font-display mr-2">{idx + 1}.</span>
                       {q}
                     </p>
-                    <p className="text-sm" style={{ color: '#666666' }}>
-                      Your response: <span style={{ color: '#1A1A2E' }}>{LIKERT_LABELS[responseMap[idx] ?? 0] || '—'}</span>
+                    <p className="text-sm" style={{ color: 'var(--herr-ink-soft)' }}>
+                      Your response: <span style={{ color: 'var(--herr-ink)' }}>{LIKERT_LABELS[responseMap[idx] ?? 0] || '—'}</span>
                     </p>
                   </div>
                 ))}
@@ -148,7 +148,7 @@ export default async function AssessmentPage() {
           ) : (
             <div className="p-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', borderLeft: '3px solid var(--herr-violet)' }}>
               <p className="herr-label text-[var(--herr-cobalt)] mb-3">Ready for a Fresh Assessment</p>
-              <p className="leading-relaxed" style={{ color: '#666666', fontSize: '1rem' }}>
+              <p className="leading-relaxed" style={{ color: 'var(--herr-ink-soft)', fontSize: '1rem' }}>
                 Your screener has been reset for this month. Retake it to update your existential profile
                 and generate fresh personalized affirmations.
               </p>
@@ -161,15 +161,15 @@ export default async function AssessmentPage() {
           {/* Past snapshots */}
           {snapshots && snapshots.length > 0 && (
             <div className="mt-16">
-              <p className="herr-label mb-6" style={{ color: '#666666' }}>Assessment History</p>
+              <p className="herr-label mb-6" style={{ color: 'var(--herr-ink-soft)' }}>Assessment History</p>
               <div className="space-y-3">
                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {snapshots.map((snap: any, i: number) => (
                   <div key={i} className="px-6 py-4 flex items-center justify-between rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-                    <p className="text-sm" style={{ color: '#1A1A2E' }}>
+                    <p className="text-sm" style={{ color: 'var(--herr-ink)' }}>
                       {new Date(snap.year, snap.month - 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                     </p>
-                    <p className="text-[0.75rem]" style={{ color: '#999999' }}>
+                    <p className="text-[0.75rem]" style={{ color: 'rgba(26,15,26,0.5)' }}>
                       {Object.keys(snap.responses).length} responses archived
                     </p>
                   </div>
@@ -178,7 +178,7 @@ export default async function AssessmentPage() {
             </div>
           )}
 
-          <p className="mt-8 text-[0.72rem] leading-relaxed" style={{ color: '#999999' }}>
+          <p className="mt-8 text-[0.72rem] leading-relaxed" style={{ color: 'rgba(26,15,26,0.5)' }}>
             This assessment is a wellness screening tool and does not constitute a clinical diagnosis.
             Results are used exclusively to personalize your HERR affirmation protocol.
           </p>

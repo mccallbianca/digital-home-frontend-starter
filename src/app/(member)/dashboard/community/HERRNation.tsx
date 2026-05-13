@@ -526,10 +526,10 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
                 {threads.length === 0 ? (
                   <div className="p-8 text-center">
                     <p style={{ fontSize: 28, marginBottom: 8 }}>&#x1F331;</p>
-                    <p style={{ fontSize: '1rem', color: '#1A1A2E', fontWeight: 600, marginBottom: 8 }}>
+                    <p style={{ fontSize: '1rem', color: 'var(--herr-ink)', fontWeight: 600, marginBottom: 8 }}>
                       This space is waiting for your voice.
                     </p>
-                    <p style={{ fontSize: '0.9rem', color: '#666666', lineHeight: 1.6, maxWidth: 360, margin: '0 auto' }}>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--herr-ink-soft)', lineHeight: 1.6, maxWidth: 360, margin: '0 auto' }}>
                       You are among the first to be here. Start a thread, share a reflection, or simply say hello.
                     </p>
                   </div>
@@ -630,10 +630,10 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
 
                 {dmList.length === 0 ? (
                   <div className="p-8 text-center">
-                    <p style={{ fontSize: '1rem', color: '#1A1A2E', fontWeight: 500, marginBottom: 6 }}>
+                    <p style={{ fontSize: '1rem', color: 'var(--herr-ink)', fontWeight: 500, marginBottom: 6 }}>
                       No conversations yet
                     </p>
-                    <p style={{ fontSize: '0.88rem', color: '#666666', lineHeight: 1.5 }}>
+                    <p style={{ fontSize: '0.88rem', color: 'var(--herr-ink-soft)', lineHeight: 1.5 }}>
                       Start a private conversation with another HERR member.
                     </p>
                   </div>

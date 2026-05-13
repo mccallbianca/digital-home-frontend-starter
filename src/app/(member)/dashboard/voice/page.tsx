@@ -45,20 +45,20 @@ export default async function VoicePage() {
           {/* Status cards */}
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             <div className="p-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-              <p className="herr-label mb-2" style={{ color: '#666666' }}>Voice Clone Status</p>
+              <p className="herr-label mb-2" style={{ color: 'var(--herr-ink-soft)' }}>Voice Clone Status</p>
               <p className={`font-display text-2xl font-light mb-2 ${hasFile ? 'text-[var(--herr-cobalt)]' : 'text-[var(--herr-pink)]'}`}>
                 {hasFile ? 'Sample Uploaded' : 'Pending'}
               </p>
-              <p className="text-[0.8rem]" style={{ color: '#999999' }}>
+              <p className="text-[0.8rem]" style={{ color: 'rgba(26,15,26,0.5)' }}>
                 {hasFile ? 'Your voice sample is being processed.' : 'Upload a voice sample to begin.'}
               </p>
             </div>
             <div className="p-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-              <p className="herr-label mb-2" style={{ color: '#666666' }}>Consent</p>
+              <p className="herr-label mb-2" style={{ color: 'var(--herr-ink-soft)' }}>Consent</p>
               <p className={`font-display text-2xl font-light mb-2 ${hasConsent ? 'text-[var(--herr-cobalt)]' : 'text-[var(--herr-faint)]'}`}>
                 {hasConsent ? 'Confirmed' : 'Not yet provided'}
               </p>
-              <p className="text-[0.8rem]" style={{ color: '#999999' }}>
+              <p className="text-[0.8rem]" style={{ color: 'rgba(26,15,26,0.5)' }}>
                 {hasConsent
                   ? `Consented on ${new Date(consent!.consented_at!).toLocaleDateString()}`
                   : 'Consent is required before voice cloning.'
@@ -69,7 +69,7 @@ export default async function VoicePage() {
 
           {/* Re-upload section */}
           <div className="p-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <p className="herr-label mb-4" style={{ color: '#666666' }}>
+            <p className="herr-label mb-4" style={{ color: 'var(--herr-ink-soft)' }}>
               {hasFile ? 'Re-upload Voice Sample' : 'Upload Voice Sample'}
             </p>
             <VoiceUploader userId={user!.id} hasExisting={hasFile} />
@@ -77,7 +77,7 @@ export default async function VoicePage() {
 
           {/* Privacy notice */}
           <div className="mt-8 p-6 rounded" style={{ background: '#F4F1EB' }}>
-            <p className="text-[0.8rem] leading-relaxed" style={{ color: '#999999' }}>
+            <p className="text-[0.8rem] leading-relaxed" style={{ color: 'rgba(26,15,26,0.5)' }}>
               Your voice recordings are encrypted, stored securely, and used exclusively to generate
               your personal affirmations. We never share, sell, or use your voice for any other purpose.
             </p>

@@ -30,8 +30,8 @@ export default async function SoundPage() {
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C42D8E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 16px', display: 'block' }}>
             <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 24, color: '#1A1A2E', marginBottom: 8 }}>Unlock ECQO Sound</h1>
-          <p style={{ fontSize: '1rem', color: '#666666', lineHeight: 1.6, marginBottom: 24 }}>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 24, color: 'var(--herr-ink)', marginBottom: 8 }}>Unlock ECQO Sound</h1>
+          <p style={{ fontSize: '1rem', color: 'var(--herr-ink-soft)', lineHeight: 1.6, marginBottom: 24 }}>
             Upgrade to HERR Personalized or Elite for music-layered affirmations with your chosen genres and activity modes.
           </p>
           <a href="/checkout?tier=personalized" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', height: 48, padding: '0 32px', background: '#C42D8E', color: '#FFFFFF', borderRadius: 12, fontSize: 14, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', textDecoration: 'none' }}>
@@ -64,30 +64,30 @@ export default async function SoundPage() {
         <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '2px', color: '#C42D8E', marginBottom: 8 }}>
           ECQO SOUND
         </p>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 28, fontWeight: 600, color: '#1A1A2E', marginBottom: 32 }}>
+        <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 28, fontWeight: 600, color: 'var(--herr-ink)', marginBottom: 32 }}>
           Your Sonic Architecture
         </h1>
 
         {/* Current preferences */}
         <div style={{ background: '#FFFFFF', borderRadius: 16, padding: 24, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', marginBottom: 24 }}>
           <div style={{ marginBottom: 16 }}>
-            <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '1px', color: '#666666', marginBottom: 8 }}>Modes</p>
+            <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--herr-ink-soft)', marginBottom: 8 }}>Modes</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
               {modes.length > 0 ? modes.map((m: string) => (
                 <span key={m} style={{ fontSize: 12, color: '#C42D8E', border: '1px solid #C42D8E', padding: '4px 12px', borderRadius: 12 }}>
                   {m.replace('-', ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
                 </span>
-              )) : <span style={{ fontSize: '1rem', color: '#666666' }}>No modes selected</span>}
+              )) : <span style={{ fontSize: '1rem', color: 'var(--herr-ink-soft)' }}>No modes selected</span>}
             </div>
           </div>
           <div style={{ marginBottom: 16 }}>
-            <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '1px', color: '#666666', marginBottom: 8 }}>Genres</p>
+            <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--herr-ink-soft)', marginBottom: 8 }}>Genres</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
               {genres.length > 0 ? genres.map((g: string) => (
                 <span key={g} style={{ fontSize: 12, color: '#C42D8E', border: '1px solid #C42D8E', padding: '4px 12px', borderRadius: 12 }}>
                   {g.replace('-', ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
                 </span>
-              )) : <span style={{ fontSize: '1rem', color: '#666666' }}>No genres selected</span>}
+              )) : <span style={{ fontSize: '1rem', color: 'var(--herr-ink-soft)' }}>No genres selected</span>}
             </div>
           </div>
           <div style={{ display: 'flex', gap: 12 }}>
@@ -97,7 +97,7 @@ export default async function SoundPage() {
         </div>
 
         {/* Today's tracks placeholder */}
-        <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '2px', color: '#666666', marginBottom: 16 }}>
+        <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--herr-ink-soft)', marginBottom: 16 }}>
           TODAY&apos;S TRACKS
         </p>
 
@@ -114,7 +114,7 @@ export default async function SoundPage() {
                 {mode.replace('-', ' ')}
               </span>
               {genres[0] && (
-                <span style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '1px', color: '#666666', border: '1px solid rgba(0,0,0,0.15)', padding: '4px 12px', borderRadius: 12 }}>
+                <span style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--herr-ink-soft)', border: '1px solid rgba(0,0,0,0.15)', padding: '4px 12px', borderRadius: 12 }}>
                   {genres[0]}
                 </span>
               )}
@@ -129,12 +129,12 @@ export default async function SoundPage() {
               <div style={{ flex: 1 }}>
                 <div style={{ width: '100%', height: 4, background: 'rgba(0,0,0,0.08)', borderRadius: 2 }} />
               </div>
-              <span style={{ fontSize: 12, color: '#999999' }}>Generating...</span>
+              <span style={{ fontSize: 12, color: 'rgba(26,15,26,0.5)' }}>Generating...</span>
             </div>
           </div>
         )) : (
           <div style={{ background: '#FFFFFF', borderRadius: 16, padding: 32, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', textAlign: 'center' }}>
-            <p style={{ fontSize: '1rem', color: '#1A1A2E' }}>
+            <p style={{ fontSize: '1rem', color: 'var(--herr-ink)' }}>
               Select your activity modes to start receiving personalized sound tracks.
             </p>
             <Link href="/dashboard/modes" style={{
