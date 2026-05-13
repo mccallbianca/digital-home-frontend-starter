@@ -1,0 +1,32 @@
+name: Beta-Testers Briefing
+
+on:
+  schedule:
+    # 8 AM ET (during EDT) = 13:00 UTC; in EST this becomes 12:00 UTC.
+    # The route accepts UTC hour 12..17 as 'morning', so EST also works.
+    - cron: '0 13 * * *'
+    # 8 PM ET (during EDT) = 01:00 UTC next day; route accepts 0..5 UTC as 'evening'.
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  briefing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: GET /api/cron/beta-testers-briefing
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::CRON_SECRET missing"
+            exit 1
+          fi
+          RESPONSE=$(curl -sS -w "\nHTTP_STATUS:%{http_code}" \
+            -X GET https://www.h3rr.com/api/cron/beta-testers-briefing \
+            -H "Authorization: Bearer $CRON_SECRET")
+          HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS:" | cut -d: -f2)
+          BODY=$(echo "$RESPONSE" | sed '/HTTP_STATUS:/d')
+          echo "Status: $HTTP_STATUS"
+          echo "$BODY"
+          if [ "$HTTP_STATUS" != "200" ]; then exit 1; fi
