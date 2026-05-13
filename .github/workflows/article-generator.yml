@@ -1,0 +1,49 @@
+name: HERR Journal Article Generator
+
+on:
+  schedule:
+    # Tuesday + Thursday 6 AM ET (during EDT = 10:00 UTC, EST = 11:00 UTC).
+    # Run 11:00 UTC to align with EDT; EST runs at 6 AM local fine via this
+    # workflow's day_of_week query param computed at runtime.
+    - cron: '0 11 * * 2'
+    - cron: '0 11 * * 4'
+  workflow_dispatch:
+    inputs:
+      day_of_week:
+        description: 'tuesday or thursday'
+        required: false
+        default: 'tuesday'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Resolve day_of_week
+        id: day
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            DAY="${{ inputs.day_of_week }}"
+          else
+            DAY=$(date -u +%A | tr '[:upper:]' '[:lower:]')
+          fi
+          echo "day=$DAY" >> $GITHUB_OUTPUT
+
+      - name: GET /api/cron/generate-article
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          DAY: ${{ steps.day.outputs.day }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::CRON_SECRET missing"
+            exit 1
+          fi
+          RESPONSE=$(curl -sS -w "\nHTTP_STATUS:%{http_code}" \
+            -X GET "https://www.h3rr.com/api/cron/generate-article?day_of_week=$DAY" \
+            -H "Authorization: Bearer $CRON_SECRET")
+          HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS:" | cut -d: -f2)
+          BODY=$(echo "$RESPONSE" | sed '/HTTP_STATUS:/d')
+          echo "Day: $DAY"
+          echo "Status: $HTTP_STATUS"
+          echo "$BODY"
+          if [ "$HTTP_STATUS" != "200" ]; then exit 1; fi
