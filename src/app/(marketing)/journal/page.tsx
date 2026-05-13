@@ -74,11 +74,15 @@ function estimateReadingTime(body: string | null): number {
 export default async function JournalPage() {
   const supabase = await createClient();
 
-  const { data: articles, error } = await supabase
+  // Phase 1v2 EPIC B6: filter out HERR Nation-only entries from the public journal.
+  // (supabase as any) because herr_nation_only column not yet in types/database.ts.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: articles, error } = await (supabase as any)
     .from('content_objects')
-    .select('slug, title, excerpt, content_type, semantic_tags, published_at, featured_image_url, body, author_name')
+    .select('slug, title, excerpt, content_type, semantic_tags, published_at, featured_image_url, body, author_name, herr_nation_only')
     .eq('status', 'published')
     .eq('content_type', 'article')
+    .or('herr_nation_only.is.null,herr_nation_only.eq.false')
     .order('published_at', { ascending: false, nullsFirst: false });
 
   if (error) {
@@ -87,8 +91,10 @@ export default async function JournalPage() {
 
   /* Filter out excluded titles, then normalize shape */
   const dbArticles = (articles || [])
-    .filter((a) => !EXCLUDED_TITLES.includes(a.title))
-    .map((a) => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .filter((a: any) => !EXCLUDED_TITLES.includes(a.title))
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .map((a: any) => ({
       slug: a.slug,
       title: a.title,
       excerpt: a.excerpt || '',
@@ -100,7 +106,7 @@ export default async function JournalPage() {
     }));
 
   /* Merge: DB articles first, then static articles not already present */
-  const dbSlugs = new Set(dbArticles.map((a) => a.slug));
+  const dbSlugs = new Set(dbArticles.map((a: { slug: string }) => a.slug));
   const staticFill = STATIC_ARTICLES.filter((a) => !dbSlugs.has(a.slug)).map((a) => ({
     ...a,
     published_at: '',

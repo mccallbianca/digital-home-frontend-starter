@@ -40,8 +40,6 @@ export default async function CommunityPage() {
 
   // Pioneer counter — paid-member count + 100 founders' offset.
   // Phase 1v2 EPIC B6: live from profiles, single source of truth.
-  // (supabase as any) because src/types/database.ts plan union doesn't
-  // yet include 'collective'/'free'; runtime is correct.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { count: paidMemberCount } = await (supabase as any)
     .from('profiles')
@@ -52,7 +50,35 @@ export default async function CommunityPage() {
   const userTier = profile?.plan || 'collective';
   const acknowledged = !!profile?.community_acknowledged;
   const pioneers = (paidMemberCount ?? 0) + 100;
-  const theme = getWeeklyTheme();
+  const fallbackTheme = getWeeklyTheme();
+
+  // Phase 1v2 EPIC B6: 3-card section fed by content_objects via the
+  // herr_nation_section taxonomy. If the column doesn't exist yet (SQL not
+  // pasted), the queries return errors and we fall back to placeholder copy.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const fetchSection = async (section: 'reflection' | 'theme' | 'milestone') => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data, error } = await (supabase as any)
+        .from('content_objects')
+        .select('slug, title, excerpt, body, published_at')
+        .eq('herr_nation_section', section)
+        .eq('status', 'published')
+        .order('published_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error) return null;
+      return data;
+    } catch {
+      return null;
+    }
+  };
+
+  const [reflectionEntry, themeEntry, milestoneEntry] = await Promise.all([
+    fetchSection('reflection'),
+    fetchSection('theme'),
+    fetchSection('milestone'),
+  ]);
 
   return (
     <main style={{ minHeight: '100vh' }}>
@@ -163,7 +189,7 @@ export default async function CommunityPage() {
                 gap: 20,
               }}
             >
-              {/* Daily Reflection */}
+              {/* Daily Reflection — fed by content_objects.herr_nation_section='reflection' */}
               <div
                 style={{
                   background: '#16161F',
@@ -175,46 +201,43 @@ export default async function CommunityPage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
                   <span
                     style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: '50%',
+                      width: 36, height: 36, borderRadius: '50%',
                       background: 'rgba(232, 56, 138, 0.15)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 16,
                     }}
                   >
                     &#x1F4AD;
                   </span>
-                  <p
-                    style={{
-                      fontSize: 12,
-                      textTransform: 'uppercase',
-                      letterSpacing: '2px',
-                      color: '#E8388A',
-                    }}
-                  >
+                  <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '2px', color: '#E8388A' }}>
                     Daily Reflection
                   </p>
                 </div>
-                <p style={{ fontSize: '1rem', color: '#FAF8F5', lineHeight: 1.6, marginBottom: 16 }}>
-                  What did your inner voice tell you today? Share a moment of awareness.
-                </p>
-                <Link
-                  href="#community-feed"
-                  style={{
-                    fontSize: 13,
-                    color: '#E8388A',
-                    textDecoration: 'none',
-                    fontWeight: 600,
-                  }}
-                >
-                  Share Your Reflection &rarr;
-                </Link>
+                {reflectionEntry ? (
+                  <>
+                    <p style={{ fontSize: '1.05rem', color: '#FAF8F5', lineHeight: 1.6, marginBottom: 12, fontWeight: 500 }}>
+                      {reflectionEntry.title}
+                    </p>
+                    {reflectionEntry.excerpt && (
+                      <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.65)', lineHeight: 1.6, marginBottom: 16 }}>
+                        {reflectionEntry.excerpt}
+                      </p>
+                    )}
+                    <Link
+                      href={`/journal/${reflectionEntry.slug}`}
+                      style={{ fontSize: 13, color: '#E8388A', textDecoration: 'none', fontWeight: 600 }}
+                    >
+                      Read Reflection &rarr;
+                    </Link>
+                  </>
+                ) : (
+                  <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.6, fontStyle: 'italic' }}>
+                    New reflection coming soon.
+                  </p>
+                )}
               </div>
 
-              {/* This Week's Theme */}
+              {/* This Week's Theme — fed by content_objects.herr_nation_section='theme' */}
               <div
                 style={{
                   background: '#16161F',
@@ -226,46 +249,63 @@ export default async function CommunityPage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
                   <span
                     style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: '50%',
+                      width: 36, height: 36, borderRadius: '50%',
                       background: 'rgba(139, 92, 246, 0.15)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 16,
                     }}
                   >
                     &#x2728;
                   </span>
-                  <p
-                    style={{
-                      fontSize: 12,
-                      textTransform: 'uppercase',
-                      letterSpacing: '2px',
-                      color: '#8B5CF6',
-                    }}
-                  >
+                  <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '2px', color: '#8B5CF6' }}>
                     This Week&apos;s Theme
                   </p>
                 </div>
-                <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.5)', marginBottom: 6 }}>
-                  We&apos;re exploring: <span style={{ color: '#FAF8F5', fontWeight: 600 }}>{theme.concern}</span>
-                </p>
-                <p
-                  style={{
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
-                    fontSize: '1.25rem',
-                    fontStyle: 'italic',
-                    color: '#FAF8F5',
-                    lineHeight: 1.5,
-                  }}
-                >
-                  &ldquo;{theme.prompt}&rdquo;
-                </p>
+                {themeEntry ? (
+                  <>
+                    <p
+                      style={{
+                        fontFamily: "'Cormorant Garamond', Georgia, serif",
+                        fontSize: '1.25rem',
+                        fontStyle: 'italic',
+                        color: '#FAF8F5',
+                        lineHeight: 1.5,
+                        marginBottom: 12,
+                      }}
+                    >
+                      &ldquo;{themeEntry.title}&rdquo;
+                    </p>
+                    {themeEntry.excerpt && (
+                      <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.65)', lineHeight: 1.6, marginBottom: 12 }}>
+                        {themeEntry.excerpt}
+                      </p>
+                    )}
+                    <Link href={`/journal/${themeEntry.slug}`} style={{ fontSize: 13, color: '#8B5CF6', textDecoration: 'none', fontWeight: 600 }}>
+                      Read Theme &rarr;
+                    </Link>
+                  </>
+                ) : (
+                  // Fallback: keep the curated weekly prompt loop until a theme entry is published.
+                  <>
+                    <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.5)', marginBottom: 6 }}>
+                      We&apos;re exploring: <span style={{ color: '#FAF8F5', fontWeight: 600 }}>{fallbackTheme.concern}</span>
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: "'Cormorant Garamond', Georgia, serif",
+                        fontSize: '1.25rem',
+                        fontStyle: 'italic',
+                        color: '#FAF8F5',
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      &ldquo;{fallbackTheme.prompt}&rdquo;
+                    </p>
+                  </>
+                )}
               </div>
 
-              {/* Community Milestone */}
+              {/* Community Milestone — fed by content_objects.herr_nation_section='milestone' */}
               <div
                 style={{
                   background: '#16161F',
@@ -277,36 +317,43 @@ export default async function CommunityPage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
                   <span
                     style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: '50%',
+                      width: 36, height: 36, borderRadius: '50%',
                       background: 'rgba(16, 185, 129, 0.15)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 16,
                     }}
                   >
                     &#x1F331;
                   </span>
-                  <p
-                    style={{
-                      fontSize: 12,
-                      textTransform: 'uppercase',
-                      letterSpacing: '2px',
-                      color: '#10B981',
-                    }}
-                  >
-                    Community Milestone
+                  <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '2px', color: '#10B981' }}>
+                    HERR Nation Milestone
                   </p>
                 </div>
-                <p style={{ fontSize: '1rem', color: '#FAF8F5', lineHeight: 1.6 }}>
-                  Welcome to the first generation of HERR pioneers.
-                  You are building HERR Nation from the ground up.
-                </p>
-                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', marginTop: 12 }}>
-                  HERR Nation is growing. Every voice that joins makes it stronger.
-                </p>
+                {milestoneEntry ? (
+                  <>
+                    <p style={{ fontSize: '1.05rem', color: '#FAF8F5', lineHeight: 1.6, marginBottom: 12, fontWeight: 500 }}>
+                      {milestoneEntry.title}
+                    </p>
+                    {milestoneEntry.excerpt && (
+                      <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.65)', lineHeight: 1.6, marginBottom: 16 }}>
+                        {milestoneEntry.excerpt}
+                      </p>
+                    )}
+                    <Link href={`/journal/${milestoneEntry.slug}`} style={{ fontSize: 13, color: '#10B981', textDecoration: 'none', fontWeight: 600 }}>
+                      Read Milestone &rarr;
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <p style={{ fontSize: '1rem', color: '#FAF8F5', lineHeight: 1.6 }}>
+                      Welcome to the first generation of HERR pioneers.
+                      You are building HERR Nation from the ground up.
+                    </p>
+                    <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', marginTop: 12 }}>
+                      New milestone coming soon. Every voice that joins makes HERR Nation stronger.
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           </ScrollFadeIn>
