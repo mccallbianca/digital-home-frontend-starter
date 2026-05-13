@@ -38,15 +38,20 @@ export default async function CommunityPage() {
     .eq('id', user!.id)
     .single();
 
-  // Get member count for activity indicator
-  const { count: memberCount } = await supabase
+  // Pioneer counter — paid-member count + 100 founders' offset.
+  // Phase 1v2 EPIC B6: live from profiles, single source of truth.
+  // (supabase as any) because src/types/database.ts plan union doesn't
+  // yet include 'collective'/'free'; runtime is correct.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { count: paidMemberCount } = await (supabase as any)
     .from('profiles')
-    .select('*', { count: 'exact', head: true });
+    .select('id', { count: 'exact', head: true })
+    .in('plan', ['collective', 'personalized', 'elite']);
 
   const displayName = profile?.preferred_name || profile?.first_name || 'HERR Member';
   const userTier = profile?.plan || 'collective';
   const acknowledged = !!profile?.community_acknowledged;
-  const pioneers = memberCount || 12;
+  const pioneers = (paidMemberCount ?? 0) + 100;
   const theme = getWeeklyTheme();
 
   return (
