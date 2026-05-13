@@ -9,6 +9,37 @@ export const metadata: Metadata = {
   description: 'Your HERR member dashboard.',
 };
 
+// ── Helpers ──────────────────────────────────────────────────────────
+function ptDateString(d: Date): string {
+  // YYYY-MM-DD in America/Los_Angeles
+  return d.toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
+}
+
+function computeDayStreak(timestamps: string[]): number {
+  if (!timestamps || timestamps.length === 0) return 0;
+  const dateSet = new Set(timestamps.map((ts) => ptDateString(new Date(ts))));
+  let streak = 0;
+  const cursor = new Date();
+  let cursorStr = ptDateString(cursor);
+  while (dateSet.has(cursorStr)) {
+    streak++;
+    cursor.setDate(cursor.getDate() - 1);
+    cursorStr = ptDateString(cursor);
+  }
+  return streak;
+}
+
+const MODE_LABELS: Record<string, string> = {
+  workout: 'Workout',
+  driving: 'Driving',
+  sleep: 'Sleep',
+  morning: 'Morning',
+  'deep-work': 'Deep Work',
+  'love-family': 'Love + Family',
+  abundance: 'Abundance',
+  healing: 'Healing',
+};
+
 export default async function DashboardPage({
   searchParams,
 }: {
@@ -36,29 +67,84 @@ export default async function DashboardPage({
   const hasVoice = plan === 'personalized' || plan === 'elite';
   const voiceReady = !!voiceConsent?.file_path;
 
-  // Detect first-load via ?welcome=1 query param (set by onboarding redirect)
   const isFirstLoad = params.welcome === '1';
 
-  // ── Role-based portal access ────────────────────────────────
-  // TODO: Replace with role-based visibility once roles are implemented in Supabase
-  // Currently uses hardcoded admin email list (matches /admin layout gate)
   const ADMIN_EMAILS = ['bianca@h3rr.com', 'bdmccall@gmail.com', 'mccall.bianca@gmail.com'];
   const userEmail = profile?.email ?? user!.email ?? '';
   const isAdmin = ADMIN_EMAILS.includes(userEmail);
-  // TODO: Add is_producer column to profiles table and check here
-  const isProducer = isAdmin; // For now, Bianca has all roles
+  const isProducer = isAdmin;
 
-  // ── 5-Section Card Configuration ────────────────────────────
+  // ── Phase 1 v2 EPIC B8: real metrics (no more hardcoded 12/47/Morning) ──
+
+  // Day streak: fetch last 90 days of non-deleted affirmation dates, compute consecutive PT days ending today.
+  const ninetyDaysAgo = new Date();
+  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: streakRows } = await (supabase as any)
+    .from('affirmation_scripts')
+    .select('generated_at')
+    .eq('member_id', user!.id)
+    .is('deleted_at', null)
+    .gte('generated_at', ninetyDaysAgo.toISOString())
+    .order('generated_at', { ascending: false });
+
+  const dayStreak = computeDayStreak(
+    (streakRows ?? []).map((r: { generated_at: string }) => r.generated_at),
+  );
+
+  // Total sessions attended (session_registrations table may not exist yet; treat 404 as 0).
+  let totalSessions = 0;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { count, error: sessErr } = await (supabase as any)
+      .from('session_registrations')
+      .select('id', { count: 'exact', head: true })
+      .eq('member_id', user!.id)
+      .eq('attended', true);
+    if (!sessErr && typeof count === 'number') totalSessions = count;
+  } catch {
+    totalSessions = 0;
+  }
+
+  // Current active mode: most recently updated active row from member_activity_modes.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: currentModeRow } = await (supabase as any)
+    .from('member_activity_modes')
+    .select('mode, updated_at')
+    .eq('member_id', user!.id)
+    .eq('active', true)
+    .order('updated_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  const currentModeId = currentModeRow?.mode ?? null;
+  const currentModeLabel = currentModeId ? MODE_LABELS[currentModeId] ?? currentModeId : null;
+
+  // Today's affirmation: latest non-deleted row generated today (PT).
+  const todayPT = ptDateString(new Date());
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: latestAffirmationRows } = await (supabase as any)
+    .from('affirmation_scripts')
+    .select('id, script, activity_mode, generated_at')
+    .eq('member_id', user!.id)
+    .is('deleted_at', null)
+    .order('generated_at', { ascending: false })
+    .limit(5);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const todaysAffirmation = (latestAffirmationRows ?? []).find((r: any) => {
+    return r.generated_at && ptDateString(new Date(r.generated_at)) === todayPT;
+  }) ?? null;
+
   const cards = [
-    // Section 1: Inbox / Affirmation Downloads
     {
       href: '/dashboard/affirmations',
       label: 'Inbox & Affirmations',
       description: 'Your daily personalized affirmations, delivered in your own cloned voice. Download, listen, and reprogram your inner narrative.',
       tier: 'All tiers',
-      tierColor: 'text-[var(--herr-muted)]',
+      tierColor: 'text-[var(--herr-ink-soft)]',
       status: voiceReady ? 'New affirmation available' : 'Generating your personalized library...',
-      statusColor: voiceReady ? 'text-[var(--herr-cobalt)]' : 'text-[var(--herr-faint)]',
+      statusColor: voiceReady ? 'text-[var(--herr-magenta)]' : 'text-[var(--herr-ink-soft)]',
       accessible: true,
       sectionId: 'inbox',
       icon: (
@@ -67,13 +153,12 @@ export default async function DashboardPage({
         </svg>
       ),
     },
-    // Section 2: My Progress
     {
       href: '/dashboard/assessment',
       label: 'My Progress',
       description: 'Track your existential wellness over time. Retake the ECQO screener weekly or monthly to recalibrate your affirmation content.',
       tier: hasVoice ? 'Personalized + Elite' : 'All tiers',
-      tierColor: hasVoice ? 'text-[var(--herr-pink)]' : 'text-[var(--herr-muted)]',
+      tierColor: hasVoice ? 'text-[var(--herr-magenta)]' : 'text-[var(--herr-ink-soft)]',
       status: null,
       statusColor: '',
       accessible: true,
@@ -84,13 +169,12 @@ export default async function DashboardPage({
         </svg>
       ),
     },
-    // Section 3: Live Events
     {
       href: isElite ? '/dashboard/sessions' : '/dashboard/billing',
       label: 'Live Events',
       description: 'Monthly live group sessions with Bianca D. McCall, M.A., LMFT. Real-time guidance, Q&A, and community healing.',
       tier: isElite ? 'Elite' : 'Elite Only: Upgrade',
-      tierColor: 'text-[var(--herr-violet)]',
+      tierColor: 'text-[var(--herr-magenta)]',
       status: null,
       statusColor: '',
       accessible: true,
@@ -102,13 +186,12 @@ export default async function DashboardPage({
         </svg>
       ),
     },
-    // Section 4: Community
     {
       href: '/dashboard/community',
       label: 'Community',
       description: 'HERR Nation: share wins, ask questions, and grow alongside people committed to reprogramming their inner voice.',
       tier: 'All tiers',
-      tierColor: 'text-[var(--herr-muted)]',
+      tierColor: 'text-[var(--herr-ink-soft)]',
       status: null,
       statusColor: '',
       accessible: true,
@@ -119,13 +202,12 @@ export default async function DashboardPage({
         </svg>
       ),
     },
-    // Section 5: My Profile
     {
       href: '/dashboard/billing',
       label: 'My Profile',
       description: 'Manage your subscription, update preferences, voice settings, and billing. Access your complete HERR account.',
       tier: 'All tiers',
-      tierColor: 'text-[var(--herr-muted)]',
+      tierColor: 'text-[var(--herr-ink-soft)]',
       status: null,
       statusColor: '',
       accessible: true,
@@ -147,6 +229,12 @@ export default async function DashboardPage({
       isFirstLoad={isFirstLoad}
       isAdmin={isAdmin}
       isProducer={isProducer}
+      dayStreak={dayStreak}
+      totalSessions={totalSessions}
+      currentModeId={currentModeId}
+      currentModeLabel={currentModeLabel}
+      todaysAffirmationScript={todaysAffirmation?.script ?? null}
+      todaysAffirmationMode={todaysAffirmation?.activity_mode ?? null}
     />
   );
 }
