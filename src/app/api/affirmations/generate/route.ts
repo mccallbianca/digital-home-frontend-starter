@@ -39,7 +39,11 @@ const MODE_CONTEXT: Record<string, string> = {
   'healing':     'The member is in a healing or recovery process. Focus on grace, patience, and becoming. Gentle, compassionate tone.',
 };
 
-function buildSystemPrompt(mode: string, screenerData: string): string {
+function buildSystemPrompt(
+  mode: string,
+  screenerData: string,
+  priorScripts: string,
+): string {
   const modeCtx = MODE_CONTEXT[mode] || MODE_CONTEXT['morning'];
   return `You are HERR - Human Existential Regulator and Reprogramming. You generate personalized affirmation scripts.
 
@@ -63,7 +67,7 @@ ${modeCtx}
 
 MEMBER EXISTENTIAL PROFILE:
 ${screenerData}
-
+${priorScripts ? `\nRECENT AFFIRMATIONS DELIVERED TO THIS MEMBER (do NOT repeat these declarations, phrasings, metaphors, or thematic openings — write something distinct in cadence, imagery, and content):\n\n${priorScripts}\n` : ''}
 OUTPUT FORMAT:
 Return the script as plain text. Start with the Regulate section, then a blank line, then the Reprogram section. No headers, no labels, no markdown. Just the script text that will be spoken aloud.`;
 }
@@ -97,6 +101,40 @@ export async function POST(req: NextRequest) {
     const memberName = profile?.preferred_name || profile?.first_name || '';
     const nameContext = memberName ? `\nMember name: ${memberName}. You may use it once in the Regulate section.` : '';
 
+    // Phase 1 v2 EPIC B1 variance fix: fetch the member's last 5 non-deleted
+    // affirmations so we can instruct Claude to avoid repeating themes,
+    // metaphors, or declarations.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: priorAffirmations } = await (supabase as any)
+      .from('affirmation_scripts')
+      .select('script, activity_mode, generated_at')
+      .eq('member_id', userId)
+      .is('deleted_at', null)
+      .order('generated_at', { ascending: false })
+      .limit(5);
+
+    const priorScripts =
+      priorAffirmations && priorAffirmations.length > 0
+        ? priorAffirmations
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .map((a: any, i: number) => {
+              const date = (a.generated_at || '').slice(0, 10);
+              const excerpt = (a.script || '').slice(0, 400);
+              return `Affirmation ${i + 1} (${a.activity_mode}, ${date}):\n${excerpt}`;
+            })
+            .join('\n\n')
+        : '';
+
+    // Variance signals: timestamp + UUID nonce make every prompt physically
+    // different even when all the other inputs match.
+    const generationTimestamp = new Date().toISOString();
+    const generationNonce = crypto.randomUUID();
+
+    const userPrompt = `Generate a HERR affirmation script for the ${activityMode} activity mode.${nameContext}
+
+Generation timestamp: ${generationTimestamp}
+Generation nonce: ${generationNonce}`;
+
     const claudeStartTime = Date.now();
     const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -108,11 +146,12 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1024,
+        temperature: 0.9,
         messages: [{
           role: 'user',
-          content: `Generate a HERR affirmation script for the ${activityMode} activity mode.${nameContext}`,
+          content: userPrompt,
         }],
-        system: buildSystemPrompt(activityMode, screenerData),
+        system: buildSystemPrompt(activityMode, screenerData, priorScripts),
       }),
     });
 
