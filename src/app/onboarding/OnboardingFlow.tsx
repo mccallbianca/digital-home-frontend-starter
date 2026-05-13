@@ -307,7 +307,42 @@ export default function OnboardingFlow({ userId, userEmail, plan, existingProfil
       onboarding_complete: true,
     }).eq('id', userId);
 
-    router.push('/dashboard?welcome=1');
+    // Phase 1v2 EPIC B10: redeem tester invite if present in URL, then
+    // check tester flag to route. Invite redemption happens here (not at
+    // signup) so it works through the email-confirmation flow which loses
+    // session state during /auth/callback.
+    let isTester = false;
+    if (typeof window !== 'undefined') {
+      const inviteCode = new URLSearchParams(window.location.search).get('invite');
+      if (inviteCode) {
+        try {
+          await fetch('/api/auth/redeem-invite', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: inviteCode }),
+          });
+        } catch (err) {
+          console.error('[redeem-invite]', err);
+        }
+      }
+    }
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: profile } = await (supabase as any)
+        .from('profiles')
+        .select('is_tester')
+        .eq('id', userId)
+        .maybeSingle();
+      isTester = profile?.is_tester === true;
+    } catch {
+      // is_tester column may not exist yet (pre-migration); fall through.
+    }
+
+    if (isTester) {
+      router.push('/dashboard/beta-testers');
+    } else {
+      router.push('/dashboard?welcome=1');
+    }
   }
 
   // ── Navigation handler ────────────────────────────────────

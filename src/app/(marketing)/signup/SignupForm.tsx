@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { createClient } from '@/lib/supabase/browser';
 
-export default function SignupForm() {
+export default function SignupForm({ inviteCode = null }: { inviteCode?: string | null }) {
   const router = useRouter();
   const captchaRef = useRef<HCaptcha>(null);
 
@@ -40,12 +40,15 @@ export default function SignupForm() {
 
     const supabase = createClient();
 
+    const nextPath = inviteCode
+      ? `/onboarding?invite=${encodeURIComponent(inviteCode)}`
+      : '/onboarding';
     const signUpOptions: { captchaToken?: string; emailRedirectTo: string } = {
-      emailRedirectTo: `${window.location.origin}/auth/callback?next=/onboarding`,
+      emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
     };
     if (captchaToken) signUpOptions.captchaToken = captchaToken;
 
-    const { error } = await supabase.auth.signUp({
+    const { data: signUpData, error } = await supabase.auth.signUp({
       email,
       password,
       options: signUpOptions,
@@ -57,6 +60,22 @@ export default function SignupForm() {
       captchaRef.current?.resetCaptcha();
       setCaptchaToken('');
       return;
+    }
+
+    // Tester invite redemption — only when an active session exists
+    // (i.e. email confirmation disabled OR auto-confirmed). When confirmation
+    // is required we leave the code unredeemed; the user can re-enter the
+    // link with the same ?invite= param after confirming.
+    if (inviteCode && signUpData.session) {
+      try {
+        await fetch('/api/auth/redeem-invite', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: inviteCode }),
+        });
+      } catch (err) {
+        console.error('[redeem-invite]', err);
+      }
     }
 
     router.push('/onboarding');

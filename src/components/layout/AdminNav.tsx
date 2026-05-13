@@ -17,17 +17,22 @@ const SECTIONS: Section[] = [
   {
     title: 'Operations',
     items: [
-      { href: '/admin',          label: 'Overview' },
-      { href: '/admin/members',  label: 'Members' },
-      { href: '/admin/sessions', label: 'Sessions' },
+      { href: '/admin',              label: 'Overview' },
+      { href: '/admin/members',      label: 'Members' },
+      { href: '/admin/sessions',     label: 'Sessions' },
+      { href: '/admin/testers',      label: 'Testers' },
+      { href: '/admin/beta-testers', label: 'Beta Reports' },
+      { href: '/admin/briefings',    label: 'Briefings' },
     ],
   },
   {
     title: 'Content',
     items: [
-      { href: '/admin/affirmations', label: 'Affirmations Queue' },
-      { href: '/admin/journal',      label: 'Journal' },
-      { href: '/admin/sound',        label: 'ECQO Sound' },
+      { href: '/admin/affirmations',   label: 'Affirmations Queue' },
+      { href: '/admin/journal',        label: 'Journal' },
+      { href: '/admin/journal-queue',  label: 'Journal AI Queue' },
+      { href: '/admin/peer-review',    label: 'Peer-Review Papers' },
+      { href: '/admin/sound',          label: 'ECQO Sound' },
     ],
   },
   {

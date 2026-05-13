@@ -1,13 +1,44 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import SignupForm from './SignupForm';
+import { createAdminClient } from '@/lib/supabase/server';
 
 export const metadata: Metadata = {
   title: 'Begin Your Journey | HERR',
   description: 'Create your free HERR account and begin your reprogramming journey.',
 };
 
-export default function SignupPage() {
+type InviteState =
+  | { code: null; status: 'none' }
+  | { code: string; status: 'valid' | 'used' | 'unknown' };
+
+async function resolveInvite(raw: string | undefined): Promise<InviteState> {
+  if (!raw) return { code: null, status: 'none' };
+  const code = raw.trim().toUpperCase();
+  if (!code) return { code: null, status: 'none' };
+  try {
+    const admin = createAdminClient();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: row } = await (admin as any)
+      .from('tester_invite_codes')
+      .select('code, used_at')
+      .eq('code', code)
+      .maybeSingle();
+    if (!row) return { code, status: 'unknown' };
+    if (row.used_at) return { code, status: 'used' };
+    return { code, status: 'valid' };
+  } catch {
+    return { code, status: 'unknown' };
+  }
+}
+
+export default async function SignupPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ invite?: string }>;
+}) {
+  const params = await searchParams;
+  const invite = await resolveInvite(params.invite);
   return (
     <main
       style={{
@@ -53,10 +84,43 @@ export default function SignupPage() {
             marginBottom: 32,
           }}
         >
-          Begin Your Journey
+          {invite.status === 'valid' ? 'Welcome, Beta Tester' : 'Begin Your Journey'}
         </h1>
 
-        <SignupForm />
+        {invite.status === 'valid' && (
+          <div
+            style={{
+              background: 'rgba(196,45,142,0.12)',
+              border: '1px solid rgba(196,45,142,0.4)',
+              borderRadius: 12,
+              padding: '12px 16px',
+              marginBottom: 20,
+              fontSize: 13,
+              color: '#FFFFFF',
+              textAlign: 'center',
+            }}
+          >
+            Tester invite verified. Code: <strong>{invite.code}</strong>
+          </div>
+        )}
+        {(invite.status === 'used' || invite.status === 'unknown') && invite.code && (
+          <div
+            style={{
+              background: 'rgba(239,68,68,0.10)',
+              border: '1px solid rgba(239,68,68,0.4)',
+              borderRadius: 12,
+              padding: '12px 16px',
+              marginBottom: 20,
+              fontSize: 13,
+              color: 'rgba(255,255,255,0.85)',
+              textAlign: 'center',
+            }}
+          >
+            This invite code has already been used or is not recognized. Please request a new code from Bianca.
+          </div>
+        )}
+
+        <SignupForm inviteCode={invite.status === 'valid' ? invite.code : null} />
 
         {/* Below CTA */}
         <p
