@@ -23,19 +23,155 @@ const TIER_LABELS: Record<string, string> = {
   elite: 'HERR Elite: $29/mo',
 };
 
+const cardStyle: React.CSSProperties = {
+  background: '#FFFFFF',
+  border: '1px solid var(--herr-line)',
+  borderRadius: 16,
+  padding: 28,
+  marginBottom: 16,
+};
+
+const labelStyle: React.CSSProperties = {
+  fontSize: 11,
+  textTransform: 'uppercase',
+  letterSpacing: '0.18em',
+  color: 'var(--herr-ink-soft)',
+  fontWeight: 600,
+  marginBottom: 12,
+};
+
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  height: 44,
+  background: 'var(--herr-cream)',
+  border: '1px solid var(--herr-line)',
+  borderRadius: 10,
+  padding: '0 14px',
+  color: 'var(--herr-ink)',
+  fontSize: 15,
+  outline: 'none',
+};
+
+const primaryBtnStyle: React.CSSProperties = {
+  height: 44,
+  padding: '0 22px',
+  background: 'var(--herr-magenta)',
+  color: 'var(--herr-cream)',
+  borderRadius: 10,
+  border: 'none',
+  fontSize: 13,
+  fontWeight: 600,
+  textTransform: 'uppercase',
+  letterSpacing: '0.08em',
+  cursor: 'pointer',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
+const secondaryBtnStyle: React.CSSProperties = {
+  height: 40,
+  padding: '0 18px',
+  background: 'transparent',
+  color: 'var(--herr-ink)',
+  borderRadius: 10,
+  border: '1px solid var(--herr-line)',
+  fontSize: 13,
+  fontWeight: 600,
+  textTransform: 'uppercase',
+  letterSpacing: '0.08em',
+  cursor: 'pointer',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
 export default function SettingsClient({
   userId, email, displayName: initialName, plan, hasVoice, voiceActive, modes, genres,
 }: SettingsClientProps) {
   const router = useRouter();
   const supabase = createClient();
   const [name, setName] = useState(initialName);
-  const [saving, setSaving] = useState(false);
+  const [savingName, setSavingName] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
+  // Phase 1 v2 EPIC B7: change email
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [newEmail, setNewEmail] = useState('');
+  const [emailSaving, setEmailSaving] = useState(false);
+  const [emailStatus, setEmailStatus] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
+
+  // Phase 1 v2 EPIC B7: change password
+  const [showPwForm, setShowPwForm] = useState(false);
+  const [currentPw, setCurrentPw] = useState('');
+  const [newPw, setNewPw] = useState('');
+  const [confirmPw, setConfirmPw] = useState('');
+  const [pwSaving, setPwSaving] = useState(false);
+  const [pwStatus, setPwStatus] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
+
   const handleSaveProfile = async () => {
-    setSaving(true);
+    setSavingName(true);
     await supabase.from('profiles').update({ preferred_name: name }).eq('id', userId);
-    setSaving(false);
+    setSavingName(false);
+  };
+
+  const handleChangeEmail = async () => {
+    setEmailStatus(null);
+    if (!newEmail || !newEmail.includes('@')) {
+      setEmailStatus({ type: 'error', msg: 'Enter a valid email address.' });
+      return;
+    }
+    if (newEmail.trim().toLowerCase() === email.trim().toLowerCase()) {
+      setEmailStatus({ type: 'error', msg: 'New email matches your current email.' });
+      return;
+    }
+    setEmailSaving(true);
+    const { error } = await supabase.auth.updateUser({ email: newEmail.trim() });
+    setEmailSaving(false);
+    if (error) {
+      setEmailStatus({ type: 'error', msg: error.message });
+      return;
+    }
+    setEmailStatus({
+      type: 'success',
+      msg: `Verification email sent to ${newEmail.trim()}. Click the link to confirm the change.`,
+    });
+    setNewEmail('');
+    setShowEmailForm(false);
+  };
+
+  const handleChangePassword = async () => {
+    setPwStatus(null);
+    if (newPw.length < 8) {
+      setPwStatus({ type: 'error', msg: 'New password must be at least 8 characters.' });
+      return;
+    }
+    if (newPw !== confirmPw) {
+      setPwStatus({ type: 'error', msg: 'New password and confirmation do not match.' });
+      return;
+    }
+    setPwSaving(true);
+    // Re-authenticate by attempting sign-in with current password.
+    const { error: reauthErr } = await supabase.auth.signInWithPassword({
+      email,
+      password: currentPw,
+    });
+    if (reauthErr) {
+      setPwSaving(false);
+      setPwStatus({ type: 'error', msg: 'Current password is incorrect.' });
+      return;
+    }
+    const { error: updateErr } = await supabase.auth.updateUser({ password: newPw });
+    setPwSaving(false);
+    if (updateErr) {
+      setPwStatus({ type: 'error', msg: updateErr.message });
+      return;
+    }
+    setPwStatus({ type: 'success', msg: 'Password updated successfully.' });
+    setCurrentPw('');
+    setNewPw('');
+    setConfirmPw('');
+    setShowPwForm(false);
   };
 
   const handleDeleteAccount = async () => {
@@ -44,26 +180,10 @@ export default function SettingsClient({
     router.push('/');
   };
 
-  const cardStyle = {
-    background: '#16161F',
-    borderRadius: 16,
-    padding: 32,
-    border: '1px solid rgba(255,255,255,0.08)',
-    marginBottom: 16,
-  };
-
-  const labelStyle = {
-    fontSize: 12,
-    textTransform: 'uppercase' as const,
-    letterSpacing: '2px',
-    color: 'rgba(255,255,255,0.4)',
-    marginBottom: 12,
-  };
-
   return (
-    <div style={{ minHeight: '100vh', background: '#0A0A0F', padding: '80px 24px 60px' }}>
-      <div style={{ maxWidth: 640, margin: '0 auto' }}>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 28, fontWeight: 600, color: '#FFFFFF', marginBottom: 32, textAlign: 'center' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--herr-cream)', padding: '40px 24px 80px' }}>
+      <div style={{ maxWidth: 720, margin: '0 auto' }}>
+        <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 34, fontWeight: 500, color: 'var(--herr-ink)', marginBottom: 32, textAlign: 'center' }}>
           Settings
         </h1>
 
@@ -71,62 +191,148 @@ export default function SettingsClient({
         <div style={cardStyle}>
           <p style={labelStyle}>PROFILE</p>
           <div style={{ marginBottom: 16 }}>
-            <label style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', display: 'block', marginBottom: 6 }}>Display Name</label>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              style={{
-                width: '100%', height: 48, background: '#111118', border: '1px solid rgba(255,255,255,0.15)',
-                borderRadius: 12, padding: '0 16px', color: '#FFFFFF', fontSize: 15, outline: 'none',
-              }}
-            />
+            <label style={{ fontSize: 13, color: 'var(--herr-ink-soft)', display: 'block', marginBottom: 6 }}>Display Name</label>
+            <input value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
           </div>
-          <div style={{ marginBottom: 16 }}>
-            <label style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', display: 'block', marginBottom: 6 }}>Email</label>
-            <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.3)', padding: '12px 0' }}>{email}</p>
-          </div>
-          <button
-            onClick={handleSaveProfile}
-            disabled={saving}
-            style={{
-              height: 48, padding: '0 32px', background: '#C42D8E', color: '#FFFFFF', borderRadius: 12,
-              border: 'none', fontSize: 14, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px',
-              cursor: 'pointer', opacity: saving ? 0.6 : 1,
-            }}
-          >
-            {saving ? 'Saving...' : 'Update Profile'}
+          <button onClick={handleSaveProfile} disabled={savingName} style={{ ...primaryBtnStyle, opacity: savingName ? 0.6 : 1 }}>
+            {savingName ? 'Saving…' : 'Update Profile'}
           </button>
         </div>
 
-        {/* 2. Subscription */}
+        {/* 2. Email — Phase 1 v2 EPIC B7 */}
+        <div style={cardStyle}>
+          <p style={labelStyle}>EMAIL</p>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: showEmailForm ? 16 : 0 }}>
+            <span style={{ fontSize: 15, color: 'var(--herr-ink)', fontWeight: 500 }}>{email}</span>
+            <button
+              onClick={() => { setShowEmailForm(!showEmailForm); setEmailStatus(null); }}
+              style={secondaryBtnStyle}
+            >
+              {showEmailForm ? 'Cancel' : 'Change Email'}
+            </button>
+          </div>
+          {showEmailForm && (
+            <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--herr-line)' }}>
+              <label style={{ fontSize: 13, color: 'var(--herr-ink-soft)', display: 'block', marginBottom: 6 }}>New Email</label>
+              <input
+                type="email"
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+                placeholder="you@example.com"
+                style={{ ...inputStyle, marginBottom: 12 }}
+                autoComplete="email"
+              />
+              <button onClick={handleChangeEmail} disabled={emailSaving} style={{ ...primaryBtnStyle, opacity: emailSaving ? 0.6 : 1 }}>
+                {emailSaving ? 'Sending…' : 'Send Verification'}
+              </button>
+              <p style={{ fontSize: 12, color: 'var(--herr-ink-soft)', marginTop: 12, lineHeight: 1.5 }}>
+                We&apos;ll send a verification link to the new address. The change takes effect once you click that link.
+              </p>
+            </div>
+          )}
+          {emailStatus && (
+            <p style={{
+              marginTop: 12,
+              fontSize: 13,
+              color: emailStatus.type === 'success' ? 'var(--herr-magenta)' : 'var(--herr-magenta-deep)',
+              fontWeight: 500,
+            }}>
+              {emailStatus.msg}
+            </p>
+          )}
+        </div>
+
+        {/* 3. Password — Phase 1 v2 EPIC B7 */}
+        <div style={cardStyle}>
+          <p style={labelStyle}>PASSWORD</p>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: 14, color: 'var(--herr-ink-soft)' }}>Last updated through Supabase auth</span>
+            <button
+              onClick={() => { setShowPwForm(!showPwForm); setPwStatus(null); }}
+              style={secondaryBtnStyle}
+            >
+              {showPwForm ? 'Cancel' : 'Change Password'}
+            </button>
+          </div>
+          {showPwForm && (
+            <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--herr-line)', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div>
+                <label style={{ fontSize: 13, color: 'var(--herr-ink-soft)', display: 'block', marginBottom: 6 }}>Current Password</label>
+                <input
+                  type="password"
+                  value={currentPw}
+                  onChange={(e) => setCurrentPw(e.target.value)}
+                  style={inputStyle}
+                  autoComplete="current-password"
+                />
+              </div>
+              <div>
+                <label style={{ fontSize: 13, color: 'var(--herr-ink-soft)', display: 'block', marginBottom: 6 }}>New Password</label>
+                <input
+                  type="password"
+                  value={newPw}
+                  onChange={(e) => setNewPw(e.target.value)}
+                  style={inputStyle}
+                  autoComplete="new-password"
+                />
+              </div>
+              <div>
+                <label style={{ fontSize: 13, color: 'var(--herr-ink-soft)', display: 'block', marginBottom: 6 }}>Confirm New Password</label>
+                <input
+                  type="password"
+                  value={confirmPw}
+                  onChange={(e) => setConfirmPw(e.target.value)}
+                  style={inputStyle}
+                  autoComplete="new-password"
+                />
+              </div>
+              <button onClick={handleChangePassword} disabled={pwSaving} style={{ ...primaryBtnStyle, opacity: pwSaving ? 0.6 : 1, alignSelf: 'flex-start' }}>
+                {pwSaving ? 'Updating…' : 'Update Password'}
+              </button>
+              <p style={{ fontSize: 12, color: 'var(--herr-ink-soft)', lineHeight: 1.5 }}>
+                Minimum 8 characters. We verify your current password before applying the change.
+              </p>
+            </div>
+          )}
+          {pwStatus && (
+            <p style={{
+              marginTop: 12,
+              fontSize: 13,
+              color: pwStatus.type === 'success' ? 'var(--herr-magenta)' : 'var(--herr-magenta-deep)',
+              fontWeight: 500,
+            }}>
+              {pwStatus.msg}
+            </p>
+          )}
+        </div>
+
+        {/* 4. Subscription */}
         <div style={cardStyle}>
           <p style={labelStyle}>SUBSCRIPTION</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-            <span style={{ fontSize: 12, color: '#C42D8E', border: '1px solid #C42D8E', padding: '4px 12px', borderRadius: 12 }}>
+            <span style={{ fontSize: 12, color: 'var(--herr-magenta)', border: '1px solid var(--herr-magenta)', padding: '4px 12px', borderRadius: 12, fontWeight: 600 }}>
               {TIER_LABELS[plan] || plan}
             </span>
           </div>
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-            <Link href="/checkout" style={{ height: 40, padding: '0 20px', background: 'transparent', color: '#FFFFFF', borderRadius: 12, border: '1px solid rgba(255,255,255,0.3)', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
-              Change Plan
-            </Link>
-          </div>
+          <Link href="/dashboard/billing" style={{ ...secondaryBtnStyle, textDecoration: 'none' }}>
+            Manage Subscription
+          </Link>
         </div>
 
-        {/* 3. Voice Clone */}
+        {/* 5. Voice Clone */}
         {hasVoice && (
           <div style={cardStyle}>
             <p style={labelStyle}>VOICE CLONE</p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-              <div style={{ width: 8, height: 8, borderRadius: '50%', background: voiceActive ? '#22C55E' : 'rgba(255,255,255,0.3)' }} />
-              <span style={{ fontSize: 14, color: '#FFFFFF' }}>{voiceActive ? 'Active' : 'Not Set Up'}</span>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: voiceActive ? '#22C55E' : 'var(--herr-ink-soft)' }} />
+              <span style={{ fontSize: 14, color: 'var(--herr-ink)' }}>{voiceActive ? 'Active' : 'Not Set Up'}</span>
             </div>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <Link href="/dashboard/voice-setup" style={{ height: 40, padding: '0 20px', background: 'transparent', color: '#FFFFFF', borderRadius: 12, border: '1px solid rgba(255,255,255,0.3)', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+              <Link href="/dashboard/voice-setup" style={{ ...secondaryBtnStyle, textDecoration: 'none' }}>
                 {voiceActive ? 'Re-record Voice' : 'Set Up Voice'}
               </Link>
               {voiceActive && (
-                <button style={{ height: 40, padding: '0 20px', background: 'transparent', color: '#EF4444', borderRadius: 12, border: 'none', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                <button style={{ ...secondaryBtnStyle, color: 'var(--herr-magenta-deep)', borderColor: 'var(--herr-magenta-deep)' }}>
                   Delete Voice Profile
                 </button>
               )}
@@ -134,60 +340,58 @@ export default function SettingsClient({
           </div>
         )}
 
-        {/* 4. Activity Modes */}
+        {/* 6. Activity Modes */}
         <div style={cardStyle}>
           <p style={labelStyle}>ACTIVITY MODES</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
             {modes.length > 0 ? modes.map((m: string) => (
-              <span key={m} style={{ fontSize: 12, color: '#C42D8E', border: '1px solid #C42D8E', padding: '4px 12px', borderRadius: 12 }}>
+              <span key={m} style={{ fontSize: 12, color: 'var(--herr-magenta)', border: '1px solid var(--herr-magenta)', padding: '4px 12px', borderRadius: 12, fontWeight: 600 }}>
                 {m.replace('-', ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
               </span>
-            )) : <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)' }}>None selected</span>}
+            )) : <span style={{ fontSize: 13, color: 'var(--herr-ink-soft)' }}>None selected</span>}
           </div>
-          <Link href="/dashboard/modes" style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textDecoration: 'underline' }}>Change Modes</Link>
+          <Link href="/dashboard/modes" style={{ fontSize: 13, color: 'var(--herr-magenta)', textDecoration: 'underline', fontWeight: 600 }}>Change Modes</Link>
         </div>
 
-        {/* 5. Genre Preferences */}
+        {/* 7. Genre Preferences */}
         {hasVoice && (
           <div style={cardStyle}>
             <p style={labelStyle}>GENRE PREFERENCES</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
               {genres.length > 0 ? genres.map((g: string) => (
-                <span key={g} style={{ fontSize: 12, color: '#C42D8E', border: '1px solid #C42D8E', padding: '4px 12px', borderRadius: 12 }}>
+                <span key={g} style={{ fontSize: 12, color: 'var(--herr-magenta)', border: '1px solid var(--herr-magenta)', padding: '4px 12px', borderRadius: 12, fontWeight: 600 }}>
                   {g.replace('-', ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
                 </span>
-              )) : <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)' }}>None selected</span>}
+              )) : <span style={{ fontSize: 13, color: 'var(--herr-ink-soft)' }}>None selected</span>}
             </div>
-            <Link href="/dashboard/genres" style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textDecoration: 'underline' }}>Change Genres</Link>
+            <Link href="/dashboard/genres" style={{ fontSize: 13, color: 'var(--herr-magenta)', textDecoration: 'underline', fontWeight: 600 }}>Change Genres</Link>
           </div>
         )}
 
-        {/* 6. Notifications */}
+        {/* 8. Notifications */}
         <div style={cardStyle}>
           <p style={labelStyle}>NOTIFICATIONS</p>
           {['Daily affirmation ready', 'New journal articles', 'Community mentions', 'Live session announcements'].map((label) => (
-            <div key={label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-              <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.7)' }}>{label}</span>
+            <div key={label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid var(--herr-line)' }}>
+              <span style={{ fontSize: 14, color: 'var(--herr-ink)' }}>{label}</span>
               <label style={{ position: 'relative', width: 44, height: 24, cursor: 'pointer' }}>
                 <input type="checkbox" defaultChecked style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} />
-                <span style={{ position: 'absolute', inset: 0, background: '#C42D8E', borderRadius: 12, transition: 'background 200ms' }}>
-                  <span style={{ position: 'absolute', left: 22, top: 2, width: 20, height: 20, background: '#FFF', borderRadius: '50%', transition: 'left 200ms' }} />
+                <span style={{ position: 'absolute', inset: 0, background: 'var(--herr-magenta)', borderRadius: 12, transition: 'background 200ms' }}>
+                  <span style={{ position: 'absolute', left: 22, top: 2, width: 20, height: 20, background: 'var(--herr-cream)', borderRadius: '50%', transition: 'left 200ms' }} />
                 </span>
               </label>
             </div>
           ))}
         </div>
 
-        {/* 7. Data & Privacy */}
+        {/* 9. Data & Privacy */}
         <div style={cardStyle}>
           <p style={labelStyle}>DATA &amp; PRIVACY</p>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-            <button style={{ height: 40, padding: '0 20px', background: 'transparent', color: '#FFFFFF', borderRadius: 12, border: '1px solid rgba(255,255,255,0.3)', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', cursor: 'pointer' }}>
-              Download My Data
-            </button>
+            <button style={secondaryBtnStyle}>Download My Data</button>
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              style={{ height: 40, padding: '0 20px', background: 'transparent', color: '#EF4444', borderRadius: 12, border: 'none', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+              style={{ ...secondaryBtnStyle, color: 'var(--herr-magenta-deep)', borderColor: 'var(--herr-magenta-deep)' }}
             >
               Delete My Account
             </button>
@@ -196,24 +400,21 @@ export default function SettingsClient({
 
         {/* Delete confirmation modal */}
         {showDeleteConfirm && (
-          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-            <div style={{ background: '#16161F', borderRadius: 16, padding: 32, border: '2px solid #EF4444', maxWidth: 480, width: '100%' }}>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 24, color: '#FFFFFF', marginBottom: 12 }}>
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(26,15,26,0.7)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+            <div style={{ background: '#FFFFFF', borderRadius: 16, padding: 32, border: '2px solid var(--herr-magenta-deep)', maxWidth: 480, width: '100%' }}>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 24, color: 'var(--herr-ink)', marginBottom: 12 }}>
                 Delete Your Account?
               </h2>
-              <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, marginBottom: 24 }}>
+              <p style={{ fontSize: 14, color: 'var(--herr-ink-soft)', lineHeight: 1.6, marginBottom: 24 }}>
                 This will permanently delete your account, all assessment data, affirmation history, voice clone, and community posts. This cannot be undone.
               </p>
               <div style={{ display: 'flex', gap: 12 }}>
-                <button
-                  onClick={() => setShowDeleteConfirm(false)}
-                  style={{ height: 48, padding: '0 24px', background: 'transparent', color: '#FFFFFF', borderRadius: 12, border: '1px solid rgba(255,255,255,0.3)', fontSize: 14, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', cursor: 'pointer' }}
-                >
+                <button onClick={() => setShowDeleteConfirm(false)} style={secondaryBtnStyle}>
                   Cancel
                 </button>
                 <button
                   onClick={handleDeleteAccount}
-                  style={{ height: 48, padding: '0 24px', background: '#EF4444', color: '#FFFFFF', borderRadius: 12, border: 'none', fontSize: 14, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', cursor: 'pointer' }}
+                  style={{ ...primaryBtnStyle, background: 'var(--herr-magenta-deep)' }}
                 >
                   Delete Everything
                 </button>
