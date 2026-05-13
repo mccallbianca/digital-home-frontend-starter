@@ -11,6 +11,8 @@ export const metadata: Metadata = {
 };
 
 const PLAN_LABELS: Record<string, string> = {
+  free: 'HERR Free',
+  collective: 'HERR Collective: $9/mo',
   personalized: 'HERR Personalized: $19/mo',
   elite: 'HERR Elite: $29/mo',
 };
@@ -25,93 +27,185 @@ export default async function BillingPage() {
     .eq('id', user!.id)
     .single();
 
-  // Get member details for billing info
   const { data: member } = await supabase
     .from('members')
     .select('tier, status, period_end, subscribed_at')
     .eq('email', profile?.email ?? user!.email ?? '')
     .single();
 
-  const plan = profile?.plan ?? member?.tier ?? null;
+  const plan = (profile?.plan ?? member?.tier ?? 'free') as 'free' | 'collective' | 'personalized' | 'elite';
   const status = member?.status ?? 'active';
   const periodEnd = member?.period_end ? new Date(member.period_end).toLocaleDateString() : null;
   const subscribedAt = member?.subscribed_at ? new Date(member.subscribed_at).toLocaleDateString() : null;
 
+  const canUpgrade = plan === 'free' || plan === 'collective' || plan === 'personalized';
+  const canDowngrade = plan === 'collective' || plan === 'personalized' || plan === 'elite';
+  const isPaidPlan = plan !== 'free';
+
   return (
-    <main className="min-h-screen">
-      <section className="px-6 pt-32 pb-16 border-b border-[var(--herr-border)]" style={{ background: '#0A0A0F' }}>
-        <div className="max-w-[900px] mx-auto">
-          <Link href="/dashboard" className="herr-label text-[var(--herr-muted)] hover:text-[var(--herr-white)] transition-colors mb-8 inline-block">
-            ← Dashboard
-          </Link>
-          <p className="herr-label text-[var(--herr-muted)] mb-4">All tiers</p>
-          <h1 className="font-display text-4xl md:text-6xl font-light text-[var(--herr-white)] leading-[0.9] mb-6">
-            Billing + Account.
-          </h1>
-          <p className="text-[var(--herr-muted)] max-w-xl leading-relaxed">
-            Manage your subscription, payment method, and billing history.
-          </p>
-        </div>
-      </section>
+    <main style={{ minHeight: '100vh', background: 'var(--herr-cream)', padding: '40px 24px 80px' }}>
+      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+        <Link
+          href="/dashboard"
+          style={{
+            fontSize: 12,
+            color: 'var(--herr-ink-soft)',
+            textDecoration: 'none',
+            display: 'inline-block',
+            marginBottom: 24,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            fontWeight: 600,
+          }}
+        >
+          ← Dashboard
+        </Link>
 
-      <section className="px-6 py-16" style={{ background: '#FAF8F5' }}>
-        <div className="max-w-[900px] mx-auto">
-          {/* Current plan */}
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
-            <div className="p-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-              <p className="herr-label mb-2" style={{ color: 'var(--herr-ink-soft)' }}>Current Plan</p>
-              <p className="font-display text-2xl font-light mb-2" style={{ color: 'var(--herr-ink)' }}>
-                {plan ? (PLAN_LABELS[plan] ?? plan) : 'No active plan'}
-              </p>
-              <p className={`text-[0.8rem] ${status === 'active' ? 'text-[var(--herr-cobalt)]' : 'text-[var(--herr-pink)]'}`}>
-                Status: {status.charAt(0).toUpperCase() + status.slice(1)}
-              </p>
+        <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--herr-magenta)', fontWeight: 600, marginBottom: 8 }}>
+          ALL TIERS
+        </p>
+        <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 34, fontWeight: 500, color: 'var(--herr-ink)', marginBottom: 8 }}>
+          Billing + Account
+        </h1>
+        <p style={{ fontSize: 16, color: 'var(--herr-ink-soft)', marginBottom: 32, maxWidth: 540 }}>
+          Manage your subscription, payment method, and billing history.
+        </p>
+
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--herr-line)',
+            borderRadius: 16,
+            padding: 32,
+            marginBottom: 24,
+          }}
+        >
+          <p style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--herr-ink-soft)', fontWeight: 600, marginBottom: 8 }}>
+            CURRENT PLAN
+          </p>
+          <p
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: 28,
+              fontWeight: 500,
+              color: 'var(--herr-ink)',
+              marginBottom: 12,
+            }}
+          >
+            {PLAN_LABELS[plan] ?? plan}
+          </p>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, marginBottom: 24, fontSize: 13 }}>
+            <div>
+              <span style={{ color: 'var(--herr-ink-soft)' }}>Status: </span>
+              <span
+                style={{
+                  color: status === 'active' ? 'var(--herr-magenta)' : 'var(--herr-magenta-deep)',
+                  fontWeight: 600,
+                  textTransform: 'capitalize',
+                }}
+              >
+                {status}
+              </span>
             </div>
-            <div className="p-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-              <p className="herr-label mb-2" style={{ color: 'var(--herr-ink-soft)' }}>Billing</p>
-              {periodEnd && (
-                <p className="mb-1" style={{ color: 'var(--herr-ink)' }}>
-                  Next billing: <span style={{ color: 'var(--herr-ink-soft)' }}>{periodEnd}</span>
-                </p>
-              )}
-              {subscribedAt && (
-                <p className="text-sm" style={{ color: 'var(--herr-ink-soft)' }}>
-                  Member since {subscribedAt}
-                </p>
-              )}
-            </div>
+            {periodEnd && (
+              <div>
+                <span style={{ color: 'var(--herr-ink-soft)' }}>Next billing: </span>
+                <span style={{ color: 'var(--herr-ink)', fontWeight: 500 }}>{periodEnd}</span>
+              </div>
+            )}
+            {subscribedAt && (
+              <div>
+                <span style={{ color: 'var(--herr-ink-soft)' }}>Member since: </span>
+                <span style={{ color: 'var(--herr-ink)', fontWeight: 500 }}>{subscribedAt}</span>
+              </div>
+            )}
           </div>
 
-          {/* Manage subscription */}
-          <div className="p-8 mb-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <p className="herr-label mb-4" style={{ color: 'var(--herr-ink-soft)' }}>Manage Subscription</p>
-            <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--herr-ink-soft)', fontSize: '1rem' }}>
-              View invoices, update your payment method, upgrade or downgrade your tier, or cancel your subscription through the secure billing portal.
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+            {canUpgrade && (
+              isPaidPlan ? (
+                <BillingPortalButton label="Upgrade Plan" variant="primary" />
+              ) : (
+                <Link
+                  href="/checkout"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 44,
+                    padding: '0 24px',
+                    background: 'var(--herr-magenta)',
+                    color: 'var(--herr-cream)',
+                    borderRadius: 10,
+                    fontSize: 13,
+                    fontWeight: 600,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    textDecoration: 'none',
+                  }}
+                >
+                  Upgrade Plan
+                </Link>
+              )
+            )}
+            {canDowngrade && <BillingPortalButton label="Downgrade Plan" variant="secondary" />}
+          </div>
+        </div>
+
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--herr-line)',
+            borderRadius: 16,
+            padding: 32,
+            marginBottom: 24,
+          }}
+        >
+          <p style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--herr-ink-soft)', fontWeight: 600, marginBottom: 12 }}>
+            MANAGE SUBSCRIPTION
+          </p>
+          <p style={{ fontSize: 15, color: 'var(--herr-ink-soft)', lineHeight: 1.6, marginBottom: 20 }}>
+            View invoices, update your payment method, or cancel your subscription through the secure billing portal.
+          </p>
+          {isPaidPlan ? (
+            <BillingPortalButton label="Open Billing Portal" variant="ghost" />
+          ) : (
+            <p style={{ fontSize: 13, color: 'var(--herr-ink-soft)', fontStyle: 'italic' }}>
+              Available after you upgrade to a paid plan.
             </p>
-            <BillingPortalButton />
-          </div>
+          )}
+        </div>
 
-          {/* Account details */}
-          <div className="p-8 rounded" style={{ background: '#FFFFFF', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <p className="herr-label mb-4" style={{ color: 'var(--herr-ink-soft)' }}>Account</p>
-            <div className="space-y-3 text-sm">
-              <div className="flex justify-between">
-                <span style={{ color: 'rgba(26,15,26,0.5)' }}>Email</span>
-                <span style={{ color: 'var(--herr-ink)' }}>{profile?.email ?? user!.email}</span>
-              </div>
-              <div className="flex justify-between">
-                <span style={{ color: 'rgba(26,15,26,0.5)' }}>Member ID</span>
-                <span className="font-mono text-[0.75rem]" style={{ color: 'var(--herr-ink-soft)' }}>{user!.id.slice(0, 8)}…</span>
-              </div>
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid var(--herr-line)',
+            borderRadius: 16,
+            padding: 32,
+            marginBottom: 24,
+          }}
+        >
+          <p style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--herr-ink-soft)', fontWeight: 600, marginBottom: 12 }}>
+            ACCOUNT
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, fontSize: 14 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span style={{ color: 'var(--herr-ink-soft)' }}>Email</span>
+              <span style={{ color: 'var(--herr-ink)', fontWeight: 500 }}>{profile?.email ?? user!.email}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span style={{ color: 'var(--herr-ink-soft)' }}>Member ID</span>
+              <span style={{ color: 'var(--herr-ink-soft)', fontFamily: 'monospace', fontSize: 12 }}>{user!.id.slice(0, 8)}…</span>
             </div>
           </div>
-
-          <p className="mt-8 text-[0.72rem] leading-relaxed" style={{ color: 'rgba(26,15,26,0.5)' }}>
-            HERR is a wellness tool and is not a substitute for professional mental health treatment.
-            Always consult a licensed clinician for clinical concerns. © ECQO Holdings.
-          </p>
         </div>
-      </section>
+
+        <p style={{ fontSize: 12, color: 'var(--herr-ink-soft)', lineHeight: 1.6, marginTop: 24 }}>
+          HERR is a wellness tool and is not a substitute for professional mental health treatment.
+          Always consult a licensed clinician for clinical concerns. © ECQO Holdings.
+        </p>
+      </div>
     </main>
   );
 }
