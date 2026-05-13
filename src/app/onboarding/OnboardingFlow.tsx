@@ -251,11 +251,24 @@ export default function OnboardingFlow({ userId, userEmail, plan, existingProfil
 
   // ── Complete onboarding ───────────────────────────────────
   async function completeOnboarding(modes: string[]) {
-    // Save activity modes
+    // Save activity modes — legacy (user_preferences) kept for read-fallback during transition.
     await supabase.from('user_preferences').upsert({
       user_id: userId,
       activity_modes: modes,
     }, { onConflict: 'user_id' });
+
+    // Phase 1v2 EPIC B9: canonical write to member_activity_modes (one row per mode,
+    // active=true for selected). Matches pattern in dashboard/modes/ModesClient.tsx.
+    const modeRows = modes.map((m) => ({
+      member_id: userId,
+      mode: m,
+      active: true,
+      updated_at: new Date().toISOString(),
+    }));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (supabase as any)
+      .from('member_activity_modes')
+      .upsert(modeRows, { onConflict: 'member_id,mode' });
 
     // If WS2 flow, submit Phase 5 handoff
     if (assessmentPath === 'conversational') {
