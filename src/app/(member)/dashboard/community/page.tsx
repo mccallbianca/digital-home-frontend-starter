@@ -8,8 +8,8 @@ import HERRNation from './HERRNation';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'HERR Nation | Community',
-  description: 'The HERR community is a space for connection, reflection, and shared growth. Every voice matters.',
+  title: 'HERR Nation',
+  description: 'HERR Nation is the space for connection, reflection, and shared growth. Every voice matters.',
 };
 
 const WEEKLY_THEMES = [
@@ -110,7 +110,7 @@ export default async function CommunityPage() {
                 margin: '0 auto',
               }}
             >
-              The HERR community is a space for connection, reflection, and shared growth.
+              HERR Nation is the space for connection, reflection, and shared growth.
               Every voice here matters, including yours.
             </p>
           </ScrollFadeIn>
@@ -140,7 +140,7 @@ export default async function CommunityPage() {
                 }}
               />
               <span style={{ fontSize: 14, color: 'var(--herr-ink)', fontWeight: 500 }}>
-                {pioneers} pioneer{pioneers !== 1 ? 's' : ''} building this community
+                {pioneers} pioneer{pioneers !== 1 ? 's' : ''} building HERR Nation
               </span>
             </div>
           </ScrollFadeIn>
@@ -297,10 +297,10 @@ export default async function CommunityPage() {
                 </div>
                 <p style={{ fontSize: '1rem', color: '#FAF8F5', lineHeight: 1.6 }}>
                   Welcome to the first generation of HERR pioneers.
-                  You are building this community from the ground up.
+                  You are building HERR Nation from the ground up.
                 </p>
                 <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', marginTop: 12 }}>
-                  This community is growing. Every voice that joins makes it stronger.
+                  HERR Nation is growing. Every voice that joins makes it stronger.
                 </p>
               </div>
             </div>

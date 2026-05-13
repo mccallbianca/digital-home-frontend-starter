@@ -36,7 +36,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard/genres',       label: 'My Music',        requires: 'personalized' },
   { href: '/dashboard/assessment',   label: 'My Progress',     requires: 'collective' },
   { href: '/dashboard/sessions',     label: 'Live w/ Bianca',  requires: 'collective' },
-  { href: '/dashboard/community',    label: 'Community',       requires: 'collective' },
+  { href: '/dashboard/community',    label: 'HERR Nation',     requires: 'collective' },
   { href: '/dashboard/billing',      label: 'Billing',         requires: 'collective' },
   { href: '/dashboard/settings',     label: 'Settings',        requires: 'free' },
 ];
