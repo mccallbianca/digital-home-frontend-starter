@@ -1,127 +1,134 @@
 /**
  * POST /api/sessions/register
  *
- * Register for a live session. Writes to live_session_registrations,
- * checks seat count, sends confirmation email via Resend.
+ * Phase 1v2 EPIC B5: authenticated member registers for a live session.
+ * Writes to session_registrations (UNIQUE(session_id, member_id)) and
+ * sends a Resend confirmation email.
  *
- * Body: { sessionId, firstName, lastName, email, tier }
+ * Body:    { session_id: uuid }
+ * Returns: { ok: true, registration_id }
+ *
+ * Auth:    Supabase session cookie required (middleware-gated under
+ *          /api/sessions). user_id is taken from the session, never the
+ *          request body, so members cannot register on behalf of others.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { createClient as createServerSupabase } from '@/lib/supabase/server';
 import { createClient } from '@supabase/supabase-js';
 import { sendEmail } from '@/lib/email/resend';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
+function formatPTDate(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-US', {
+    weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+    timeZone: 'America/Los_Angeles',
+  });
+}
+
+function formatPTTime(iso: string): string {
+  return new Date(iso).toLocaleTimeString('en-US', {
+    hour: 'numeric', minute: '2-digit',
+    timeZone: 'America/Los_Angeles', timeZoneName: 'short',
+  });
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { sessionId, firstName, lastName, email, tier } = await req.json();
-
-    if (!sessionId || !email) {
-      return NextResponse.json({ error: 'sessionId and email required' }, { status: 400 });
+    const { session_id } = await req.json();
+    if (!session_id) {
+      return NextResponse.json({ error: 'session_id required' }, { status: 400 });
     }
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+    // Get the authenticated user.
+    const ssr = await createServerSupabase();
+    const { data: { user } } = await ssr.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+    }
 
-    // Get session details
-    const { data: session } = await supabase
+    // Use service-role client for the write so RLS-policy errors surface clearly.
+    const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+
+    // Fetch the session for confirmation email.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: session } = await (admin as any)
       .from('live_sessions')
-      .select('*')
-      .eq('id', sessionId)
+      .select('id, scheduled_at, duration_min, title, description, max_seats')
+      .eq('id', session_id)
       .single();
-
     if (!session) {
       return NextResponse.json({ error: 'Session not found' }, { status: 404 });
     }
 
-    // Check seat count
-    const { count } = await supabase
-      .from('live_session_registrations')
-      .select('*', { count: 'exact', head: true })
-      .eq('session_id', sessionId);
-
-    if ((count || 0) >= (session.capacity || 25)) {
-      return NextResponse.json({ error: 'Session is full' }, { status: 409 });
+    // Capacity check.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { count: registeredCount } = await (admin as any)
+      .from('session_registrations')
+      .select('id', { count: 'exact', head: true })
+      .eq('session_id', session_id);
+    if ((registeredCount ?? 0) >= (session.max_seats ?? 25)) {
+      return NextResponse.json({ error: 'This session is full.' }, { status: 409 });
     }
 
-    // Check duplicate
-    const { data: existing } = await supabase
-      .from('live_session_registrations')
-      .select('id')
-      .eq('session_id', sessionId)
-      .eq('email', email)
-      .single();
-
-    if (existing) {
-      return NextResponse.json({ error: 'Already registered', registrationId: existing.id });
-    }
-
-    // Insert registration
-    const { data: reg, error: regErr } = await supabase
-      .from('live_session_registrations')
-      .insert({
-        session_id: sessionId,
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        tier: tier || 'collective',
-        confirmation_sent: false,
-        zoom_link_sent: false,
-      })
+    // UPSERT registration (composite unique session_id + member_id silently no-ops re-clicks).
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: reg, error: insertErr } = await (admin as any)
+      .from('session_registrations')
+      .upsert(
+        { session_id, member_id: user.id, registered_at: new Date().toISOString() },
+        { onConflict: 'session_id,member_id' },
+      )
       .select('id')
       .single();
-
-    if (regErr) {
-      return NextResponse.json({ error: regErr.message }, { status: 500 });
+    if (insertErr) {
+      console.error('[sessions/register] insert error:', insertErr);
+      return NextResponse.json({ error: insertErr.message }, { status: 500 });
     }
 
-    // Send confirmation email
-    const sessionDate = new Date(session.scheduled_at).toLocaleDateString('en-US', {
-      weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
-    });
-    const sessionTime = new Date(session.scheduled_at).toLocaleTimeString('en-US', {
-      hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York',
-    });
+    // Fetch profile for greeting + email destination.
+    const { data: profile } = await admin
+      .from('profiles')
+      .select('email, preferred_name, first_name')
+      .eq('id', user.id)
+      .single();
+    const memberEmail = profile?.email ?? user.email ?? '';
+    const memberName = profile?.preferred_name || profile?.first_name || 'HERR member';
 
-    const emailResult = await sendEmail({
-      to: email,
-      subject: `You're registered: ${session.title}`,
-      html: `
-        <div style="background:#0A0A0F;color:#F4F1EB;padding:40px;font-family:system-ui,sans-serif;">
-          <h1 style="font-size:28px;font-weight:300;margin-bottom:8px;">You're In.</h1>
-          <p style="color:rgba(244,241,235,0.5);margin-bottom:32px;">Registration confirmed for ${session.title}</p>
-          <div style="border:1px solid rgba(244,241,235,0.1);padding:24px;margin-bottom:24px;">
-            <p style="color:#C42D8E;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">Session Details</p>
-            <p style="margin:4px 0;"><strong>Date:</strong> ${sessionDate}</p>
-            <p style="margin:4px 0;"><strong>Time:</strong> ${sessionTime} ET</p>
-            <p style="margin:4px 0;"><strong>Duration:</strong> 90 minutes</p>
-            <p style="margin:4px 0;"><strong>Host:</strong> Bianca D. McCall, M.A., LMFT</p>
+    // Resend confirmation email.
+    if (memberEmail) {
+      const dateStr = formatPTDate(session.scheduled_at);
+      const timeStr = formatPTTime(session.scheduled_at);
+      await sendEmail({
+        to: memberEmail,
+        subject: `You're registered for ${session.title}`,
+        html: `
+          <div style="background:#F4F1EB;color:#1A0F1A;padding:40px;font-family:system-ui,-apple-system,sans-serif;">
+            <p style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#C42D8E;font-weight:600;margin:0 0 8px;">Confirmed</p>
+            <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:500;margin:0 0 12px;">You're in, ${memberName}.</h1>
+            <p style="color:rgba(26,15,26,0.65);margin:0 0 28px;line-height:1.6;">Registration confirmed for ${session.title}.</p>
+            <div style="background:#FFFFFF;border:1px solid rgba(26,15,26,0.12);border-radius:12px;padding:24px;margin-bottom:24px;">
+              <p style="color:#C42D8E;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;font-weight:600;margin:0 0 12px;">Session Details</p>
+              <p style="margin:6px 0;"><strong>Date:</strong> ${dateStr}</p>
+              <p style="margin:6px 0;"><strong>Time:</strong> ${timeStr}</p>
+              <p style="margin:6px 0;"><strong>Duration:</strong> ${session.duration_min} minutes</p>
+              <p style="margin:6px 0;"><strong>Host:</strong> Bianca D. McCall, M.A., LMFT</p>
+            </div>
+            <p style="font-size:13px;color:rgba(26,15,26,0.55);line-height:1.6;">Your Zoom join link will be sent to this email 24 hours before the session. Manage notifications at <a href="https://www.h3rr.com/dashboard/settings" style="color:#C42D8E;text-decoration:underline;">your settings</a>.</p>
+            <p style="margin-top:28px;font-size:11px;color:rgba(26,15,26,0.45);">HERR &mdash; Human Existential Regulator and Reprogramming<br/>&copy; ECQO Holdings</p>
           </div>
-          <p style="font-size:13px;color:rgba(244,241,235,0.4);">Your Zoom join link will be sent 24 hours before the session.</p>
-          <p style="margin-top:24px;font-size:11px;color:rgba(244,241,235,0.3);">HERR &mdash; Human Existential Regulator and Reprogramming &copy; ECQO Holdings</p>
-        </div>
-      `,
-    });
-
-    if ('id' in emailResult) {
-      await supabase
-        .from('live_session_registrations')
-        .update({ confirmation_sent: true })
-        .eq('id', reg.id);
+        `,
+      });
     }
 
-    return NextResponse.json({
-      ok: true,
-      registrationId: reg.id,
-      seatsRemaining: (session.capacity || 25) - (count || 0) - 1,
-    });
-
+    return NextResponse.json({ ok: true, registration_id: reg.id });
   } catch (err) {
-    console.error('[sessions/register] Error:', err);
+    console.error('[sessions/register] error:', err);
     return NextResponse.json(
       { error: err instanceof Error ? err.message : 'Registration failed' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
