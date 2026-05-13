@@ -299,14 +299,54 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
           </button>
         </div>
 
-        {/* 988 persistent block */}
+        {/* 988 persistent block — desktop sidebar (with clickable tel/sms) */}
         <div className="p-4 border-t border-[var(--herr-border)]">
           <div className="bg-[#1a0a12] border border-[var(--herr-pink)]/30 p-3 text-[0.75rem] text-[var(--herr-muted)] leading-relaxed">
-            <p className="text-[var(--herr-pink)] font-medium mb-1">Crisis?</p>
-            <p>Call or text <strong className="text-[var(--herr-white)]">988</strong></p>
+            <p className="text-[var(--herr-pink)] font-medium mb-2">In Crisis? 988 Suicide &amp; Crisis Lifeline</p>
+            <div className="flex gap-2">
+              <a
+                href="tel:988"
+                className="flex-1 inline-flex items-center justify-center px-2 py-1.5 text-[0.7rem] font-semibold uppercase tracking-wide bg-[var(--herr-magenta)] text-[var(--herr-cream)] rounded hover:bg-[var(--herr-magenta-deep)] transition-colors"
+              >
+                Call 988
+              </a>
+              <a
+                href="sms:988"
+                className="flex-1 inline-flex items-center justify-center px-2 py-1.5 text-[0.7rem] font-semibold uppercase tracking-wide bg-[var(--herr-magenta)] text-[var(--herr-cream)] rounded hover:bg-[var(--herr-magenta-deep)] transition-colors"
+              >
+                Text 988
+              </a>
+            </div>
           </div>
         </div>
       </aside>
+
+      {/* 988 Crisis CTA — mobile-only sticky bottom banner */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-[var(--herr-ink)] border-t border-[var(--herr-magenta)] px-3 py-2 flex items-center gap-2 shadow-[0_-2px_12px_rgba(0,0,0,0.18)]">
+        <span className="text-[0.65rem] text-[var(--herr-magenta-soft)] font-semibold uppercase tracking-wider shrink-0 pl-1">
+          988 Lifeline
+        </span>
+        <a
+          href="tel:988"
+          aria-label="Call 988"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-[0.75rem] font-semibold uppercase tracking-wide bg-[var(--herr-magenta)] text-[var(--herr-cream)] rounded"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+          </svg>
+          Call
+        </a>
+        <a
+          href="sms:988"
+          aria-label="Text 988"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-[0.75rem] font-semibold uppercase tracking-wide bg-[var(--herr-magenta)] text-[var(--herr-cream)] rounded"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          Text
+        </a>
+      </div>
 
       {/* ---- Mobile sidebar toggle ---- */}
       <button
