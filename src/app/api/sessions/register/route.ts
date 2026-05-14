@@ -114,10 +114,10 @@ export async function POST(req: NextRequest) {
               <p style="margin:6px 0;"><strong>Date:</strong> ${dateStr}</p>
               <p style="margin:6px 0;"><strong>Time:</strong> ${timeStr}</p>
               <p style="margin:6px 0;"><strong>Duration:</strong> ${session.duration_min} minutes</p>
-              <p style="margin:6px 0;"><strong>Host:</strong> Bianca D. McCall, M.A., LMFT</p>
+              <p style="margin:6px 0;"><strong>Host:</strong> ${process.env.NEXT_PUBLIC_PRODUCT_FOUNDER_CREDENTIAL || 'Bianca D. McCall, M.A., LMFT'}</p>
             </div>
             <p style="font-size:13px;color:rgba(26,15,26,0.55);line-height:1.6;">Your Zoom join link will be sent to this email 24 hours before the session. Manage notifications at <a href="https://www.h3rr.com/dashboard/settings" style="color:#C42D8E;text-decoration:underline;">your settings</a>.</p>
-            <p style="margin-top:28px;font-size:11px;color:rgba(26,15,26,0.45);">HERR &mdash; Human Existential Regulator and Reprogramming<br/>&copy; ECQO Holdings</p>
+            <p style="margin-top:28px;font-size:11px;color:rgba(26,15,26,0.45);">${process.env.NEXT_PUBLIC_PRODUCT_NAME || 'HERR'} &mdash; ${process.env.NEXT_PUBLIC_PRODUCT_LONG_NAME || 'Human Existential Regulator and Reprogramming'}<br/>&copy; ECQO Holdings</p>
           </div>
         `,
       });

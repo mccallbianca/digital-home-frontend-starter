@@ -92,7 +92,7 @@ export default function MemberNav({
         textTransform: 'uppercase',
       }}
     >
-      HERR
+      {process.env.NEXT_PUBLIC_PRODUCT_NAME || 'HERR'}
     </Link>
   );
 

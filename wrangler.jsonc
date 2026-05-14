@@ -27,6 +27,10 @@
     "STRIPE_PRICE_ELITE": "price_1TI1t8HZB88bXQVDJPOX9vzb",
     "STRIPE_PRICE_FREE": "none",
     "STRIPE_PORTAL_URL": "https://billing.stripe.com/p/login/9B628rgXfca98nX8Uc1VK00",
-    "RESEND_FROM_EMAIL": "noreply@h3rr.com"
+    "RESEND_FROM_EMAIL": "noreply@h3rr.com",
+    "NEXT_PUBLIC_PRODUCT_NAME": "HERR",
+    "NEXT_PUBLIC_PRODUCT_LONG_NAME": "Human Existential Regulator and Reprogramming",
+    "NEXT_PUBLIC_PRODUCT_TAGLINE": "You Are Not Alone in This Journey",
+    "NEXT_PUBLIC_PRODUCT_FOUNDER_CREDENTIAL": "Bianca D. McCall, M.A., LMFT"
   }
 }

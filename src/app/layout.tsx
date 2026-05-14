@@ -15,20 +15,26 @@ const dmSans = DM_Sans({
   weight: ['300', '400', '500', '600'],
 });
 
+// Brand strings come from env so future ECQO verticals can rebrand
+// without touching code. See src/core/README.md.
+const PRODUCT_NAME = process.env.NEXT_PUBLIC_PRODUCT_NAME || 'HERR';
+const PRODUCT_LONG_NAME = process.env.NEXT_PUBLIC_PRODUCT_LONG_NAME || 'Human Existential Regulator and Reprogramming';
+const FOUNDER_CREDENTIAL = process.env.NEXT_PUBLIC_PRODUCT_FOUNDER_CREDENTIAL || 'Bianca D. McCall, M.A., LMFT';
+
 export const metadata: Metadata = {
   title: {
-    default: 'HERR | Human Existential Regulator and Reprogramming',
-    template: '%s | HERR',
+    default: `${PRODUCT_NAME} | ${PRODUCT_LONG_NAME}`,
+    template: `%s | ${PRODUCT_NAME}`,
   },
   description:
-    'HERR is a clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice. Regulate your nervous system. Reprogram your inner voice. Founded by Bianca D. McCall, M.A., LMFT.',
+    `${PRODUCT_NAME} is a clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice. Regulate your nervous system. Reprogram your inner voice. Founded by ${FOUNDER_CREDENTIAL}.`,
   metadataBase: new URL('https://www.h3rr.com'),
   openGraph: {
-    siteName: 'HERR by ECQO Holdings',
+    siteName: `${PRODUCT_NAME} by ECQO Holdings`,
     url: 'https://www.h3rr.com',
     type: 'website',
   },
-  authors: [{ name: 'Bianca D. McCall, M.A., LMFT' }],
+  authors: [{ name: FOUNDER_CREDENTIAL }],
 };
 
 // Catches Supabase implicit-flow tokens that land on any page (e.g. homepage)

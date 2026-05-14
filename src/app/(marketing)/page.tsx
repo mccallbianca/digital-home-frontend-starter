@@ -208,7 +208,7 @@ export default function HomePage() {
             zIndex: 2,
           }}
         >
-          Reclaim Your Power with HERR
+          Reclaim Your Power with {process.env.NEXT_PUBLIC_PRODUCT_NAME || 'HERR'}
         </h1>
 
         <p
