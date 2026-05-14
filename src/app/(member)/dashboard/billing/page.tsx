@@ -42,6 +42,9 @@ export default async function BillingPage() {
   const canDowngrade = plan === 'collective' || plan === 'personalized' || plan === 'elite';
   const isPaidPlan = plan !== 'free';
 
+  const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? process.env.STRIPE_PUBLISHABLE_KEY ?? '';
+  const isTestMode = stripeKey.startsWith('pk_test_');
+
   return (
     <main style={{ minHeight: '100vh', background: 'var(--herr-cream)', padding: '40px 24px 80px' }}>
       <div style={{ maxWidth: 900, margin: '0 auto' }}>
@@ -60,6 +63,28 @@ export default async function BillingPage() {
         >
           ← Dashboard
         </Link>
+
+        {isTestMode && (
+          <div
+            style={{
+              background: '#FEF3C7',
+              border: '1px solid #F59E0B',
+              borderRadius: 12,
+              padding: '12px 16px',
+              marginBottom: 24,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+            }}
+          >
+            <span style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 700, color: '#92400E' }}>
+              TEST MODE
+            </span>
+            <span style={{ fontSize: 13, color: '#78350F' }}>
+              Stripe is in test mode. Use card 4242 4242 4242 4242 with any future expiry + any CVC. No real charges.
+            </span>
+          </div>
+        )}
 
         <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--herr-magenta)', fontWeight: 600, marginBottom: 8 }}>
           ALL TIERS
