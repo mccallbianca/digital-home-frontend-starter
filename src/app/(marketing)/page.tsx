@@ -7,8 +7,10 @@ import ParticleField from '@/components/ui/ParticleField';
 import { JsonLd } from '@/components/seo/JsonLd';
 import CrisisResource from '@/components/ui/CrisisResource';
 
+// Title omitted so root layout's default ("HERR | Human Existential
+// Regulator and Reprogramming") renders without the template appending
+// a second " | HERR" suffix. Description stays page-specific.
 export const metadata: Metadata = {
-  title: 'HERR | Human Existential Regulator and Reprogramming',
   description:
     'A clinical wellness operating system that delivers personalized voice affirmations in your own cloned voice. Regulate first. Reprogram second. Founded by Bianca D. McCall, M.A., LMFT.',
 };

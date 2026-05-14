@@ -13,8 +13,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient, createAdminClient } from '@/lib/supabase/server';
 
-export const runtime = 'edge';
-
 export async function POST(req: NextRequest) {
   const { code } = (await req.json().catch(() => ({}))) as { code?: string };
   if (!code || typeof code !== 'string') {

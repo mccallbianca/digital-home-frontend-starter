@@ -9,8 +9,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
-export const runtime = 'edge';
-
 function clampInt(v: unknown): number | null {
   if (typeof v !== 'number' || !Number.isFinite(v)) return null;
   const n = Math.round(v);

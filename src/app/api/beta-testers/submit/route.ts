@@ -12,8 +12,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { sendEmail } from '@/lib/email/resend';
 
-export const runtime = 'edge';
-
 const VALID_CATEGORIES = ['bug', 'ui_issue', 'feature_request', 'content_suggestion', 'other'];
 const VALID_SEVERITIES = ['low', 'medium', 'high', 'critical'];
 
