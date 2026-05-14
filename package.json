@@ -36,8 +36,10 @@
     "eslint": "^9",
     "eslint-config-next": "^15.3.3",
     "puppeteer": "^24.40.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "typescript": "^5",
+    "web-push": "^3.6.7",
     "wrangler": "^4.81.0"
   }
 }

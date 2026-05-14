@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, DM_Sans } from 'next/font/google';
 import './globals.css';
+import PWAServiceWorkerRegister from '@/components/PWAServiceWorkerRegister';
 
 const cormorant = Cormorant_Garamond({
   variable: '--font-display',
@@ -35,6 +36,19 @@ export const metadata: Metadata = {
     type: 'website',
   },
   authors: [{ name: FOUNDER_CREDENTIAL }],
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    title: PRODUCT_NAME,
+    statusBarStyle: 'black-translucent',
+  },
+  icons: {
+    apple: '/icons/icon-192.png',
+  },
+};
+
+export const viewport = {
+  themeColor: '#C42D8E',
 };
 
 // Catches Supabase implicit-flow tokens that land on any page (e.g. homepage)
@@ -63,6 +77,7 @@ export default function RootLayout({
         <AuthHashInterceptor />
       </head>
       <body className={`${cormorant.variable} ${dmSans.variable} antialiased`}>
+        <PWAServiceWorkerRegister />
         {children}
       </body>
     </html>

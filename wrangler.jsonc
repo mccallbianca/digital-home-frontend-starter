@@ -31,6 +31,7 @@
     "NEXT_PUBLIC_PRODUCT_NAME": "HERR",
     "NEXT_PUBLIC_PRODUCT_LONG_NAME": "Human Existential Regulator and Reprogramming",
     "NEXT_PUBLIC_PRODUCT_TAGLINE": "You Are Not Alone in This Journey",
-    "NEXT_PUBLIC_PRODUCT_FOUNDER_CREDENTIAL": "Bianca D. McCall, M.A., LMFT"
+    "NEXT_PUBLIC_PRODUCT_FOUNDER_CREDENTIAL": "Bianca D. McCall, M.A., LMFT",
+    "NEXT_PUBLIC_VAPID_PUBLIC_KEY": "BFBp9WqRg7bzvCzOKKktuD_AQBMh6HFf7rLQnF2jyWnQzNb64lqWdhsGDNuoVFxtuEWakoZ5lrHsXA3hRvn81Ds"
   }
 }

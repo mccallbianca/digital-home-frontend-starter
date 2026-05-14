@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/browser';
 import Link from 'next/link';
+import PushNotificationToggle from '@/components/PushNotificationToggle';
 
 interface SettingsClientProps {
   userId: string;
@@ -240,6 +241,12 @@ export default function SettingsClient({
               {emailStatus.msg}
             </p>
           )}
+        </div>
+
+        {/* Push notifications — Phase 1 v2 Block 3 Part 1 (PWA) */}
+        <div style={cardStyle}>
+          <p style={labelStyle}>NOTIFICATIONS</p>
+          <PushNotificationToggle />
         </div>
 
         {/* 3. Password — Phase 1 v2 EPIC B7 */}
