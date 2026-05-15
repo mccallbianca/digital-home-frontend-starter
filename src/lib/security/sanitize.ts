@@ -15,12 +15,16 @@ const SCRIPT_RE = /<script[\s\S]*?<\/script>/gi;
 const EVENT_HANDLER_RE = /\bon\w+\s*=\s*["'][^"']*["']/gi;
 
 // ── SQL injection patterns ─────────────────────────────────────
+// All Supabase queries here are parameterized, so raw SQL words inside
+// natural-language content cannot reach the SQL parser. The previous
+// keyword filter blocked legitimate reflection content ("I create my
+// reality", "drop the shame", "declare myself free"). Only patterns
+// that are strong signals of an injection attempt remain.
 const SQL_INJECTION_PATTERNS = [
-  /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|ALTER|CREATE|EXEC|UNION|DECLARE)\b\s)/i,
-  /(-{2}|\/\*|\*\/)/,
-  /(;\s*(SELECT|INSERT|UPDATE|DELETE|DROP))/i,
-  /('\s*(OR|AND)\s+')/i,
-  /(1\s*=\s*1)/,
+  // Statement terminator immediately followed by a destructive verb.
+  /(;\s*(SELECT|INSERT|UPDATE|DELETE|DROP|ALTER)\s)/i,
+  // Boolean-bypass classic: ' OR '1'='1
+  /'\s*(OR|AND)\s+'?\s*\d+\s*=\s*\d+/i,
 ];
 
 // ── Script injection patterns ──────────────────────────────────

@@ -45,7 +45,35 @@ export default async function AssessmentPage() {
 
   const responseMap: Record<number, number> = {};
   responses?.forEach(r => { responseMap[r.question_index] = r.response; });
-  const hasResponses = responses && responses.length > 0;
+  let hasResponses = !!responses && responses.length > 0;
+  let displayingBaseline = false;
+
+  // Block 4 bug 3: when no current responses exist, fall back to the
+  // most recent screener_snapshot (preferring the baseline written
+  // during onboarding). The "Your screener has been reset" copy is
+  // misleading on first visit when the member just completed signup.
+  if (!hasResponses) {
+    const { data: latestSnapshot } = await db
+      .from('screener_snapshots')
+      .select('responses, is_baseline')
+      .eq('member_id', user!.id)
+      .order('is_baseline', { ascending: false })
+      .order('year', { ascending: false })
+      .order('month', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    const snapshotResponses = latestSnapshot?.responses as
+      | Record<string, number>
+      | undefined;
+    if (snapshotResponses && Object.keys(snapshotResponses).length > 0) {
+      for (const [k, v] of Object.entries(snapshotResponses)) {
+        responseMap[Number(k)] = Number(v);
+      }
+      hasResponses = true;
+      displayingBaseline = !!latestSnapshot?.is_baseline;
+    }
+  }
 
   // Progress reports (most recent first)
   const { data: progressReports } = await db
@@ -103,7 +131,15 @@ export default async function AssessmentPage() {
           {/* Current responses */}
           {hasResponses ? (
             <>
-              <p className="herr-label mb-6" style={{ color: 'var(--herr-ink-soft)' }}>Current Assessment</p>
+              <p className="herr-label mb-6" style={{ color: 'var(--herr-ink-soft)' }}>
+                {displayingBaseline ? 'Your Baseline Profile' : 'Current Assessment'}
+              </p>
+              {displayingBaseline && (
+                <p className="mb-6 text-sm" style={{ color: 'var(--herr-ink-soft)' }}>
+                  This is your baseline screener from signup. Your next monthly
+                  recalibration will appear here once the cycle resets.
+                </p>
+              )}
 
               {/* Domain summary bars */}
               <div className="grid md:grid-cols-2 gap-6 mb-12">

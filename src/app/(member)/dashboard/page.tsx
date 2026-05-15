@@ -106,9 +106,13 @@ export default async function DashboardPage({
     totalSessions = 0;
   }
 
-  // Current active mode: most recently updated active row from member_activity_modes.
+  // Current mode resolution (Block 4 bug 2):
+  //   1. Most recently updated *active* mode from member_activity_modes
+  //   2. Fallback to most recently updated mode regardless of active flag
+  //      (handles members whose modes were toggled off accidentally)
+  //   3. Caller decides on a final display fallback if both return null
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: currentModeRow } = await (supabase as any)
+  let { data: currentModeRow } = await (supabase as any)
     .from('member_activity_modes')
     .select('mode, updated_at')
     .eq('member_id', user!.id)
@@ -116,6 +120,18 @@ export default async function DashboardPage({
     .order('updated_at', { ascending: false })
     .limit(1)
     .maybeSingle();
+
+  if (!currentModeRow) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: anyModeRow } = await (supabase as any)
+      .from('member_activity_modes')
+      .select('mode, updated_at')
+      .eq('member_id', user!.id)
+      .order('updated_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    currentModeRow = anyModeRow;
+  }
 
   const currentModeId = currentModeRow?.mode ?? null;
   const currentModeLabel = currentModeId ? MODE_LABELS[currentModeId] ?? currentModeId : null;

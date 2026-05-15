@@ -82,6 +82,8 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
   const [newThreadBody, setNewThreadBody] = useState('');
   const [newPostBody, setNewPostBody] = useState('');
   const [showNewThread, setShowNewThread] = useState(false);
+  const [composerError, setComposerError] = useState<string | null>(null);
+  const [posting, setPosting] = useState(false);
 
   // DMs
   const [view, setView] = useState<'spaces' | 'dms'>('spaces');
@@ -90,9 +92,6 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
   const [dmMessages, setDmMessages] = useState<DM[]>([]);
   const [newDmBody, setNewDmBody] = useState('');
   const [newDmPartnerId, setNewDmPartnerId] = useState('');
-
-  // Sidebar mobile toggle
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const postsEndRef = useRef<HTMLDivElement>(null);
 
@@ -150,36 +149,58 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
   /* ----- Create thread ----- */
   async function handleCreateThread() {
     if (!newThreadTitle.trim() || !activeSpace) return;
-    const result = await post({
-      action: 'create-thread',
-      space: activeSpace,
-      title: newThreadTitle.trim(),
-      content: newThreadBody.trim() || null,
-      authorId: userId,
-    });
-    if (result.threadId) {
-      setNewThreadTitle('');
-      setNewThreadBody('');
-      setShowNewThread(false);
-      const d = await api('threads', { space: activeSpace });
-      setThreads(d.threads || []);
+    setComposerError(null);
+    setPosting(true);
+    try {
+      const result = await post({
+        action: 'create-thread',
+        space: activeSpace,
+        title: newThreadTitle.trim(),
+        content: newThreadBody.trim() || '',
+        authorId: userId,
+      });
+      if (result.threadId) {
+        setNewThreadTitle('');
+        setNewThreadBody('');
+        setShowNewThread(false);
+        const d = await api('threads', { space: activeSpace });
+        setThreads(d.threads || []);
+      } else {
+        setComposerError(result.error || 'Your thread could not be saved. Please try again.');
+      }
+    } catch {
+      setComposerError('Connection issue. Please try again.');
+    } finally {
+      setPosting(false);
     }
   }
 
   /* ----- Create post ----- */
   async function handleCreatePost() {
     if (!newPostBody.trim() || !activeThread) return;
-    await post({
-      action: 'create-post',
-      threadId: activeThread.id,
-      content: newPostBody.trim(),
-      authorId: userId,
-    });
-    setNewPostBody('');
-    const d = await api('posts', { threadId: activeThread.id });
-    setPosts(d.posts || []);
-    setReactions(d.reactions || []);
-    setTimeout(() => postsEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+    setComposerError(null);
+    setPosting(true);
+    try {
+      const result = await post({
+        action: 'create-post',
+        threadId: activeThread.id,
+        content: newPostBody.trim(),
+        authorId: userId,
+      });
+      if (result.postId) {
+        setNewPostBody('');
+        const d = await api('posts', { threadId: activeThread.id });
+        setPosts(d.posts || []);
+        setReactions(d.reactions || []);
+        setTimeout(() => postsEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+      } else {
+        setComposerError(result.error || 'Your reply could not be saved. Please try again.');
+      }
+    } catch {
+      setComposerError('Connection issue. Please try again.');
+    } finally {
+      setPosting(false);
+    }
   }
 
   /* ----- React ----- */
@@ -259,19 +280,60 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
 
   /* ======================= RENDER ======================= */
   return (
-    <div className="flex h-[calc(100vh-280px)] min-h-[500px] border border-[var(--herr-border)]">
-      {/* ---- Sidebar ---- */}
-      <aside className={`
-        ${sidebarOpen ? 'block' : 'hidden'} md:block
-        w-full md:w-56 shrink-0 border-r border-[var(--herr-border)] bg-[var(--herr-black)]
-        absolute md:relative z-10 md:z-auto h-full overflow-y-auto
-      `}>
+    <div className="herr-nation-shell flex h-[calc(100vh-280px)] min-h-[500px] border border-[var(--herr-border)] flex-col md:flex-row">
+      {/* ---- Mobile circles strip (always visible on <768px) ---- */}
+      <nav
+        aria-label="Community circles"
+        className="md:hidden w-full border-b border-[var(--herr-border)] bg-[var(--herr-black)] overflow-x-auto"
+        style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}
+      >
+        <div className="flex gap-2 px-3 py-3 min-w-max">
+          {spaces.map((s) => {
+            const isActive = activeSpace === s.slug && view === 'spaces';
+            return (
+              <button
+                key={s.slug}
+                onClick={() => { setActiveSpace(s.slug); setView('spaces'); }}
+                style={{ scrollSnapAlign: 'start' }}
+                className={`shrink-0 px-3 py-1.5 text-[0.75rem] rounded-full border whitespace-nowrap transition-colors ${
+                  isActive
+                    ? 'bg-[var(--herr-magenta)] border-[var(--herr-magenta)] text-[var(--herr-cream)]'
+                    : 'bg-transparent border-[var(--herr-border)] text-[var(--herr-muted)]'
+                }`}
+              >
+                # {s.name}
+                {s.min_tier !== 'collective' && (
+                  <span className="ml-1 text-[0.65rem] opacity-70 uppercase">{s.min_tier}</span>
+                )}
+              </button>
+            );
+          })}
+          <button
+            onClick={() => { setView('dms'); loadDMs(); }}
+            style={{ scrollSnapAlign: 'start' }}
+            className={`shrink-0 px-3 py-1.5 text-[0.75rem] rounded-full border whitespace-nowrap transition-colors ${
+              view === 'dms'
+                ? 'bg-[var(--herr-magenta)] border-[var(--herr-magenta)] text-[var(--herr-cream)]'
+                : 'bg-transparent border-[var(--herr-border)] text-[var(--herr-muted)]'
+            }`}
+          >
+            DMs
+          </button>
+        </div>
+      </nav>
+
+      {/* ---- Sidebar (desktop only) ---- */}
+      <aside className="
+        hidden md:block
+        md:w-56 shrink-0 border-r border-[var(--herr-border)] bg-[var(--herr-black)]
+        md:relative md:z-auto h-full overflow-y-auto
+      ">
         <div className="p-4">
           <p className="herr-label text-[var(--herr-faint)] mb-3">Spaces</p>
           {spaces.map(s => (
             <button
               key={s.slug}
-              onClick={() => { setActiveSpace(s.slug); setView('spaces'); setSidebarOpen(false); }}
+              onClick={() => { setActiveSpace(s.slug); setView('spaces'); }}
               className={`block w-full text-left px-3 py-2 text-[0.85rem] rounded transition-colors mb-1 ${
                 activeSpace === s.slug && view === 'spaces'
                   ? 'bg-[var(--herr-surface)] text-[var(--herr-white)]'
@@ -288,7 +350,7 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
 
         <div className="p-4 border-t border-[var(--herr-border)]">
           <button
-            onClick={() => { setView('dms'); loadDMs(); setSidebarOpen(false); }}
+            onClick={() => { setView('dms'); loadDMs(); }}
             className={`block w-full text-left px-3 py-2 text-[0.85rem] rounded transition-colors ${
               view === 'dms'
                 ? 'bg-[var(--herr-surface)] text-[var(--herr-white)]'
@@ -347,14 +409,6 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
           Text
         </a>
       </div>
-
-      {/* ---- Mobile sidebar toggle ---- */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="md:hidden fixed bottom-4 left-4 z-20 bg-[var(--herr-surface)] border border-[var(--herr-border)] px-3 py-2 text-[0.8rem] text-[var(--herr-muted)]"
-      >
-        {sidebarOpen ? 'Close' : 'Spaces'}
-      </button>
 
       {/* ---- Main content ---- */}
       <div className="flex-1 flex flex-col overflow-hidden bg-[var(--herr-surface)]/30">
@@ -467,12 +521,17 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
                   />
                   <button
                     onClick={handleCreatePost}
-                    disabled={!newPostBody.trim()}
+                    disabled={posting || !newPostBody.trim()}
                     className="btn-herr-primary text-[0.82rem] px-4 disabled:opacity-30"
                   >
-                    Reply
+                    {posting ? 'Sending…' : 'Reply'}
                   </button>
                 </div>
+                {composerError && (
+                  <p className="mt-2 text-[0.78rem] text-[var(--herr-pink)]" role="alert">
+                    {composerError}
+                  </p>
+                )}
               </div>
             </>
           ) : (
@@ -513,13 +572,18 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
                       className="w-full bg-transparent border border-[var(--herr-border)] px-4 py-2 text-[0.88rem] text-[var(--herr-muted)] placeholder:text-[var(--herr-faint)] focus:outline-none focus:border-[var(--herr-cobalt)] mb-2 resize-none"
                     />
                     <div className="flex gap-2">
-                      <button onClick={handleCreateThread} disabled={!newThreadTitle.trim()} className="btn-herr-primary text-[0.78rem] px-3 py-1.5 disabled:opacity-30">
-                        Create Thread
+                      <button onClick={handleCreateThread} disabled={posting || !newThreadTitle.trim()} className="btn-herr-primary text-[0.78rem] px-3 py-1.5 disabled:opacity-30">
+                        {posting ? 'Saving…' : 'Create Thread'}
                       </button>
-                      <button onClick={() => setShowNewThread(false)} className="text-[0.78rem] text-[var(--herr-muted)] px-3 py-1.5">
+                      <button onClick={() => { setShowNewThread(false); setComposerError(null); }} className="text-[0.78rem] text-[var(--herr-muted)] px-3 py-1.5">
                         Cancel
                       </button>
                     </div>
+                    {composerError && (
+                      <p className="mt-2 text-[0.78rem] text-[var(--herr-pink)]" role="alert">
+                        {composerError}
+                      </p>
+                    )}
                   </div>
                 )}
 

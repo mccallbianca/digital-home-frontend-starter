@@ -251,24 +251,89 @@ export default function OnboardingFlow({ userId, userEmail, plan, existingProfil
 
   // ── Complete onboarding ───────────────────────────────────
   async function completeOnboarding(modes: string[]) {
-    // Save activity modes — legacy (user_preferences) kept for read-fallback during transition.
-    await supabase.from('user_preferences').upsert({
-      user_id: userId,
-      activity_modes: modes,
-    }, { onConflict: 'user_id' });
+    // Block 4 bug 2: the canonical write to member_activity_modes must
+    // always run, even if the legacy user_preferences write fails. The
+    // dashboard mode badge reads from member_activity_modes; if it's
+    // never written, the badge falls back to "Morning" regardless of
+    // what the member actually selected.
 
-    // Phase 1v2 EPIC B9: canonical write to member_activity_modes (one row per mode,
-    // active=true for selected). Matches pattern in dashboard/modes/ModesClient.tsx.
-    const modeRows = modes.map((m) => ({
-      member_id: userId,
-      mode: m,
-      active: true,
-      updated_at: new Date().toISOString(),
-    }));
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await (supabase as any)
-      .from('member_activity_modes')
-      .upsert(modeRows, { onConflict: 'member_id,mode' });
+    // Legacy: user_preferences kept as a read-fallback during the
+    // member_activity_modes transition. Non-fatal if missing.
+    try {
+      await supabase.from('user_preferences').upsert({
+        user_id: userId,
+        activity_modes: modes,
+      }, { onConflict: 'user_id' });
+    } catch (err) {
+      console.error('[onboarding] user_preferences write failed (non-fatal):', err);
+    }
+
+    if (modes.length > 0) {
+      // Phase 1v2 EPIC B9: canonical write to member_activity_modes.
+      const modeRows = modes.map((m) => ({
+        member_id: userId,
+        mode: m,
+        active: true,
+        updated_at: new Date().toISOString(),
+      }));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error: modeErr } = await (supabase as any)
+        .from('member_activity_modes')
+        .upsert(modeRows, { onConflict: 'member_id,mode' });
+      if (modeErr) {
+        console.error('[onboarding] member_activity_modes write failed:', modeErr);
+      }
+    }
+
+    // Block 4 bug 3: persist a baseline screener_snapshot so
+    // /dashboard/assessment shows results immediately after signup
+    // (instead of "Your screener has been reset for this month").
+    try {
+      const baselineResponses: Record<number, number> = {};
+      if (assessmentPath === 'clickthrough' && Object.keys(responses).length > 0) {
+        for (const [k, v] of Object.entries(responses)) {
+          baselineResponses[Number(k)] = v;
+        }
+      } else if (assessment?.domain_scores) {
+        const ds = assessment.domain_scores;
+        const clamp = (n: number) => Math.min(5, Math.max(1, Math.round(n || 0)));
+        baselineResponses[0] = clamp(ds.meaning ?? 3);
+        baselineResponses[1] = clamp(ds.meaning ?? 3);
+        baselineResponses[2] = clamp(ds.freedom ?? 3);
+        baselineResponses[3] = clamp(ds.freedom ?? 3);
+        baselineResponses[4] = clamp(ds.isolation ?? 3);
+        baselineResponses[5] = clamp(ds.identity ?? 3);
+        baselineResponses[6] = clamp(ds.death ?? 3);
+        baselineResponses[7] = clamp(ds.perturbation ?? 3);
+      }
+
+      if (Object.keys(baselineResponses).length > 0) {
+        const now = new Date();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (supabase as any).from('screener_snapshots').insert({
+          member_id: userId,
+          responses: baselineResponses,
+          snapshot_date: now.toISOString().split('T')[0],
+          month: now.getMonth() + 1,
+          year: now.getFullYear(),
+          is_baseline: true,
+        });
+
+        // Conversational path: also seed existential_responses so the
+        // assessment page's domain bars render the synthesized baseline.
+        if (assessmentPath === 'conversational') {
+          const rows = Object.entries(baselineResponses).map(([idx, val]) => ({
+            user_id: userId,
+            question_index: Number(idx),
+            response: val,
+          }));
+          await supabase.from('existential_responses').delete().eq('user_id', userId);
+          await supabase.from('existential_responses').insert(rows);
+        }
+      }
+    } catch (err) {
+      console.error('[onboarding] baseline snapshot write failed (non-fatal):', err);
+    }
 
     // If WS2 flow, submit Phase 5 handoff
     if (assessmentPath === 'conversational') {

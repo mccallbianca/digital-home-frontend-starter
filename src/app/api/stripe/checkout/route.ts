@@ -9,6 +9,20 @@
  *   - Personalized ($19): 7-day free trial
  *   - Elite ($29): 7-day free trial
  *   - Testers: bypass Stripe entirely, granted 30-day access via profile flag
+ *
+ * ─── LIVE-mode Stripe price IDs (Block 4 reconciliation, May 14) ───
+ *   STRIPE_PRICE_COLLECTIVE   = price_1TINGOHZB88bXQVDOx6oJ07M  ($9/mo)
+ *   STRIPE_PRICE_PERSONALIZED = price_1TINIcHZB88bXQVD5V69Ynnz ($19/mo)
+ *   STRIPE_PRICE_ELITE        = price_1TINJiHZB88bXQVDHDt19eVQ ($29/mo)
+ *
+ * These IDs are stored as public vars in wrangler.jsonc (Cloudflare
+ * Workers cannot read NEXT_PUBLIC_* at runtime, so the non-prefixed
+ * names are the canonical source).
+ *
+ * Production STRIPE_SECRET_KEY must be sk_live_* and set via
+ * `npx wrangler secret put STRIPE_SECRET_KEY`. If the secret is a test
+ * key while these price IDs are live, Stripe returns "No such price"
+ * and this route surfaces it as the 500 below.
  */
 
 import Stripe from 'stripe';
@@ -84,6 +98,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Stripe price not configured' }, { status: 503 });
     }
 
+    // Block 4 bug 7: surface a clearer error when the secret key mode
+    // mismatches the price ID. Live-mode prices fail against test keys
+    // with "No such price"; this hint helps Bianca diagnose the env
+    // gap without digging through Stripe logs.
+    const isLiveKey = secretKey.startsWith('sk_live_');
+    const isTestKey = secretKey.startsWith('sk_test_');
+
     const trialDays = TRIAL_DAYS[validTier];
 
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
@@ -134,9 +155,17 @@ export async function POST(req: NextRequest) {
       const errMessage = stripeErr instanceof Error ? stripeErr.message : String(stripeErr);
       console.error('[stripe/checkout] Stripe API error:', errMessage);
       console.error('[stripe/checkout] Full error:', JSON.stringify(stripeErr, Object.getOwnPropertyNames(stripeErr)));
-      return NextResponse.json({ 
+
+      let hint: string | undefined;
+      if (/No such price/i.test(errMessage)) {
+        const keyMode = isLiveKey ? 'LIVE' : isTestKey ? 'TEST' : 'unknown';
+        hint = `Price ${priceId} not found in Stripe ${keyMode} mode. Confirm STRIPE_SECRET_KEY and STRIPE_PRICE_${validTier.toUpperCase()} are both LIVE or both TEST.`;
+      }
+
+      return NextResponse.json({
         error: 'Failed to create checkout session',
         debug: errMessage,
+        ...(hint ? { hint } : {}),
       }, { status: 500 });
     }
   } catch (err) {

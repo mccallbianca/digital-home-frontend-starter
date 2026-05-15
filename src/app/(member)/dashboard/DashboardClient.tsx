@@ -73,6 +73,9 @@ export default function DashboardClient({
         ? 'HERR Collective'
         : 'HERR Free';
 
+  // Block 4 bug 2: display the member's actual selected mode. Only fall
+  // back to "Morning" when truly no mode is saved AND no affirmation has
+  // been generated yet (last-resort cosmetic default).
   const todaysModeBadge = todaysAffirmationMode
     ? todaysAffirmationMode.replace('-', ' ').replace(/\b\w/g, (c) => c.toUpperCase())
     : (currentModeLabel ?? 'Morning');

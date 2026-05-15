@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import ScrollFadeIn from '@/components/home/ScrollFadeIn';
 import CrisisResource from '@/components/ui/CrisisResource';
 import HERRNation from './HERRNation';
+import ShareReflectionCTA from './ShareReflectionCTA';
 
 export const dynamic = 'force-dynamic';
 
@@ -38,18 +39,19 @@ export default async function CommunityPage() {
     .eq('id', user!.id)
     .single();
 
-  // Pioneer counter — paid-member count + 100 founders' offset.
-  // Phase 1v2 EPIC B6: live from profiles, single source of truth.
+  // Pioneer counter — every signup is a Pioneer (Free included).
+  // Block 4 bug 4: previously filtered to paid plans only; Free Plan
+  // signups didn't uptick the counter. Bianca confirmed Free tier
+  // members ARE Pioneers and the counter should increment on ANY signup.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { count: paidMemberCount } = await (supabase as any)
+  const { count: memberCount } = await (supabase as any)
     .from('profiles')
-    .select('id', { count: 'exact', head: true })
-    .in('plan', ['collective', 'personalized', 'elite']);
+    .select('id', { count: 'exact', head: true });
 
   const displayName = profile?.preferred_name || profile?.first_name || 'HERR Member';
   const userTier = profile?.plan || 'collective';
   const acknowledged = !!profile?.community_acknowledged;
-  const pioneers = (paidMemberCount ?? 0) + 100;
+  const pioneers = (memberCount ?? 0) + 100;
   const fallbackTheme = getWeeklyTheme();
 
   // Phase 1v2 EPIC B6: 3-card section fed by content_objects via the
@@ -431,26 +433,10 @@ export default async function CommunityPage() {
           >
             Ready to connect?
           </p>
-          <a
-            href="#community-feed"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: 48,
-              padding: '0 32px',
-              background: '#E8388A',
-              color: '#FFFFFF',
-              borderRadius: 12,
-              fontSize: 14,
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: '1px',
-              textDecoration: 'none',
-            }}
-          >
-            Share Your First Reflection
-          </a>
+          <ShareReflectionCTA
+            userId={user!.id}
+            canPost={['collective', 'personalized', 'elite'].includes(userTier)}
+          />
         </ScrollFadeIn>
       </section>
 
