@@ -101,15 +101,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: insertErr.message }, { status: 500 });
   }
 
-  // Email Bianca
+  // Email Bianca with HERR-branded template (Block 5 Part 2 Task 4).
   try {
     await sendEmail({
       to: 'mccall.bianca@gmail.com',
       subject: `[HERR Beta Briefing] ${briefingDate} ${briefingTime}`,
-      html: `
-        <pre style="white-space: pre-wrap; font-family: -apple-system, sans-serif; font-size: 13px;">${escapeHtml(briefingText)}</pre>
-        <p><a href="https://h3rr.com/admin/briefings">View all briefings</a></p>
-      `,
+      html: brandedBriefingHtml({ briefingText, briefingDate, briefingTime, reportCount: reports.length }),
     });
   } catch (err) {
     console.error('[beta-testers-briefing] email error:', err);
@@ -228,4 +225,38 @@ function escapeHtml(s: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+function brandedBriefingHtml(params: {
+  briefingText: string;
+  briefingDate: string;
+  briefingTime: BriefingTime;
+  reportCount: number;
+}): string {
+  const e = escapeHtml;
+  const label = params.briefingTime === 'morning' ? 'Morning' : 'Evening';
+  return `
+<div style="background:#0A0A0F;padding:32px 20px;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;background:#16161F;border:1px solid rgba(244,241,235,0.12);border-radius:16px;padding:32px;color:#F4F1EB;">
+    <p style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#C42D8E;font-weight:700;margin:0 0 8px;">
+      HERR Beta Briefing &middot; ${e(label)}
+    </p>
+    <p style="font-family:Georgia,serif;font-size:24px;font-weight:500;color:#F4F1EB;margin:0 0 6px;line-height:1.3;">
+      ${e(params.briefingDate)}
+    </p>
+    <p style="font-size:12px;color:rgba(244,241,235,0.5);margin:0 0 24px;">
+      ${params.reportCount} report${params.reportCount === 1 ? '' : 's'} in the past 14 hours.
+    </p>
+    <pre style="white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;line-height:1.7;color:rgba(244,241,235,0.85);margin:0 0 24px;background:rgba(244,241,235,0.04);padding:16px 18px;border-radius:12px;border:1px solid rgba(244,241,235,0.08);">${e(params.briefingText)}</pre>
+    <div style="padding-top:18px;border-top:1px solid rgba(244,241,235,0.12);">
+      <a href="https://h3rr.com/admin/briefings" style="display:inline-block;background:#C42D8E;color:#FFFFFF;text-decoration:none;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:10px 18px;border-radius:10px;">
+        Open Briefings
+      </a>
+    </div>
+    <p style="font-size:11px;color:rgba(244,241,235,0.35);margin:22px 0 0;line-height:1.6;">
+      HERR Human Existential Regulator and Reprogramming<br/>
+      &copy; ECQO Holdings
+    </p>
+  </div>
+</div>`.trim();
 }

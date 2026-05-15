@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Cormorant_Garamond, DM_Sans } from 'next/font/google';
 import './globals.css';
 import PWAServiceWorkerRegister from '@/components/PWAServiceWorkerRegister';
+import TesterBugReportButton from '@/components/TesterBugReportButton';
 
 const cormorant = Cormorant_Garamond({
   variable: '--font-display',
@@ -79,6 +80,7 @@ export default function RootLayout({
       <body className={`${cormorant.variable} ${dmSans.variable} antialiased`}>
         <PWAServiceWorkerRegister />
         {children}
+        <TesterBugReportButton />
       </body>
     </html>
   );
