@@ -16,16 +16,19 @@ export default async function AffirmationsPage() {
 
   if (!user) redirect('/login?redirect=/dashboard/affirmations');
 
-  const { data: profile } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: profile } = await (supabase as any)
     .from('profiles')
-    .select('plan')
+    .select('plan, is_tester')
     .eq('id', user.id)
     .single();
 
   const plan = (profile?.plan ?? 'free') as 'free' | 'collective' | 'personalized' | 'elite';
+  const isTester = profile?.is_tester === true;
 
-  // Free users see tier gate (themed cream/ink/magenta per Phase 1 v2 portal palette)
-  if (plan === 'free') {
+  // Free users see tier gate (themed cream/ink/magenta per Phase 1 v2 portal palette).
+  // Block 5 Task 2c: testers always pass — they have Founding Tester access.
+  if (plan === 'free' && !isTester) {
     return (
       <div style={{ minHeight: '100vh', background: 'var(--herr-cream)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 24px' }}>
         <div style={{ maxWidth: 480, textAlign: 'center' }}>

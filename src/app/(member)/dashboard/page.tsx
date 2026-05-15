@@ -62,7 +62,10 @@ export default async function DashboardPage({
     .single();
 
   const displayName = profile?.preferred_name || profile?.first_name || 'Member';
-  const plan = profile?.plan;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const isTester = (profile as any)?.is_tester === true;
+  // Block 5 Task 2c: testers see Elite capabilities across the dashboard.
+  const plan = isTester ? 'elite' : profile?.plan;
   const isElite = plan === 'elite';
   const hasVoice = plan === 'personalized' || plan === 'elite';
   const voiceReady = !!voiceConsent?.file_path;

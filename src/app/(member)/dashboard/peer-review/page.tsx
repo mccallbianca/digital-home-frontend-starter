@@ -24,11 +24,12 @@ export default async function PeerReviewPage() {
   const db = supabase as any;
   const { data: profile } = await db
     .from('profiles')
-    .select('plan')
+    .select('plan, is_tester')
     .eq('id', user.id)
     .maybeSingle();
   const plan = profile?.plan ?? 'free';
-  if (!PAID_PLANS.includes(plan)) {
+  const isTester = profile?.is_tester === true;
+  if (!isTester && !PAID_PLANS.includes(plan)) {
     redirect('/checkout?from=/dashboard/peer-review');
   }
 

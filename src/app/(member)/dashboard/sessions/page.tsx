@@ -38,15 +38,17 @@ export default async function SessionsPage() {
 
   if (!user) redirect('/login?redirect=/dashboard/sessions');
 
-  const { data: profile } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: profile } = await (supabase as any)
     .from('profiles')
-    .select('plan')
+    .select('plan, is_tester')
     .eq('id', user.id)
     .single();
 
   const plan = (profile?.plan ?? 'free') as Plan;
+  const isTester = profile?.is_tester === true;
 
-  if (plan === 'free') {
+  if (plan === 'free' && !isTester) {
     return (
       <main style={{ minHeight: '100vh', background: 'var(--herr-cream)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 24px' }}>
         <div style={{ maxWidth: 480, textAlign: 'center' }}>

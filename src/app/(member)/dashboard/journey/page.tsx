@@ -31,8 +31,13 @@ export default async function JourneyPage() {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const db = supabase as any;
-  const { data: profile } = await db.from('profiles').select('plan').eq('id', user.id).maybeSingle();
-  if (!PAID_PLANS.includes(profile?.plan ?? 'free')) {
+  const { data: profile } = await db
+    .from('profiles')
+    .select('plan, is_tester')
+    .eq('id', user.id)
+    .maybeSingle();
+  const isTester = profile?.is_tester === true;
+  if (!isTester && !PAID_PLANS.includes(profile?.plan ?? 'free')) {
     redirect('/checkout?from=/dashboard/journey');
   }
 

@@ -16,14 +16,16 @@ export default async function SoundPage() {
 
   if (!user) redirect('/login?redirect=/dashboard/sound');
 
-  const { data: profile } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: profile } = await (supabase as any)
     .from('profiles')
-    .select('plan')
+    .select('plan, is_tester')
     .eq('id', user.id)
     .single();
 
   const plan = profile?.plan ?? 'free';
-  if (plan !== 'personalized' && plan !== 'elite') {
+  const isTester = profile?.is_tester === true;
+  if (!isTester && plan !== 'personalized' && plan !== 'elite') {
     return (
       <div style={{ minHeight: '100vh', background: '#FAF8F5', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 24px' }}>
         <div style={{ maxWidth: 480, textAlign: 'center', background: '#FFFFFF', borderRadius: 16, padding: 32, boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>

@@ -74,7 +74,8 @@ export default function MemberNav({
       ? pathname === '/dashboard'
       : pathname === href || pathname.startsWith(`${href}/`);
 
-  const isLocked = (item: NavItem) => TIER_RANK[plan] < TIER_RANK[item.requires];
+  // Block 5 Task 2c: testers have Founding Tester access — never locked.
+  const isLocked = (item: NavItem) => !isTester && TIER_RANK[plan] < TIER_RANK[item.requires];
 
   const upsellHref = (item: NavItem) =>
     `/checkout?from=${encodeURIComponent(item.href)}`;
@@ -168,7 +169,7 @@ export default function MemberNav({
 
   const Footer = () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      {plan === 'free' && (
+      {plan === 'free' && !isTester && (
         <Link
           href="/checkout"
           style={{
@@ -194,7 +195,7 @@ export default function MemberNav({
         Signed in as <span style={{ color: 'var(--herr-ink)', fontWeight: 600 }}>{displayName}</span>
         <br />
         <span style={{ fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-          {TIER_BADGE[plan]} TIER
+          {isTester ? 'Founding Tester' : `${TIER_BADGE[plan]} Tier`}
         </span>
       </p>
       <button

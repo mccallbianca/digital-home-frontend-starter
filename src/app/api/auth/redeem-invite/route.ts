@@ -4,10 +4,19 @@
  * Body: { code: string }
  * Auth: authenticated user (session cookie).
  *
- * Validates a tester invite code, marks it used, and flips
- * the caller's profiles.is_tester to true. Idempotent for the
- * same user — repeated calls with the same code after first
- * redemption return 409 (already used) without further mutation.
+ * Validates a tester invite code, marks it used, and flips the
+ * caller's profile to a Founding Tester:
+ *   - profiles.is_tester           = true
+ *   - profiles.plan                = 'elite'
+ *   - profiles.subscription_status = 'active'
+ *
+ * Block 5 Task 1: testers are auto-elevated to Elite at signup so
+ * every gated feature is unlocked without Stripe involvement. The
+ * billing surface hides upgrade UI when is_tester is true.
+ *
+ * Idempotent for the same user. Repeated calls with the same code
+ * after first redemption return 409 (already used) without further
+ * mutation.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -54,14 +63,31 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to mark code used' }, { status: 500 });
   }
 
+  // Block 5 Task 1: elevate tester to Elite + active in the same write
+  // so feature gates unlock immediately. If the subscription_status
+  // column does not yet exist in this environment, retry without it.
+  const elevatedFields = {
+    is_tester: true,
+    plan: 'elite',
+    subscription_status: 'active',
+  };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error: profileErr } = await (admin as any)
+  let { error: profileErr } = await (admin as any)
     .from('profiles')
-    .update({ is_tester: true })
+    .update(elevatedFields)
     .eq('id', user.id);
+
+  if (profileErr && /column .*subscription_status.* does not exist/i.test(profileErr.message)) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ({ error: profileErr } = await (admin as any)
+      .from('profiles')
+      .update({ is_tester: true, plan: 'elite' })
+      .eq('id', user.id));
+  }
+
   if (profileErr) {
     return NextResponse.json({ error: 'Failed to set tester flag' }, { status: 500 });
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, tier: 'elite' });
 }

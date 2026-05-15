@@ -35,7 +35,7 @@ export default async function CommunityPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: profile } = await (supabase as any)
     .from('profiles')
-    .select('preferred_name, first_name, plan, community_acknowledged')
+    .select('preferred_name, first_name, plan, community_acknowledged, is_tester')
     .eq('id', user!.id)
     .single();
 
@@ -50,6 +50,7 @@ export default async function CommunityPage() {
 
   const displayName = profile?.preferred_name || profile?.first_name || 'HERR Member';
   const userTier = profile?.plan || 'collective';
+  const isTester = profile?.is_tester === true;
   const acknowledged = !!profile?.community_acknowledged;
   const pioneers = (memberCount ?? 0) + 100;
   const fallbackTheme = getWeeklyTheme();
@@ -435,7 +436,7 @@ export default async function CommunityPage() {
           </p>
           <ShareReflectionCTA
             userId={user!.id}
-            canPost={['collective', 'personalized', 'elite'].includes(userTier)}
+            canPost={isTester || ['collective', 'personalized', 'elite'].includes(userTier)}
           />
         </ScrollFadeIn>
       </section>

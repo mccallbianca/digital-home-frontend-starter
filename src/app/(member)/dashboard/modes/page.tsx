@@ -18,13 +18,16 @@ export default async function ModesPage() {
 
   if (!user) redirect('/login?redirect=/dashboard/modes');
 
-  const { data: profile } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: profile } = await (supabase as any)
     .from('profiles')
-    .select('plan')
+    .select('plan, is_tester')
     .eq('id', user.id)
     .single();
 
-  const plan = (profile?.plan ?? 'free') as Plan;
+  const isTester = profile?.is_tester === true;
+  // Block 5 Task 2c: testers see Elite capabilities everywhere.
+  const plan = (isTester ? 'elite' : (profile?.plan ?? 'free')) as Plan;
 
   // Primary source: member_activity_modes (Phase 1 v2 EPIC B2).
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
