@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, DM_Sans } from 'next/font/google';
+import { Cormorant_Garamond, DM_Sans, Inter } from 'next/font/google';
 import './globals.css';
 import PWAServiceWorkerRegister from '@/components/PWAServiceWorkerRegister';
 import TesterBugReportButton from '@/components/TesterBugReportButton';
@@ -15,6 +15,14 @@ const dmSans = DM_Sans({
   variable: '--font-body',
   subsets: ['latin'],
   weight: ['300', '400', '500', '600'],
+});
+
+// Homepage-only display + body font. Other marketing pages keep
+// Cormorant Garamond + DM Sans so editorial subpages stay consistent.
+const inter = Inter({
+  variable: '--font-sans-display',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
 });
 
 // Brand strings come from env so future ECQO verticals can rebrand
@@ -77,7 +85,7 @@ export default function RootLayout({
       <head>
         <AuthHashInterceptor />
       </head>
-      <body className={`${cormorant.variable} ${dmSans.variable} antialiased`}>
+      <body className={`${cormorant.variable} ${dmSans.variable} ${inter.variable} antialiased`}>
         <PWAServiceWorkerRegister />
         {children}
         <TesterBugReportButton />

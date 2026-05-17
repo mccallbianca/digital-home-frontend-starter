@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
 /* ── Types ─────────────────────────────────────────────────────────────────── */
@@ -171,6 +171,23 @@ function IconGift() {
 export default function CheckoutFlow() {
   const [loading, setLoading] = useState<Tier | null>(null);
   const [error, setError] = useState('');
+  const autoTriggeredRef = useRef(false);
+
+  // If the user arrived via /checkout?tier=collective|personalized|elite
+  // (homepage tier CTAs), auto-trigger that tier's Stripe redirect so the
+  // homepage button feels like a direct purchase action.
+  useEffect(() => {
+    if (autoTriggeredRef.current) return;
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const requested = params.get('tier');
+    if (!requested) return;
+    const valid: Tier[] = ['collective', 'personalized', 'elite'];
+    if (!valid.includes(requested as Tier)) return;
+    autoTriggeredRef.current = true;
+    handleCta(requested as Tier);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function handleCta(tier: Tier) {
     setError('');
