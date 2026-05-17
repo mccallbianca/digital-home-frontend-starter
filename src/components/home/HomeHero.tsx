@@ -62,9 +62,9 @@ export default function HomeHero() {
           </p>
         </div>
 
-        {/* Video column (right, 40% desktop) — contained frame, 9:16 portrait */}
-        <div className="home-hero__media" aria-hidden>
-          <div className="home-hero__frame">
+        {/* Video column (right, 40% desktop) — contained 16:9 frame */}
+        <div className="home-hero__media">
+          <div className="home-hero__frame" aria-hidden>
             <video
               autoPlay
               muted
@@ -77,6 +77,18 @@ export default function HomeHero() {
               <source src="/videos/hero-loop.mp4" type="video/mp4" />
             </video>
           </div>
+
+          <figcaption className="home-hero__caption">
+            <p className="home-hero__caption-eyebrow">FOUNDER</p>
+            <p className="home-hero__caption-name">Bianca D. McCall, M.A., LMFT</p>
+            <p className="home-hero__caption-credentials">
+              <span>SAMHSA Advisor</span>
+              <span className="home-hero__caption-dot" aria-hidden>&middot;</span>
+              <span>TEDx Speaker</span>
+              <span className="home-hero__caption-dot" aria-hidden>&middot;</span>
+              <span>NFL/MLB Consultant</span>
+            </p>
+          </figcaption>
         </div>
       </div>
 

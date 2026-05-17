@@ -525,9 +525,9 @@ body {
 .home-hero__frame {
   position: relative;
   width: 100%;
-  max-width: 380px;
-  aspect-ratio: 9 / 16;
-  max-height: 600px;
+  max-width: 560px;
+  aspect-ratio: 16 / 9;
+  max-height: 315px;
   border: 1px solid rgba(244, 241, 235, 0.08);
   border-radius: 12px;
   overflow: hidden;
@@ -536,6 +536,50 @@ body {
   opacity: 0;
   transform: translateY(20px);
   animation: home-fade-up 900ms 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.home-hero__caption {
+  margin: 1.5rem auto 0;
+  text-align: center;
+  max-width: 560px;
+  opacity: 0;
+  animation: home-fade-up 800ms 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.home-hero__caption-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--herr-magenta);
+  margin: 0 0 0.5rem;
+}
+
+.home-hero__caption-name {
+  font-family: var(--font-sans-display), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
+  letter-spacing: -0.01em;
+  color: var(--herr-cream);
+  margin: 0 0 0.5rem;
+}
+
+.home-hero__caption-credentials {
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: rgba(244, 241, 235, 0.6);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.home-hero__caption-credentials span {
+  white-space: nowrap;
+}
+
+.home-hero__caption-credentials .home-hero__caption-dot {
+  color: var(--herr-magenta);
+  margin: 0 0.6em;
+  font-weight: 700;
 }
 
 .home-hero__video {
@@ -1613,7 +1657,8 @@ body {
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .home-hero__grid   { grid-template-columns: 65fr 35fr; gap: 32px; }
-  .home-hero__frame  { max-width: 320px; max-height: 540px; }
+  .home-hero__frame  { max-width: 420px; max-height: 236px; }
+  .home-hero__caption { max-width: 420px; }
 }
 
 @media (max-width: 1024px) {
@@ -1637,8 +1682,9 @@ body {
 @media (max-width: 767px) {
   .home-hero         { padding: 110px 22px 64px; min-height: auto; }
   .home-hero__grid   { grid-template-columns: 1fr; gap: 48px; }
-  .home-hero__media  { width: 100%; }
-  .home-hero__frame  { max-width: 80%; width: 80%; max-height: 480px; margin: 0 auto; }
+  .home-hero__media  { width: 100%; flex-direction: column; }
+  .home-hero__frame  { max-width: 90%; width: 90%; max-height: 240px; margin: 0 auto; }
+  .home-hero__caption { max-width: 90%; }
   .home-hero__title  { font-size: clamp(2.6rem, 11vw, 4.2rem); }
 }
 
