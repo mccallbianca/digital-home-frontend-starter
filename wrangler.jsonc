@@ -3,6 +3,11 @@
   "compatibility_date": "2025-12-01",
   "compatibility_flags": ["nodejs_compat"],
   "main": ".open-next/worker.js",
+  // Cloudflare Smart Placement: auto-locates worker invocations near
+  // Supabase origin to cut DB round-trip latency on dynamic routes.
+  // Marketing/static routes see modest cold-start placement improvements.
+  // Falls back to default if no benefit detected.
+  "placement": { "mode": "smart" },
   "assets": {
     "binding": "ASSETS",
     "directory": ".open-next/assets"

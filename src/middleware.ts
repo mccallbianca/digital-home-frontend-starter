@@ -6,7 +6,9 @@
  * 2. Protect member routes by checking for Supabase session cookie
  * 3. Protect API routes (session cookie OR API_SECRET_KEY)
  * 4. Redirect authenticated users who haven't completed onboarding
- * 5. Visitor tracking headers for personalization
+ * 5. Initialize visitor cookies on first arrival; refresh session window
+ *    on returning visits. Cookies are idempotent — only re-set when
+ *    missing or when a campaign arrival (?utm_*) re-resolves attribution.
  *
  * NOTE: No Supabase SDK here — SDK calls in middleware crash Cloudflare Workers.
  * Auth is validated properly inside each protected Server Component instead.
@@ -14,6 +16,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { resolveSource } from '@/lib/attribution/source';
+import { hasUTMParams } from '@/lib/attribution/utm';
 import {
   VISITOR_COOKIE_NAME,
   VISITOR_COOKIE_MAX_AGE,
@@ -40,6 +43,14 @@ const PROTECTED_API_ROUTES = [
 
 // Supabase SSR stores the session in a cookie named sb-{projectRef}-auth-token
 const SUPABASE_COOKIE = 'sb-uyhfdtrvlhdhrhniysvw-auth-token';
+
+const SESSION_MAX_AGE = 1800; // 30 min
+
+function applySecurityHeaders(response: NextResponse): void {
+  for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
+    response.headers.set(key, value);
+  }
+}
 
 export function middleware(request: NextRequest) {
   const { nextUrl, headers } = request;
@@ -81,16 +92,43 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // ── 3. Attribution + visitor tracking ───────────────────────────
+  // ── 3. Visitor cookie initialization ─────────────────────────────
+  // Fast path: returning visitor without any campaign arrival skips all
+  // attribution work entirely. Cookie sets are idempotent — values are
+  // only written when missing or when a UTM-tagged URL re-resolves the
+  // segment.
+  const existingVid = request.cookies.get(VISITOR_COOKIE_NAME)?.value;
+  const existingSegment = request.cookies.get('bb_segment')?.value;
+  const hasSession = !!request.cookies.get('bb_session')?.value;
+  const hasUtm = hasUTMParams(nextUrl);
+
+  const response = NextResponse.next();
+  applySecurityHeaders(response);
+
+  // ── Fast path: known visitor, no campaign params ─────────────────
+  if (existingVid && existingSegment && !hasUtm) {
+    // Refresh 30-min session window if it lapsed (returning after >30 min)
+    if (!hasSession) {
+      const visitCount = parseInt(request.cookies.get('bb_vc')?.value || '1', 10);
+      response.cookies.set('bb_session', '1', {
+        httpOnly: true, secure: true, sameSite: 'lax',
+        maxAge: SESSION_MAX_AGE, path: '/',
+      });
+      response.cookies.set('bb_vc', String(visitCount + 1), {
+        httpOnly: true, secure: true, sameSite: 'lax',
+        maxAge: VISITOR_COOKIE_MAX_AGE, path: '/',
+      });
+    }
+    return response;
+  }
+
+  // ── Slow path: new visitor OR campaign arrival ───────────────────
   const referrer  = headers.get('referer');
   const userAgent = headers.get('user-agent');
   const url       = new URL(nextUrl.toString());
   const attribution = resolveSource(url, referrer, userAgent);
 
-  let visitorId = request.cookies.get(VISITOR_COOKIE_NAME)?.value;
-  const isNewVisitor = !visitorId;
-  if (!visitorId) visitorId = generateVisitorId();
-
+  const visitorId = existingVid || generateVisitorId();
   const visitCount = parseInt(request.cookies.get('bb_vc')?.value || '0', 10);
   const segment = assignSegment({
     visitCount: visitCount || 1,
@@ -101,36 +139,27 @@ export function middleware(request: NextRequest) {
     deviceType: detectDeviceType(userAgent),
   });
 
-  const response = NextResponse.next();
-
-  // ── Security headers (ECQO Security Layer — PART 5) ─────────────
-  for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
-    response.headers.set(key, value);
+  // Only set bb_vid when missing — long-lived cookie doesn't need refresh
+  if (!existingVid) {
+    response.cookies.set(VISITOR_COOKIE_NAME, visitorId, {
+      httpOnly: true, secure: true, sameSite: 'lax',
+      maxAge: VISITOR_COOKIE_MAX_AGE, path: '/',
+    });
   }
 
-  // Personalization headers
-  response.headers.set('x-visitor-id', visitorId);
-  response.headers.set('x-visitor-segment', segment);
-  response.headers.set('x-visitor-new', isNewVisitor ? '1' : '0');
-  response.headers.set('x-attribution-source', attribution.source);
-  response.headers.set('x-attribution-medium', attribution.medium);
-  response.headers.set('x-ai-traffic', attribution.isAITraffic ? '1' : '0');
-  if (attribution.aiSource) response.headers.set('x-ai-source', attribution.aiSource);
-  if (attribution.campaign) response.headers.set('x-attribution-campaign', attribution.campaign);
+  // Only update bb_segment when missing or changed by attribution
+  if (existingSegment !== segment) {
+    response.cookies.set('bb_segment', segment, {
+      httpOnly: true, secure: true, sameSite: 'lax',
+      maxAge: VISITOR_COOKIE_MAX_AGE, path: '/',
+    });
+  }
 
-  // Visitor cookies
-  response.cookies.set(VISITOR_COOKIE_NAME, visitorId, {
-    httpOnly: true, secure: true, sameSite: 'lax',
-    maxAge: VISITOR_COOKIE_MAX_AGE, path: '/',
-  });
-  response.cookies.set('bb_segment', segment, {
-    httpOnly: true, secure: true, sameSite: 'lax',
-    maxAge: VISITOR_COOKIE_MAX_AGE, path: '/',
-  });
-
-  if (!request.cookies.get('bb_session')?.value) {
+  // Session start: refresh window + bump visit count
+  if (!hasSession) {
     response.cookies.set('bb_session', '1', {
-      httpOnly: true, secure: true, sameSite: 'lax', maxAge: 1800, path: '/',
+      httpOnly: true, secure: true, sameSite: 'lax',
+      maxAge: SESSION_MAX_AGE, path: '/',
     });
     response.cookies.set('bb_vc', String(visitCount + 1), {
       httpOnly: true, secure: true, sameSite: 'lax',
