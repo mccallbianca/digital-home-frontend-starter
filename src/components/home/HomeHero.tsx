@@ -82,11 +82,11 @@ export default function HomeHero() {
             <p className="home-hero__caption-eyebrow">FOUNDER</p>
             <p className="home-hero__caption-name">Bianca D. McCall, M.A., LMFT</p>
             <p className="home-hero__caption-credentials">
-              <span>SAMHSA Advisor</span>
+              <span>Government Consultant</span>
               <span className="home-hero__caption-dot" aria-hidden>&middot;</span>
-              <span>TEDx Speaker</span>
+              <span>TED Speaker</span>
               <span className="home-hero__caption-dot" aria-hidden>&middot;</span>
-              <span>NFL/MLB Consultant</span>
+              <span>Retired Pro Athlete</span>
             </p>
           </figcaption>
         </div>
