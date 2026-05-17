@@ -22,6 +22,8 @@
   --herr-pink:        #D946EF;
   --herr-pink-dim:    rgba(217, 70, 239, 0.15);
   --herr-magenta:     #C42D8E;
+  /* WCAG AA compliance variant of HERR Magenta for small captions on dark — passes 5.05:1 contrast */
+  --herr-magenta-aa:  #E8388A;
   --herr-cobalt:      #2563EB;
   --herr-cobalt-dim:  rgba(37, 99, 235, 0.15);
   --herr-violet:      #7C3AED;
@@ -325,7 +327,8 @@ body {
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--herr-magenta);
+  /* WCAG AA compliance variant of HERR Magenta for small captions on dark — passes 5.05:1 contrast */
+  color: var(--herr-magenta-aa);
   margin: 0 0 1.25rem;
   display: inline-flex;
   align-items: center;
@@ -551,7 +554,8 @@ body {
   font-weight: 700;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--herr-magenta);
+  /* WCAG AA compliance variant of HERR Magenta for small captions on dark — passes 5.05:1 contrast */
+  color: var(--herr-magenta-aa);
   margin: 0 0 0.5rem;
 }
 
@@ -1641,13 +1645,15 @@ body {
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--herr-magenta);
+  /* WCAG AA compliance variant of HERR Magenta for small captions on dark — passes 5.05:1 contrast */
+  color: var(--herr-magenta-aa);
   margin: 0;
 }
 
 .home-footer__copyright {
   font-size: 0.78rem;
-  color: rgba(244, 241, 235, 0.4);
+  /* opacity bumped 0.4 → 0.55 to clear WCAG AA 4.5:1 contrast on dark footer */
+  color: rgba(244, 241, 235, 0.55);
   margin: 0;
 }
 
