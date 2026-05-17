@@ -17,11 +17,11 @@ export default function MarketingLayout({
 }
 
 const PRODUCT_LINKS = [
-  { label: 'The Gap', href: '/#the-gap' },
+  { label: 'The Gap', href: '/#gap' },
   { label: 'How It Feels', href: '/#how-it-feels' },
   { label: 'ECQO Sound', href: '/ecqo-sound' },
   { label: 'The Science', href: '/the-science' },
-  { label: "Who It's For", href: '/#who-its-for' },
+  { label: "Who It's For", href: '/#archetypes' },
   { label: 'Pricing', href: '/checkout' },
 ];
 

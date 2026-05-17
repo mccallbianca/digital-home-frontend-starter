@@ -17,11 +17,11 @@ const COLUMNS = [
 
 export default function HomeGap() {
   return (
-    <section className="home-section home-section--cream" id="the-gap" aria-labelledby="the-gap-heading">
+    <section className="home-section home-section--cream" id="gap" aria-labelledby="gap-heading">
       <div className="home-section__inner">
         <ScrollFadeIn>
           <p className="home-eyebrow home-eyebrow--ink">THE GAP</p>
-          <h2 id="the-gap-heading" className="home-h2 home-h2--ink">
+          <h2 id="gap-heading" className="home-h2 home-h2--ink">
             You&rsquo;re not failing. You&rsquo;re stuck in the Gap.
           </h2>
         </ScrollFadeIn>

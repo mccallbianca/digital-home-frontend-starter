@@ -5,19 +5,22 @@ const LAYERS = [
   {
     n: 'ONE',
     title: 'Clinical Sonic Architecture',
-    body:
-      'Proprietary frequencies, tempo, and mixing methodology engineered by ECQO Holdings. Backed by peer-reviewed research linking music to parasympathetic activation, heart rate variability, and autonomic regulation. The specific protocols are trade-secret.',
+    preview: 'Proprietary frequencies, tempo, and mixing methodology engineered by ECQO Holdings.',
+    rest:
+      ' Backed by peer-reviewed research linking music to parasympathetic activation, heart rate variability, and autonomic regulation. The specific protocols are trade-secret.',
   },
   {
     n: 'TWO',
     title: 'Affirmations Built For You',
-    body:
-      'HERR delivers daily affirmations written from your screener results. Personalized tier and above unlock delivery in your own cloned voice. Research in cognitive neuroscience shows that hearing your own voice activates self-referential brain networks more deeply than hearing others, making affirmations in your voice measurably more effective for self-regulation.',
+    preview: 'HERR delivers daily affirmations written from your screener results.',
+    rest:
+      ' Personalized tier and above unlock delivery in your own cloned voice. Research in cognitive neuroscience shows that hearing your own voice activates self-referential brain networks more deeply than hearing others, making affirmations in your voice measurably more effective for self-regulation.',
   },
   {
     n: 'THREE',
     title: 'Culturally Responsive Sound',
-    body: 'Choose a genre that already speaks your language. Audio therapy lands harder when the sound feels like home.',
+    preview: 'Choose a genre that already speaks your language.',
+    rest: ' Audio therapy lands harder when the sound feels like home.',
   },
 ];
 
@@ -63,11 +66,17 @@ export default function HomeEcqoSound() {
         <div className="layers-stack">
           {LAYERS.map((l, i) => (
             <ScrollFadeIn key={l.n} delay={120 + i * 100}>
-              <article className="layer-card">
-                <p className="layer-card__eyebrow">LAYER {l.n}</p>
-                <h3 className="layer-card__title">{l.title}</h3>
-                <p className="layer-card__body">{l.body}</p>
-              </article>
+              <details className="layer-card">
+                <summary className="layer-card__summary">
+                  <span className="layer-card__head">
+                    <span className="layer-card__eyebrow">LAYER {l.n}</span>
+                    <span className="layer-card__title">{l.title}</span>
+                    <span className="layer-card__preview">{l.preview}</span>
+                  </span>
+                  <span className="layer-card__caret" aria-hidden>&#9656;</span>
+                </summary>
+                <p className="layer-card__rest">{l.rest}</p>
+              </details>
             </ScrollFadeIn>
           ))}
         </div>
@@ -94,6 +103,8 @@ export default function HomeEcqoSound() {
               <div key={m.name} className="mode-card">
                 <p className="mode-card__name">{m.name}</p>
                 <p className="mode-card__body">{m.body}</p>
+                {/* TODO: re-enable Preview buttons when ECQO Sound music tracks live in Supabase storage */}
+                <p className="mode-card__status">Coming this week</p>
               </div>
             ))}
           </div>

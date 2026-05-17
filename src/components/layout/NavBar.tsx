@@ -12,6 +12,16 @@ const NAV_LINKS = [
   { href: '/journal', label: 'Journal' },
 ];
 
+// Mobile hamburger uses v7 anchor links to homepage sections so the
+// menu maps to the live homepage rhythm (Gap → How It Feels → etc.).
+const MOBILE_LINKS = [
+  { href: '/#gap', label: 'The Gap' },
+  { href: '/#how-it-feels', label: 'How It Feels' },
+  { href: '/#ecqo-sound', label: 'ECQO Sound' },
+  { href: '/#science', label: 'The Science' },
+  { href: '/#archetypes', label: "Who It's For" },
+];
+
 export default function NavBar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -95,9 +105,9 @@ export default function NavBar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="fixed inset-0 z-40 bg-[var(--herr-black)] flex flex-col pt-24 px-8">
-          <div className="flex flex-col gap-8 mt-8">
-            {NAV_LINKS.map((link) => (
+        <div className="fixed inset-0 z-40 bg-[var(--herr-black)] flex flex-col pt-24 px-8 overflow-y-auto">
+          <div className="flex flex-col gap-6 mt-4">
+            {MOBILE_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -107,18 +117,22 @@ export default function NavBar() {
               </Link>
             ))}
 
-            {/* Re-Enter (mobile) */}
+            {/* Sign In */}
             <Link
               href="/login"
               className="font-display text-4xl font-light text-[var(--herr-white)] hover:text-[var(--herr-pink)] transition-colors"
             >
-              Re-Enter
+              Sign In
             </Link>
 
-            {/* Begin (mobile) */}
+            {/* Separator */}
+            <div className="h-px w-full bg-[var(--herr-border)] my-2" aria-hidden />
+
+            {/* Begin → /signup */}
             <Link
-              href="/checkout"
-              className="font-display text-4xl font-light text-[var(--herr-pink)]"
+              href="/signup"
+              className="font-display text-4xl font-light text-[var(--herr-magenta)] hover:opacity-80 transition-opacity"
+              style={{ color: 'var(--herr-magenta)' }}
             >
               Begin
             </Link>

@@ -36,11 +36,11 @@ const ARCHETYPES = [
 
 export default function HomeWhoFor() {
   return (
-    <section className="home-section home-section--cream" id="who-its-for" aria-labelledby="who-its-for-heading">
+    <section className="home-section home-section--cream" id="archetypes" aria-labelledby="archetypes-heading">
       <div className="home-section__inner">
         <ScrollFadeIn>
           <p className="home-eyebrow home-eyebrow--ink">WHO IT&rsquo;S FOR</p>
-          <h2 id="who-its-for-heading" className="home-h2 home-h2--ink">
+          <h2 id="archetypes-heading" className="home-h2 home-h2--ink">
             You know which one you are.
           </h2>
         </ScrollFadeIn>

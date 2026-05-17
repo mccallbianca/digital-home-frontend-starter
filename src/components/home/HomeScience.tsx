@@ -21,11 +21,11 @@ const PROOFS = [
 
 export default function HomeScience() {
   return (
-    <section className="home-section home-section--ink" id="the-science" aria-labelledby="the-science-heading">
+    <section className="home-section home-section--ink" id="science" aria-labelledby="science-heading">
       <div className="home-section__inner">
         <ScrollFadeIn>
           <p className="home-eyebrow home-eyebrow--cream">THE SCIENCE</p>
-          <h2 id="the-science-heading" className="home-h2 home-h2--cream">
+          <h2 id="science-heading" className="home-h2 home-h2--cream">
             Built on 300 combined years of clinical and federal advisory expertise.
           </h2>
         </ScrollFadeIn>
