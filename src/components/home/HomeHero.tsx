@@ -12,7 +12,7 @@ export default function HomeHero() {
       <div className="home-hero__grid">
         {/* Copy column (left, 60% desktop) */}
         <div className="home-hero__copy">
-          <p className="home-eyebrow home-eyebrow--reveal">A PRODUCT OF ECQO HOLDINGS&trade;</p>
+          <p className="home-eyebrow home-eyebrow--reveal">POWERED BY ECQO</p>
 
           <h1 className="home-hero__title">
             <span className="home-hero__line">
@@ -44,21 +44,21 @@ export default function HomeHero() {
           </div>
 
           <p className="home-hero__subhead">
-            The strategies aren&rsquo;t broken. Your nervous system is stuck in survival mode,
-            and your brain can&rsquo;t see the path forward through the noise.
+            Even the most well-trained performers struggle to execute because the nervous system
+            is unregulated and stuck in survival mode.
           </p>
 
           <div className="home-hero__ctas">
             <Link href="/assessment" className="home-btn home-btn--primary">
-              Find Your Gap <span aria-hidden>&rarr;</span>
+              Complete the Self-Screen <span aria-hidden>&rarr;</span>
             </Link>
             <a href="#how-it-feels" className="home-btn home-btn--ghost-light">
-              See How It Feels <span aria-hidden>&darr;</span>
+              See Results <span aria-hidden>&darr;</span>
             </a>
           </div>
 
           <p className="home-hero__trust">
-            Designed by a licensed clinician &middot; For athletes, executives, professionals, performers, healers, and leaders.
+            Designed by a licensed clinician with 30 years in behavioral sciences.
           </p>
         </div>
 

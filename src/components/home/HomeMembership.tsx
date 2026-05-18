@@ -118,9 +118,11 @@ export default function HomeMembership() {
               <p className="addon-card__eyebrow">VOICE CLONE PLUS</p>
               <p className="addon-card__price">+$20 /month on Elite</p>
             </div>
-            <p className="addon-card__title">For daily voice clone users.</p>
+            <p className="addon-card__title">
+              Receive affirmations and a conversational AI companion who speaks in your own voice.
+            </p>
             <p className="addon-card__body">
-              Unlock 150 minutes of voice clone usage per month.
+              Faster results. Scientifically proven. Unlock 150 minutes of voice clone usage per month.
             </p>
             <Link href="/portal/billing" className="home-link home-link--magenta-light">
               Upgrade Voice Clone Plus <span aria-hidden>→</span>

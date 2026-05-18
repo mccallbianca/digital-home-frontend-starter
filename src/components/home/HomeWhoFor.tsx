@@ -30,7 +30,7 @@ const ARCHETYPES = [
   {
     slug: 'the-leader',
     title: 'THE LEADER',
-    body: 'You carry the livelihoods of a team on your shoulders, and the gravity of that responsibility keeps you wide awake at 3 AM, every single night.',
+    body: 'You carry the livelihoods of a team, classroom, or family on your shoulders and the gravity of that responsibility comes with the complete sacrifice of self.',
   },
 ];
 

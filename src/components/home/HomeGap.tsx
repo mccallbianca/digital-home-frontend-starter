@@ -1,17 +1,24 @@
 import ScrollFadeIn from './ScrollFadeIn';
+import KineticMissingLink from './KineticMissingLink';
 
-const COLUMNS = [
+const CARDS = [
   {
-    label: 'The Strategists say:',
-    body: 'Take massive action. Push through. Crush your limiting beliefs.',
+    eyebrow: 'WHAT THE INDUSTRY SAYS',
+    title: 'The Motivational Strategists Say:',
+    body: 'Try harder. Push through. Build better habits. Optimize your discipline.',
+    variant: 'industry' as const,
   },
   {
-    label: 'The Aligners say:',
-    body: 'Let go. Allow. Get into the Vortex.',
+    eyebrow: 'WHAT THE INDUSTRY SAYS',
+    title: 'The Alignment & Attraction Coaches Say:',
+    body: 'Raise your vibration. Manifest your reality. Align with your highest self.',
+    variant: 'industry' as const,
   },
   {
-    label: "What's actually happening:",
+    eyebrow: 'WHAT IS ACTUALLY HAPPENING',
+    title: "What's actually happening:",
     body: 'Your nervous system is in survival mode. Neither strategy can land until the body feels safe.',
+    variant: 'truth' as const,
   },
 ];
 
@@ -21,8 +28,11 @@ export default function HomeGap() {
       <div className="home-section__inner">
         <ScrollFadeIn>
           <p className="home-eyebrow home-eyebrow--ink">THE GAP</p>
-          <h2 id="gap-heading" className="home-h2 home-h2--ink">
-            You&rsquo;re not failing. You&rsquo;re stuck in the Gap.
+          <h2 id="gap-heading" className="home-h2 home-h2--ink gap-h2">
+            <span className="gap-h2__line">You&rsquo;re not failing.</span>
+            <span className="gap-h2__line">
+              You&rsquo;re stuck <span className="home-h2__accent">in the Gap.</span>
+            </span>
           </h2>
         </ScrollFadeIn>
 
@@ -39,26 +49,28 @@ export default function HomeGap() {
               You feel like you&rsquo;re doing everything and getting nowhere.
             </p>
             <p>
-              That&rsquo;s not a strategy problem. That&rsquo;s not an alignment problem.
-              Your body never got the message that the war is over.
+              That&rsquo;s not a strategy problem. That&rsquo;s not an alignment problem. That&rsquo;s not a motivation
+              problem. Even the most well-trained performers in media, entertainment, sports, academia,
+              finance and special workforces struggle to execute because the nervous system is unregulated
+              and stuck in survival mode.
             </p>
           </div>
         </ScrollFadeIn>
 
-        <div className="gap-grid">
-          {COLUMNS.map((c, i) => (
-            <ScrollFadeIn key={c.label} delay={200 + i * 100}>
-              <div className="gap-col">
-                <p className="gap-col__label">{c.label}</p>
-                <p className="gap-col__body">{c.body}</p>
-              </div>
+        <div className="gap-cards">
+          {CARDS.map((c, i) => (
+            <ScrollFadeIn key={c.title} delay={200 + i * 120}>
+              <article className={`gap-card gap-card--${c.variant}`}>
+                <span className="gap-card__accent" aria-hidden />
+                <p className="gap-card__eyebrow">{c.eyebrow}</p>
+                <h3 className="gap-card__title">{c.title}</h3>
+                <p className="gap-card__body">{c.body}</p>
+              </article>
             </ScrollFadeIn>
           ))}
         </div>
 
-        <ScrollFadeIn delay={520}>
-          <p className="home-closing-line">HERR is the missing link.</p>
-        </ScrollFadeIn>
+        <KineticMissingLink />
       </div>
     </section>
   );

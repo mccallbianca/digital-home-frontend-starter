@@ -290,6 +290,47 @@ body {
 }
 
 /* ============================================================
+   NavBar CTA buttons (magenta brand)
+   ============================================================ */
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 220ms ease, color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+}
+
+.nav-cta--outline {
+  background: transparent;
+  color: var(--herr-magenta);
+  border: 1.5px solid var(--herr-magenta);
+}
+
+.nav-cta--outline:hover {
+  background: var(--herr-magenta);
+  color: #FFFFFF;
+}
+
+.nav-cta--solid {
+  background: var(--herr-magenta);
+  color: #FFFFFF;
+  border: 1.5px solid var(--herr-magenta);
+}
+
+.nav-cta--solid:hover {
+  background: #DC3CA0;
+  border-color: #DC3CA0;
+  box-shadow: 0 0 24px rgba(196, 45, 142, 0.35);
+}
+
+/* ============================================================
    Homepage v7 — A16z Diligence Edition
    Inter Display + Magenta accent system, dark/cream alternation.
    Scoped via .home-* class prefix so it can't leak elsewhere.
@@ -765,6 +806,125 @@ body {
   max-width: 800px;
 }
 
+/* ── Patch Round 2: two-line Gap H2 + dark comparison cards on cream + kinetic missing-link ── */
+
+.gap-h2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1em;
+  text-align: left;
+}
+
+.gap-h2__line {
+  display: block;
+}
+
+.gap-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(20px, 2.5vw, 32px);
+  margin: clamp(48px, 6vw, 80px) 0 0;
+}
+
+.gap-card {
+  position: relative;
+  background: var(--herr-black);
+  color: var(--herr-cream);
+  padding: clamp(28px, 3.5vw, 40px);
+  border-radius: 4px;
+  border: 1px solid rgba(196, 45, 142, 0.18);
+  overflow: hidden;
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 320ms ease,
+              box-shadow 320ms ease;
+}
+
+.gap-card__accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--herr-magenta);
+}
+
+.gap-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--herr-magenta);
+  box-shadow: 0 20px 40px -20px rgba(196, 45, 142, 0.35);
+}
+
+.gap-card--truth {
+  border: 1.5px solid var(--herr-magenta);
+  background: linear-gradient(180deg, var(--herr-black) 0%, #1a0a14 100%);
+}
+
+.gap-card__eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--herr-magenta-aa);
+  margin: 0.4rem 0 0.9rem;
+}
+
+.gap-card__title {
+  font-family: var(--font-sans-display), system-ui, sans-serif;
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--herr-cream);
+  margin: 0 0 0.85rem;
+  line-height: 1.3;
+}
+
+.gap-card__body {
+  font-size: clamp(0.92rem, 1.05vw, 1rem);
+  line-height: 1.55;
+  color: rgba(244, 241, 235, 0.8);
+  margin: 0;
+}
+
+/* Kinetic "HERR is the missing link." */
+.missing-link {
+  margin: clamp(80px, 10vw, 140px) auto 0;
+  max-width: 1000px;
+  text-align: center;
+  perspective: 800px;
+}
+
+.missing-link__inner {
+  font-family: var(--font-sans-display), system-ui, sans-serif;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.32em;
+}
+
+.missing-link__word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.missing-link__word--magenta { color: var(--herr-magenta); }
+.missing-link__word--cream   { color: var(--herr-cream); }
+
+@media (prefers-reduced-motion: reduce) {
+  .missing-link__word {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .missing-link__inner {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 /* ============================================================
    Section 3 — HOW IT FEELS
    ============================================================ */
@@ -811,6 +971,81 @@ body {
   color: var(--herr-cream);
   margin: 1.5rem 0 0;
   font-weight: 500;
+}
+
+/* ── Patch Round 2: How It Feels image+copy rows ── */
+
+.feel-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 4vw, 56px);
+  margin-top: clamp(40px, 5vw, 64px);
+}
+
+.feel-row {
+  display: grid;
+  align-items: center;
+  gap: clamp(24px, 4vw, 56px);
+  grid-template-columns: 1fr 1fr;
+}
+
+.feel-row--left  { grid-template-areas: "media copy"; }
+.feel-row--right { grid-template-areas: "copy media"; }
+
+.feel-row--left  .feel-row__media { grid-area: media; }
+.feel-row--left  .feel-row__copy  { grid-area: copy; }
+.feel-row--right .feel-row__media { grid-area: media; }
+.feel-row--right .feel-row__copy  { grid-area: copy; }
+
+.feel-row--text {
+  grid-template-columns: 1fr;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: clamp(20px, 2.6vw, 32px) clamp(24px, 3vw, 40px);
+  background: rgba(244, 241, 235, 0.03);
+  border: 1px solid rgba(244, 241, 235, 0.08);
+  border-left: 2px solid var(--herr-magenta);
+}
+
+.feel-row__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  max-height: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--herr-card);
+}
+
+.feel-row__img {
+  object-fit: cover;
+}
+
+.feel-row__copy {
+  position: relative;
+  padding-left: clamp(20px, 2vw, 28px);
+}
+
+.feel-row__accent {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 2px;
+  height: calc(100% - 8px);
+  background: var(--herr-magenta);
+  border-radius: 1px;
+}
+
+.feel-row--text .feel-row__accent {
+  display: none;
+}
+
+.feel-row p {
+  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--herr-cream);
+  margin: 0;
 }
 
 /* ============================================================
@@ -860,6 +1095,18 @@ body {
 .role-row__tail {
   color: rgba(26, 15, 26, 0.7);
   font-weight: 500;
+}
+
+/* Multi-line WhoIs H2 */
+.whois-h2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05em;
+  text-align: left;
+}
+
+.whois-h2__line {
+  display: block;
 }
 
 .hull-quote {
@@ -976,6 +1223,37 @@ body {
   text-transform: uppercase;
   color: var(--herr-magenta);
   margin: clamp(48px, 6vw, 72px) 0 1.25rem;
+}
+
+.modes-subhead {
+  font-family: var(--font-sans-display), system-ui, sans-serif;
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--herr-cream);
+  text-align: center;
+  margin: clamp(48px, 6vw, 72px) auto 32px;
+  max-width: 720px;
+}
+
+.research-reveal__link {
+  color: var(--herr-magenta-aa);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(232, 56, 138, 0.25);
+  padding-bottom: 1px;
+  transition: color 200ms ease, border-color 200ms ease;
+}
+
+.research-reveal__link:hover {
+  color: var(--herr-cream);
+  border-bottom-color: var(--herr-cream);
+}
+
+.research-reveal__link span {
+  display: inline-block;
+  margin-left: 0.3em;
+  font-size: 0.92em;
+  opacity: 0.75;
 }
 
 .genres-row {
@@ -1241,6 +1519,104 @@ body {
   color: rgba(244, 241, 235, 0.5);
   margin: 0;
   max-width: 780px;
+}
+
+/* ── Patch Round 2: Powered by ECQO architecture beam ── */
+
+.ecqo-architecture {
+  margin: clamp(56px, 7vw, 96px) 0 clamp(40px, 5vw, 56px);
+  padding: clamp(36px, 4.5vw, 56px) clamp(28px, 4vw, 48px);
+  background: linear-gradient(180deg, rgba(196, 45, 142, 0.04) 0%, transparent 100%);
+  border: 1px solid rgba(196, 45, 142, 0.2);
+  border-radius: 4px;
+}
+
+.ecqo-architecture__eyebrow {
+  margin-bottom: 1.25rem !important;
+}
+
+.ecqo-architecture__body {
+  font-size: clamp(1rem, 1.25vw, 1.18rem);
+  line-height: 1.6;
+  color: rgba(244, 241, 235, 0.85);
+  max-width: 880px;
+  margin: 0 0 clamp(40px, 4.5vw, 56px);
+}
+
+.ecqo-beam {
+  position: relative;
+  padding: 20px 0 8px;
+}
+
+.ecqo-beam__line {
+  position: absolute;
+  top: 26px;
+  left: 5%;
+  right: 5%;
+  height: 1.5px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(232, 56, 138, 0.4) 12%,
+    var(--herr-magenta) 50%,
+    rgba(232, 56, 138, 0.4) 88%,
+    transparent 100%);
+  transform-origin: center;
+  will-change: transform;
+}
+
+.ecqo-beam__nodes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: clamp(8px, 1vw, 16px);
+  position: relative;
+}
+
+.ecqo-beam__node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  will-change: transform, opacity;
+}
+
+.ecqo-beam__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--herr-magenta);
+  box-shadow: 0 0 0 4px rgba(196, 45, 142, 0.15), 0 0 14px rgba(196, 45, 142, 0.4);
+  position: relative;
+  z-index: 2;
+}
+
+.ecqo-beam__label {
+  font-family: var(--font-sans-display), system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(244, 241, 235, 0.78);
+  text-align: center;
+  line-height: 1.3;
+}
+
+@media (max-width: 1023px) {
+  .ecqo-beam__nodes  { grid-template-columns: repeat(4, 1fr); row-gap: 28px; }
+  .ecqo-beam__line   { display: none; }
+}
+
+@media (max-width: 480px) {
+  .ecqo-beam__nodes  { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ecqo-beam__node,
+  .ecqo-beam__line {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* ============================================================
@@ -1669,8 +2045,13 @@ body {
   .gap-grid          { grid-template-columns: 1fr; }
   .gap-col           { border-left: none; border-top: 1px solid rgba(26,15,26,0.16); padding: 1.5rem 0 0; }
   .gap-col:first-child { border-top: none; padding-top: 0; }
+  .gap-cards         { grid-template-columns: 1fr; }
 
   .feel-grid         { grid-template-columns: repeat(2, 1fr); }
+  .feel-row,
+  .feel-row--left,
+  .feel-row--right   { grid-template-columns: 1fr; grid-template-areas: "media" "copy"; }
+  .feel-row__copy    { padding-left: clamp(16px, 3vw, 24px); }
   .modes-grid        { grid-template-columns: repeat(2, 1fr); }
   .archetype-grid    { grid-template-columns: repeat(2, 1fr); }
   .proof-grid        { grid-template-columns: repeat(2, 1fr); }

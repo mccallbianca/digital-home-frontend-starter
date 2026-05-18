@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import ScrollFadeIn from './ScrollFadeIn';
+import LayerCardReveal from './LayerCardReveal';
 
 const LAYERS = [
   {
@@ -38,14 +39,29 @@ const MODES = [
 ];
 
 const CITATIONS_VOICE = [
-  'Jo HJ et al. (2024). Neural Effects of One\u2019s Own Voice on Self-Talk for Emotion Regulation. Brain Sciences, 14(7), 637.',
-  'Morin A & Hamper B (2012). Self-Reflection and the Inner Voice. Open Neuroimaging Journal.',
-  'Neural representations of own-voice in the human auditory cortex (2020). PMC7804419.',
+  {
+    label: 'Jo HJ et al. (2024). Neural Effects of One\u2019s Own Voice on Self-Talk for Emotion Regulation. Brain Sciences, 14(7), 637.',
+    href: 'https://www.mdpi.com/2076-3425/14/7/637',
+  },
+  {
+    label: 'Morin A & Hamper B (2012). Self-Reflection and the Inner Voice. Open Neuroimaging Journal.',
+    href: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3462327/',
+  },
+  {
+    label: 'Hosaka T et al. (2021). Neural representations of own-voice in the human auditory cortex.',
+    href: 'https://www.nature.com/articles/s41598-020-80095-6',
+  },
 ];
 
 const CITATIONS_MUSIC = [
-  'Effect of music intervention on heart rate variability: a systematic review and meta-analysis (Frontiers in Psychology, 2026).',
-  'Can music influence cardiac autonomic system? A systematic review (ScienceDirect, 2020).',
+  {
+    label: 'Effect of music intervention on heart rate variability: a systematic review and meta-analysis (Frontiers in Psychology, 2026).',
+    href: 'https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2026.1750786/full',
+  },
+  {
+    label: 'Mojtabavi H et al. (2020). Can music influence cardiac autonomic system? A systematic review (ScienceDirect).',
+    href: 'https://www.sciencedirect.com/science/article/abs/pii/S1744388119302889',
+  },
 ];
 
 export default function HomeEcqoSound() {
@@ -53,7 +69,7 @@ export default function HomeEcqoSound() {
     <section className="home-section home-section--ink" id="ecqo-sound" aria-labelledby="ecqo-sound-heading">
       <div className="home-section__inner">
         <ScrollFadeIn>
-          <p className="home-eyebrow home-eyebrow--cream">ECQO SOUND™</p>
+          <p className="home-eyebrow home-eyebrow--cream">ECQO SOUND&trade;</p>
           <h2 id="ecqo-sound-heading" className="home-h2 home-h2--cream">
             The sound of regulation.
           </h2>
@@ -65,7 +81,7 @@ export default function HomeEcqoSound() {
 
         <div className="layers-stack">
           {LAYERS.map((l, i) => (
-            <ScrollFadeIn key={l.n} delay={120 + i * 100}>
+            <LayerCardReveal key={l.n} index={i}>
               <details className="layer-card">
                 <summary className="layer-card__summary">
                   <span className="layer-card__head">
@@ -77,7 +93,7 @@ export default function HomeEcqoSound() {
                 </summary>
                 <p className="layer-card__rest">{l.rest}</p>
               </details>
-            </ScrollFadeIn>
+            </LayerCardReveal>
           ))}
         </div>
 
@@ -86,7 +102,7 @@ export default function HomeEcqoSound() {
           <ul className="genres-row" aria-label="Available genres">
             {GENRES.map((g, i) => (
               <li key={g} className="genres-row__item">
-                {i > 0 && <span className="genres-row__dot" aria-hidden>·</span>}
+                {i > 0 && <span className="genres-row__dot" aria-hidden>&middot;</span>}
                 <span>{g}</span>
               </li>
             ))}
@@ -97,7 +113,7 @@ export default function HomeEcqoSound() {
         </ScrollFadeIn>
 
         <ScrollFadeIn delay={120}>
-          <p className="modes-eyebrow">EIGHT ACTIVITY MODES</p>
+          <h3 className="modes-subhead">Listen to HERR during 8 activity modes</h3>
           <div className="modes-grid">
             {MODES.map((m) => (
               <div key={m.name} className="mode-card">
@@ -113,26 +129,44 @@ export default function HomeEcqoSound() {
         <ScrollFadeIn delay={120}>
           <div className="ecqo-cta-row">
             <Link href="/ecqo-sound" className="home-link home-link--magenta">
-              Explore ECQO Sound <span aria-hidden>→</span>
+              Explore ECQO Sound <span aria-hidden>&rarr;</span>
             </Link>
           </div>
 
           <details className="research-reveal">
             <summary className="research-reveal__summary">
-              <span className="research-reveal__caret" aria-hidden>›</span>
+              <span className="research-reveal__caret" aria-hidden>&rsaquo;</span>
               Read the research
             </summary>
             <div className="research-reveal__body">
               <p className="research-reveal__group">Voice and the brain:</p>
               <ol className="research-reveal__list">
                 {CITATIONS_VOICE.map((c, i) => (
-                  <li key={`v-${i}`}>{c}</li>
+                  <li key={`v-${i}`}>
+                    <a
+                      href={c.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="research-reveal__link"
+                    >
+                      {c.label} <span aria-hidden>&#8599;</span>
+                    </a>
+                  </li>
                 ))}
               </ol>
               <p className="research-reveal__group">Music and nervous system regulation:</p>
               <ol className="research-reveal__list" start={4}>
                 {CITATIONS_MUSIC.map((c, i) => (
-                  <li key={`m-${i}`}>{c}</li>
+                  <li key={`m-${i}`}>
+                    <a
+                      href={c.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="research-reveal__link"
+                    >
+                      {c.label} <span aria-hidden>&#8599;</span>
+                    </a>
+                  </li>
                 ))}
               </ol>
             </div>

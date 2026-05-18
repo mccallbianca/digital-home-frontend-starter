@@ -1,23 +1,5 @@
 import ScrollFadeIn from './ScrollFadeIn';
-
-const PROOFS = [
-  {
-    title: 'SAMHSA-Aligned',
-    body: 'Trauma-informed protocols meeting Substance Abuse and Mental Health Services Administration standards.',
-  },
-  {
-    title: 'HIPAA-Aligned',
-    body: 'Privacy-first architecture. Your inner work stays yours.',
-  },
-  {
-    title: 'Federal Advisory',
-    body: 'Designed by a federal HHS and SAMHSA advisor on AI safety in behavioral health.',
-  },
-  {
-    title: 'Clinically Validated',
-    body: 'Built on six clinical domains drawn from validated instruments.',
-  },
-];
+import EcqoArchitectureBeam from './EcqoArchitectureBeam';
 
 export default function HomeScience() {
   return (
@@ -33,9 +15,10 @@ export default function HomeScience() {
         <ScrollFadeIn delay={120}>
           <div className="home-prose home-prose--cream">
             <p>
-              HERR was designed by a licensed clinician with 30 years in behavioral sciences,
-              in collaboration with an advisory team representing 300 combined years of expertise in
-              clinical psychology, existential philosophy, federal AI safety, and performance science.
+              HERR was designed by Bianca D. McCall, a licensed clinician with 30 years in the behavioral
+              sciences, in collaboration with an advisory team representing 300 combined years of expertise
+              in clinical psychology, behavioral health disciplines, existential philosophy, performance
+              science, technology and government.
             </p>
             <p>
               Every domain, every screener question, every affirmation flow is grounded in validated
@@ -44,15 +27,16 @@ export default function HomeScience() {
           </div>
         </ScrollFadeIn>
 
-        <div className="proof-grid">
-          {PROOFS.map((p, i) => (
-            <ScrollFadeIn key={p.title} delay={120 + i * 90}>
-              <div className="proof-chip">
-                <p className="proof-chip__title">{p.title}</p>
-                <p className="proof-chip__body">{p.body}</p>
-              </div>
-            </ScrollFadeIn>
-          ))}
+        <div className="ecqo-architecture">
+          <ScrollFadeIn delay={120}>
+            <p className="home-eyebrow ecqo-architecture__eyebrow">POWERED BY ECQO</p>
+            <p className="ecqo-architecture__body">
+              Powered by ECQO &mdash; the world&rsquo;s first safe source code that supports most tech stacks
+              with clinical-grade guardrails, protocols and response logic, designed and developed by
+              clinical experts, researchers, and scientists.
+            </p>
+          </ScrollFadeIn>
+          <EcqoArchitectureBeam />
         </div>
 
         <p className="science-disclaimer">
