@@ -100,7 +100,7 @@ export default function TheSciencePage() {
               lineHeight: 1.6,
             }}
           >
-            Designed by Bianca D. McCall, M.A., LMFT | Licensed Marriage and Family Therapist | Federal SAMHSA Advisor
+            Backed by Science. Used by Performers Everywhere.
           </p>
         </ScrollFadeIn>
       </section>
@@ -332,7 +332,7 @@ export default function TheSciencePage() {
               textDecoration: 'none',
             }}
           >
-            Experience the Science
+            Experience HERR
           </Link>
           <p
             style={{

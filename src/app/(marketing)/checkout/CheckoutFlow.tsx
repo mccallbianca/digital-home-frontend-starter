@@ -1,17 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 /* ── Types ─────────────────────────────────────────────────────────────────── */
 
-type Tier = 'free' | 'collective' | 'personalized' | 'elite';
-
-interface Feature {
-  text: string;
-  highlight: boolean;
-  bold?: boolean;
-}
+type Tier = 'collective' | 'personalized' | 'elite' | 'enterprise';
 
 interface Plan {
   tier: Tier;
@@ -19,52 +13,35 @@ interface Plan {
   name: string;
   price: string;
   period: string;
-  freeNote?: string;
-  tagline: string;
-  features: Feature[];
+  taglineLines: string[];
+  features: string[];
   cta: string;
   featured: boolean;
-  trialBadge?: string;       // NEW: trial banner copy (only set for trial tiers)
+  trialBadge?: boolean;
+  enterpriseHref?: string;
 }
 
 /* ── Plan Data ─────────────────────────────────────────────────────────────── */
 
 const PLANS: Plan[] = [
   {
-    tier: 'free',
-    label: 'EXPLORE',
-    name: 'HERR Free',
-    price: '$0',
-    period: '',
-    freeNote: 'Forever free',
-    tagline: 'Explore the framework.',
-    features: [
-      { text: 'Monthly existential screener', highlight: true },
-      { text: 'HERR Journal content library', highlight: false },
-      { text: 'Community portal (standard channels)', highlight: false },
-      { text: 'HERR methodology introduction', highlight: false },
-      { text: 'Self-guided awareness tools', highlight: false },
-    ],
-    cta: 'Start Free',
-    featured: false,
-  },
-  {
     tier: 'collective',
     label: 'COLLECTIVE',
     name: 'HERR Collective',
     price: '$9',
     period: '/month',
-    tagline: 'Bianca\u2019s voice. Your daily reprogramming.',
-    features: [
-      { text: 'Everything in Free', highlight: false },
-      { text: 'Daily affirmations in Bianca\u2019s voice', highlight: true },
-      { text: 'Up to 3 activity modes', highlight: true },
-      { text: 'Monthly screener with insights', highlight: false },
-      { text: 'Full journal access', highlight: false },
-      { text: 'Collective community channels', highlight: false },
-      { text: 'Voice-only delivery', highlight: false },
+    taglineLines: [
+      'Daily Voice Affirmations.',
+      'AI Companion.',
+      'HERR Nation Member Access.',
     ],
-    cta: 'Join Collective',
+    features: [
+      'Daily Voice Affirmations in Standard Voice Model',
+      'Select up to 2 Activity Modes per week — Themed Affirmations',
+      'AI Companion — (8) Text Sessions per month',
+      'Find YOUR Community in HERR Nation',
+    ],
+    cta: 'Collective Healing',
     featured: false,
   },
   {
@@ -73,19 +50,20 @@ const PLANS: Plan[] = [
     name: 'HERR Personalized',
     price: '$19',
     period: '/month',
-    tagline: 'Your voice. Your reprogramming.',
-    trialBadge: '7-DAY FREE TRIAL',
-    features: [
-      { text: 'Everything in Collective', highlight: false },
-      { text: 'Daily affirmations in your own cloned voice', highlight: true, bold: true },
-      { text: 'Up to 3 activity modes', highlight: false },
-      { text: 'Voice or music delivery \u2014 you choose', highlight: true },
-      { text: 'Genre selection (updatable weekly)', highlight: true },
-      { text: 'Voice clone session + quarterly refresh', highlight: true },
-      { text: 'Personalized community channels', highlight: false },
-      { text: 'Priority support', highlight: false },
+    taglineLines: [
+      'ECQO Sound Access.',
+      'AI Companion Voice.',
+      'HERR Nation Priority Member.',
     ],
-    cta: 'Begin Your Free Trial',
+    trialBadge: true,
+    features: [
+      'Everything in Collective',
+      'Access ECQO Sound to receive affirmations in a layered music track',
+      'AI Companion — (20) Text Sessions + (5) Voice Sessions per month',
+      'Monthly Screener Session with Conversational AI to Measure Progress',
+      'Priority HERR Nation features',
+    ],
+    cta: 'Personalized Healing',
     featured: true,
   },
   {
@@ -94,33 +72,41 @@ const PLANS: Plan[] = [
     name: 'HERR Elite',
     price: '$29',
     period: '/month',
-    tagline: 'Clinical-grade. The full protocol.',
-    trialBadge: '7-DAY FREE TRIAL',
+    taglineLines: ['Clinical-grade. The full protocol.'],
     features: [
-      { text: 'Everything in Personalized', highlight: false },
-      { text: 'Up to 5 activity modes', highlight: true },
-      { text: 'Monthly live session with Bianca (25 seats)', highlight: true, bold: true },
-      { text: 'Elite-only community channels', highlight: false },
-      { text: 'Beta testing access', highlight: false },
-      { text: 'Therapeutic progression tracking', highlight: true },
-      { text: 'Quarterly 1-on-1 check-in (15 min)', highlight: true },
-      { text: 'Early access to ECQO features', highlight: false },
+      'Everything in Personalized',
+      'AI Companion — (50) Text Sessions + (8) Voice Sessions per month',
+      'Invited to attend monthly live group sessions with the Founder',
+      'Early access to new ECQO products',
+      "We'll Pay YOU — Marketplace revenue share opportunities for Elite Members ONLY",
     ],
-    cta: 'Begin Your Free Trial',
+    cta: 'Healing for the Elite',
     featured: false,
+  },
+  {
+    tier: 'enterprise',
+    label: 'ENTERPRISE',
+    name: 'HERR Enterprise',
+    price: 'Contact for Pricing',
+    period: '',
+    taglineLines: ['For organizations and integration partners.'],
+    features: [
+      'Powered by ECQO clinical AI infrastructure',
+      'Custom integration with your platform',
+      'Dedicated clinical advisor',
+      'Volume PMPM pricing',
+      'SAMHSA-aligned compliance support',
+      'Federal advisory consultation',
+    ],
+    cta: 'Contact for Pricing',
+    featured: false,
+    enterpriseHref:
+      'mailto:hello@h3rr.com?subject=HERR%20Enterprise%20Inquiry',
   },
 ];
 
-/* ── Magenta dot SVG ───────────────────────────────────────────────────────── */
-
-function Dot() {
-  return (
-    <span
-      className="shrink-0 mt-[7px] block rounded-full"
-      style={{ width: 6, height: 6, backgroundColor: '#C42D8E' }}
-    />
-  );
-}
+const ELITE_REVSHARE_HREF =
+  'mailto:hello@h3rr.com?subject=Elite%20RevShare%20Interest%20List%20Signup';
 
 /* ── Trust signal icons ─────────────────────────────────────────────────────── */
 
@@ -154,56 +140,47 @@ function IconHeart() {
     </svg>
   );
 }
-function IconGift() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="20 12 20 22 4 22 4 12" />
-      <rect x="2" y="7" width="20" height="5" />
-      <line x1="12" y1="22" x2="12" y2="7" />
-      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
-      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
-    </svg>
-  );
-}
 
 /* ── Component ─────────────────────────────────────────────────────────────── */
 
 export default function CheckoutFlow() {
   const [loading, setLoading] = useState<Tier | null>(null);
   const [error, setError] = useState('');
-  const autoTriggeredRef = useRef(false);
+  const [highlightedTier, setHighlightedTier] = useState<Tier | null>(null);
 
-  // If the user arrived via /checkout?tier=collective|personalized|elite
-  // (homepage tier CTAs), auto-trigger that tier's Stripe redirect so the
-  // homepage button feels like a direct purchase action.
+  // Pre-select / highlight the tier requested via ?tier=collective|personalized|elite|enterprise.
+  // Does NOT auto-fire checkout — user must click the tier's CTA to proceed.
   useEffect(() => {
-    if (autoTriggeredRef.current) return;
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
     const requested = params.get('tier');
     if (!requested) return;
-    const valid: Tier[] = ['collective', 'personalized', 'elite'];
+    const valid: Tier[] = ['collective', 'personalized', 'elite', 'enterprise'];
     if (!valid.includes(requested as Tier)) return;
-    autoTriggeredRef.current = true;
-    handleCta(requested as Tier);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setHighlightedTier(requested as Tier);
+    // Scroll the highlighted card into view on mount.
+    setTimeout(() => {
+      const el = document.querySelector(`[data-tier="${requested}"]`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 250);
   }, []);
 
-  async function handleCta(tier: Tier) {
+  async function handleCta(plan: Plan) {
     setError('');
 
-    if (tier === 'free') {
-      window.location.href = '/signup';
+    // Enterprise tier uses mailto — let the browser handle it.
+    if (plan.tier === 'enterprise' && plan.enterpriseHref) {
+      window.location.href = plan.enterpriseHref;
       return;
     }
 
-    setLoading(tier);
+    setLoading(plan.tier);
 
     try {
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier }),
+        body: JSON.stringify({ tier: plan.tier }),
       });
 
       const data = await res.json();
@@ -221,417 +198,133 @@ export default function CheckoutFlow() {
     }
   }
 
-  function ctaStyle(tier: Tier): React.CSSProperties {
-    const base: React.CSSProperties = {
-      width: '100%',
-      height: 48,
-      borderRadius: 12,
-      fontWeight: 600,
-      fontSize: 14,
-      textTransform: 'uppercase',
-      letterSpacing: 1,
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
-      marginTop: 'auto',
-      border: 'none',
-    };
-
-    switch (tier) {
-      case 'free':
-        return { ...base, background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: '#FFFFFF' };
-      case 'collective':
-        return { ...base, background: 'transparent', border: '1px solid #C42D8E', color: '#C42D8E' };
-      case 'personalized':
-        return { ...base, background: '#C42D8E', color: '#FFFFFF' };
-      case 'elite':
-        return { ...base, background: 'linear-gradient(135deg, #C42D8E, #8B1A5E)', color: '#FFFFFF' };
-    }
-  }
-
-  function cardStyle(featured: boolean): React.CSSProperties {
-    if (featured) {
-      return {
-        background: 'rgba(22, 22, 31, 0.7)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        border: '2px solid rgba(196, 45, 142, 0.5)',
-        borderRadius: 16,
-        padding: '40px 32px',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        boxShadow: '0 0 40px rgba(196, 45, 142, 0.15)',
-        transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-      };
-    }
-    return {
-      background: '#16161F',
-      border: '1px solid rgba(255, 255, 255, 0.08)',
-      borderRadius: 16,
-      padding: '40px 32px',
-      display: 'flex',
-      flexDirection: 'column',
-      position: 'relative',
-      transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-    };
-  }
-
   return (
-    <>
-      {/* ── Hero Header ──────────────────────────────────────────────────── */}
-      <div style={{ paddingTop: 80, paddingBottom: 40, textAlign: 'center' }}>
-        <h1
-          style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontSize: 36,
-            fontWeight: 600,
-            color: '#FFFFFF',
-            margin: 0,
-          }}
-          className="max-md:!text-[28px]"
-        >
-          Choose Your HERR Experience
-        </h1>
-        <p
-          style={{
-            fontFamily: "system-ui, -apple-system, sans-serif",
-            fontSize: 16,
-            color: 'rgba(255,255,255,0.6)',
-            marginTop: 12,
-            maxWidth: 560,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            lineHeight: 1.6,
-          }}
-        >
-          Every journey begins with awareness. Select the level of care that meets you where you are.
-        </p>
-      </div>
+    <section className="checkout-section">
+      <div className="checkout-inner">
+        <div className="checkout-header">
+          <p className="checkout-eyebrow">Membership</p>
+          <h2 className="checkout-h2">Choose your level of self-care.</h2>
+          <p className="checkout-lead">
+            Every journey begins with awareness. Select the level of care that meets you where you are.
+          </p>
+        </div>
 
-      {/* ── Tier Cards ───────────────────────────────────────────────────── */}
-      <div
-        className="checkout-grid"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: 24,
-          maxWidth: 1280,
-          margin: '0 auto',
-          padding: '0 24px',
-          alignItems: 'stretch',
-        }}
-      >
-        {PLANS.map((plan) => (
-          <div
-            key={plan.tier}
-            className={`checkout-card${plan.featured ? ' checkout-card--featured' : ''}${plan.trialBadge ? ' checkout-card--trial' : ''}`}
-            style={cardStyle(plan.featured)}
-          >
-            {/* "MOST POPULAR" pill (Personalized only) */}
-            {plan.featured && (
-              <span
-                style={{
-                  position: 'absolute',
-                  top: -16,
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  background: '#C42D8E',
-                  color: '#FFFFFF',
-                  fontSize: 11,
-                  fontWeight: 600,
-                  letterSpacing: 2,
-                  textTransform: 'uppercase',
-                  padding: '6px 20px',
-                  borderRadius: 20,
-                  whiteSpace: 'nowrap',
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
-                }}
-              >
-                Most Popular
-              </span>
-            )}
-
-            {/* Tier label */}
-            <p
-              style={{
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-                fontSize: 12,
-                fontWeight: 600,
-                letterSpacing: 2.5,
-                textTransform: 'uppercase',
-                color: plan.featured ? '#C42D8E' : 'rgba(255,255,255,0.5)',
-                marginTop: plan.featured ? 12 : (plan.trialBadge ? 8 : 0),
-                marginBottom: 8,
-              }}
-            >
-              {plan.label}
-            </p>
-
-            {/* Tier name */}
-            <h2
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontSize: 24,
-                fontWeight: 600,
-                color: '#FFFFFF',
-                margin: 0,
-              }}
-            >
-              {plan.name}
-            </h2>
-
-            {/* Price */}
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginTop: 24, flexWrap: 'wrap' }}>
-              <span
-                style={{
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontSize: 56,
-                  fontWeight: 700,
-                  color: '#FFFFFF',
-                  lineHeight: 1,
-                }}
-              >
-                {plan.price}
-              </span>
-              {plan.period && (
-                <span
-                  style={{
-                    fontFamily: 'system-ui, -apple-system, sans-serif',
-                    fontSize: 16,
-                    color: 'rgba(255,255,255,0.5)',
-                  }}
-                >
-                  {plan.period}
-                </span>
-              )}
-            </div>
-
-            {/* "after 7 days free" pill under price */}
-            {plan.trialBadge && (
+        <div className="checkout-grid">
+          {PLANS.map((plan) => {
+            const isHighlighted = highlightedTier === plan.tier;
+            return (
               <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  marginTop: 8,
-                  padding: '4px 10px',
-                  borderRadius: 12,
-                  border: '1px solid rgba(255, 215, 0, 0.5)',
-                  background: 'rgba(255, 215, 0, 0.08)',
-                  color: '#FFD700',
-                  fontSize: 11,
-                  fontWeight: 600,
-                  letterSpacing: 0.5,
-                  textTransform: 'uppercase',
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
-                  alignSelf: 'flex-start',
-                }}
+                key={plan.tier}
+                data-tier={plan.tier}
+                className={[
+                  'checkout-card',
+                  plan.featured ? 'checkout-card--featured' : '',
+                  isHighlighted ? 'checkout-card--highlighted' : '',
+                  plan.tier === 'enterprise' ? 'checkout-card--enterprise' : '',
+                ].filter(Boolean).join(' ')}
               >
-                <IconGift />
-                Free for 7 Days
-              </div>
-            )}
+                {plan.featured && (
+                  <span className="checkout-card__popular">MOST POPULAR</span>
+                )}
 
-            {plan.freeNote && (
-              <p
-                style={{
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
-                  fontSize: 14,
-                  fontStyle: 'italic',
-                  color: '#F4F1EB',
-                  marginTop: 4,
-                }}
-              >
-                {plan.freeNote}
-              </p>
-            )}
+                {plan.trialBadge && (
+                  <span className="checkout-card__trial">7-DAY FREE TRIAL</span>
+                )}
 
-            {/* Tagline */}
-            <p
-              style={{
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-                fontSize: 15,
-                fontStyle: 'italic',
-                color: '#E8388A',
-                marginTop: 8,
-              }}
-            >
-              {plan.tagline}
-            </p>
+                <p className="checkout-card__label">{plan.label}</p>
+                <h3 className="checkout-card__name">{plan.name}</h3>
 
-            {/* Divider */}
-            <div style={{ height: 1, background: 'rgba(255,255,255,0.1)', margin: '24px 0' }} />
+                <div className="checkout-card__price">
+                  <span className="checkout-card__price-amount">{plan.price}</span>
+                  {plan.period && (
+                    <span className="checkout-card__price-period">{plan.period}</span>
+                  )}
+                </div>
 
-            {/* Feature list */}
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, flex: 1, display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {plan.features.map((f) => (
-                <li
-                  key={f.text}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: 10,
-                    fontFamily: 'system-ui, -apple-system, sans-serif',
-                    fontSize: 14,
-                    lineHeight: 1.6,
-                    color: f.highlight ? '#FFFFFF' : 'rgba(255,255,255,0.5)',
-                    fontWeight: f.bold ? 600 : 400,
-                  }}
+                <div className="checkout-card__taglines">
+                  {plan.taglineLines.map((line, i) => (
+                    <p key={i} className="checkout-card__tagline">{line}</p>
+                  ))}
+                </div>
+
+                <div className="checkout-card__divider" />
+
+                <ul className="checkout-card__features">
+                  {plan.features.map((text) => (
+                    <li key={text} className="checkout-card__feature">
+                      <span className="checkout-card__feature-dot" aria-hidden />
+                      <span>{text}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {plan.tier === 'elite' && (
+                  <p className="checkout-card__footnote">
+                    <a
+                      href={ELITE_REVSHARE_HREF}
+                      className="checkout-card__footnote-link"
+                    >
+                      Contact Us to Join the RevShare Interest List &rarr;
+                    </a>
+                  </p>
+                )}
+
+                <button
+                  onClick={() => handleCta(plan)}
+                  disabled={loading === plan.tier}
+                  className={[
+                    'checkout-card__cta',
+                    plan.featured
+                      ? 'checkout-card__cta--solid'
+                      : 'checkout-card__cta--outline',
+                  ].join(' ')}
                 >
-                  <Dot />
-                  <span>{f.text}</span>
-                </li>
-              ))}
-            </ul>
+                  {loading === plan.tier ? 'Redirecting\u2026' : plan.cta}{' '}
+                  <span aria-hidden>&rarr;</span>
+                </button>
 
-            {/* CTA Button */}
-            <button
-              onClick={() => handleCta(plan.tier)}
-              disabled={loading === plan.tier}
-              style={{
-                ...ctaStyle(plan.tier),
-                marginTop: 32,
-                opacity: loading === plan.tier ? 0.6 : 1,
-              }}
-              className="checkout-cta"
-            >
-              {loading === plan.tier ? 'Redirecting\u2026' : plan.cta}
-            </button>
+                {plan.trialBadge && (
+                  <p className="checkout-card__reassurance">
+                    No charge for 7 days. Cancel anytime.
+                  </p>
+                )}
+              </div>
+            );
+          })}
+        </div>
 
-            {/* Subtle trial reassurance below CTA */}
-            {plan.trialBadge && (
-              <p
-                style={{
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
-                  fontSize: 11,
-                  color: 'rgba(255,255,255,0.45)',
-                  textAlign: 'center',
-                  marginTop: 10,
-                  marginBottom: 0,
-                  lineHeight: 1.5,
-                }}
-              >
-                No charge for 7 days. Cancel anytime.
-              </p>
-            )}
-          </div>
-        ))}
+        {error && (
+          <p className="checkout-error">{error}</p>
+        )}
+
+        <div className="checkout-trust">
+          {[
+            { icon: <IconLock />, text: 'Cancel anytime' },
+            { icon: <IconShield />, text: 'Secure checkout via Stripe' },
+            { icon: <IconHeart />, text: 'HIPAA-aligned' },
+            { icon: <IconClipboard />, text: 'No contracts' },
+          ].map((item) => (
+            <span key={item.text} className="checkout-trust__chip">
+              {item.icon}
+              {item.text}
+            </span>
+          ))}
+        </div>
+
+        <div className="checkout-legal">
+          <p>
+            Personalized and Elite tiers include a 7-day free trial. Subscriptions auto-renew monthly.
+            Cancel anytime from your account settings.
+          </p>
+          <p>
+            By subscribing, you agree to our{' '}
+            <Link href="/terms" className="checkout-legal__link">Terms of Service</Link>{' '}and{' '}
+            <Link href="/privacy" className="checkout-legal__link">Privacy Policy</Link>.
+          </p>
+          <p>HERR is a wellness platform and is not a substitute for licensed clinical care.</p>
+          <p>If you are in crisis, call or text <a href="tel:988" className="checkout-legal__link">988</a>.</p>
+        </div>
       </div>
-
-      {/* Error */}
-      {error && (
-        <p style={{ textAlign: 'center', color: '#E8388A', fontSize: 14, marginTop: 16 }}>
-          {error}
-        </p>
-      )}
-
-      {/* ── Trust Signals ────────────────────────────────────────────────── */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: 32,
-          marginTop: 60,
-          flexWrap: 'wrap',
-          padding: '0 24px',
-        }}
-      >
-        {[
-          { icon: <IconLock />, text: 'Cancel anytime' },
-          { icon: <IconShield />, text: 'Secure checkout via Stripe' },
-          { icon: <IconHeart />, text: 'HIPAA-aligned' },
-          { icon: <IconClipboard />, text: 'No contracts' },
-        ].map((item) => (
-          <span
-            key={item.text}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              fontFamily: 'system-ui, -apple-system, sans-serif',
-              fontSize: 13,
-              color: 'rgba(255,255,255,0.5)',
-            }}
-          >
-            {item.icon}
-            {item.text}
-          </span>
-        ))}
-      </div>
-
-      {/* ── Legal Footer ─────────────────────────────────────────────────── */}
-      <div
-        style={{
-          marginTop: 40,
-          textAlign: 'center',
-          fontFamily: 'system-ui, -apple-system, sans-serif',
-          fontSize: 12,
-          color: 'rgba(255,255,255,0.35)',
-          maxWidth: 600,
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          lineHeight: 1.8,
-          padding: '0 24px 60px',
-        }}
-      >
-        <p style={{ margin: 0 }}>
-          Personalized and Elite tiers include a 7-day free trial. Subscriptions auto-renew monthly. Cancel anytime from your account settings.
-        </p>
-        <p style={{ margin: '4px 0 0' }}>
-          By subscribing, you agree to our{' '}
-          <Link href="/terms" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }} className="hover:underline">
-            Terms of Service
-          </Link>{' '}
-          and{' '}
-          <Link href="/privacy" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }} className="hover:underline">
-            Privacy Policy
-          </Link>.
-        </p>
-        <p style={{ margin: '4px 0 0' }}>
-          HERR is a wellness platform and is not a substitute for licensed clinical care.
-        </p>
-        <p style={{ margin: '4px 0 0' }}>
-          If you are in crisis, call or text 988.
-        </p>
-      </div>
-
-      {/* ── Responsive + hover CSS ───────────────────────────────────────── */}
-      <style>{`
-        .checkout-card:hover {
-          border-color: rgba(255, 255, 255, 0.15) !important;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        .checkout-card--featured:hover {
-          border-color: #C42D8E !important;
-          box-shadow: 0 0 60px rgba(196, 45, 142, 0.25) !important;
-        }
-        .checkout-card--featured {
-          transform: scale(1.03);
-          animation: checkoutGlow 3s ease-in-out infinite;
-        }
-        @keyframes checkoutGlow {
-          0%, 100% { box-shadow: 0 0 30px rgba(196, 45, 142, 0.15); }
-          50%      { box-shadow: 0 0 50px rgba(196, 45, 142, 0.3); }
-        }
-        .checkout-cta:hover {
-          filter: brightness(1.15);
-        }
-        @media (max-width: 1024px) {
-          .checkout-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-        @media (max-width: 767px) {
-          .checkout-grid {
-            grid-template-columns: 1fr !important;
-          }
-          .checkout-card--featured {
-            order: -1;
-            transform: none !important;
-          }
-        }
-      `}</style>
-    </>
+    </section>
   );
 }

@@ -15,24 +15,24 @@ const STEPS = [
   {
     num: '01',
     label: 'STEP 01',
-    title: 'Assess Your Inner Voice',
-    body: 'HERR begins with ECQO, a clinically informed assessment that maps your existential concerns: how you relate to meaning, purpose, identity, freedom, isolation, and mortality. This is not a personality quiz. It is a structured intake designed by a licensed clinician to understand what your inner voice is actually saying.',
+    title: 'Call Your Inner Voice',
+    body: 'HERR licenses the ECQO Intake Screener \u2014 a questionnaire that maps your existential concerns: life, death, meaning, purpose, and freedom. This is not a personality quiz. It is a structured intake adapted from 70+ clinically validated screeners, to understand what your inner voice is saying and how it is influencing your life experiences.',
     image: '/images/step-01-assess.jpg',
-    alt: 'Contemplative figure representing existential assessment, the clinical foundation of the HERR method.',
+    alt: 'Contemplative figure representing the ECQO Intake Screener, the clinical foundation of the HERR method.',
   },
   {
     num: '02',
     label: 'STEP 02',
     title: 'Receive Your Personalized Scripts',
-    body: 'Based on your assessment, HERR generates affirmation scripts tailored to your specific concerns. These are not generic mantras. Each script is a precise clinical intervention, written to address the exact patterns your inner voice uses to limit your performance, your healing, or your growth.',
+    body: 'Based on your screener results, HERR generates positive affirmations and I AM Declarations assigned to one or multiple activities each week. These are not generic mantras. Each script is a precise clinical intervention, written to address the exact patterns your inner voice uses to limit your performance, your healing, or your growth.',
     image: '/images/step-02-regulate-v2.jpg',
-    alt: 'Personalized affirmation scripts generated from your ECQO assessment results.',
+    alt: 'Personalized affirmation scripts generated from your ECQO screener results.',
   },
   {
     num: '03',
     label: 'STEP 03',
-    title: 'Record in Your Own Voice',
-    body: 'You record each script using your own voice. HERR clones your vocal signature through ElevenLabs technology, then produces broadcast-quality audio affirmations that sound exactly like you, speaking directly to you. Your voice is the only voice powerful enough to reprogram your own conductor.',
+    title: 'Voice Clone Plus',
+    body: 'Personalized & Elite Members have the option to purchase a voice cloning package. HERR clones your vocal signature through ElevenLabs technology, then produces broadcast-quality audio affirmations that sound exactly like you, speaking directly to you. Your voice is the only voice powerful enough to reprogram your own conductor for faster and more sustainable results.',
     image: '/images/step-03-clone-voice.jpg',
     alt: 'Microphone in magenta light representing voice cloning, the mechanism that makes HERR personal.',
   },
@@ -40,7 +40,7 @@ const STEPS = [
     num: '04',
     label: 'STEP 04',
     title: 'Listen Daily. Transform Deliberately.',
-    body: 'Your personalized audio is delivered in eight activity modes: Workout, Driving, Sleep, Morning, Deep Work, Love and Family, Abundance, and Healing. HERR meets you where you are, every day, with the voice that matters most. Regulate first. Reprogram second. Rise always.',
+    body: 'Experience HERR for just 15 minutes a day, and relief is on its way in as little as 21 days. Your personalized audio is delivered in the activity modes you select on your profile: Workout, Driving, Sleep, Morning, Deep Work, Love and Family, Abundance, and Healing. HERR meets you where you are, every day, with the voice that matters most. The clinically programmed music layers regulate the nervous system. The affirmations reprogram the subconscious being which is your inner voice. Repeat every day for at least 15 minutes and unlock the power within to stop surviving and finally start thriving.',
     image: '/images/step-04-reprogram.jpg',
     alt: 'Person with headphones representing sustained daily reprogramming across all activity modes.',
   },
@@ -71,11 +71,8 @@ export default function HowItWorksPage() {
               lineHeight: 1.15,
             }}
           >
-            The HERR Method
+            The Transformation Science
           </h1>
-          <p style={{ fontSize: '1.125rem', color: 'rgba(255,255,255,0.6)', marginBottom: 0 }}>
-            Four steps. One transformation.
-          </p>
         </AnimatedSection>
       </section>
 
@@ -102,7 +99,7 @@ export default function HowItWorksPage() {
                 paddingRight: 80,
               }}
             >
-              Regulate. Reprogram. Rise. &nbsp;&nbsp;·&nbsp;&nbsp; Regulate. Reprogram. Rise. &nbsp;&nbsp;·&nbsp;&nbsp; Regulate. Reprogram. Rise. &nbsp;&nbsp;·&nbsp;&nbsp;
+              Regulate. Reprogram. Repeat. &nbsp;&nbsp;·&nbsp;&nbsp; Regulate. Reprogram. Repeat. &nbsp;&nbsp;·&nbsp;&nbsp; Regulate. Reprogram. Repeat. &nbsp;&nbsp;·&nbsp;&nbsp;
             </span>
           ))}
         </div>
@@ -176,7 +173,7 @@ export default function HowItWorksPage() {
                         fontFamily: "'Cormorant Garamond', Georgia, serif",
                         fontSize: 72,
                         fontWeight: 700,
-                        color: isLight ? 'rgba(196, 45, 142, 0.12)' : 'rgba(196, 45, 142, 0.15)',
+                        color: isLight ? 'rgba(196, 45, 142, 0.18)' : 'rgba(232, 56, 138, 0.45)',
                         lineHeight: 1,
                         marginBottom: -20,
                         position: 'relative',
@@ -237,26 +234,56 @@ export default function HowItWorksPage() {
           >
             Ready to begin?
           </h2>
-          <Link
-            href="/signup"
+          <div
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
+              display: 'flex',
+              flexWrap: 'wrap',
               justifyContent: 'center',
-              height: 48,
-              padding: '0 40px',
-              background: '#C42D8E',
-              color: '#FFFFFF',
-              borderRadius: 12,
-              fontSize: 14,
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: '1px',
-              textDecoration: 'none',
+              gap: 16,
             }}
           >
-            Begin Your Assessment
-          </Link>
+            <Link
+              href="/assessment"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 48,
+                padding: '0 36px',
+                background: '#C42D8E',
+                color: '#FFFFFF',
+                borderRadius: 12,
+                fontSize: 14,
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                textDecoration: 'none',
+              }}
+            >
+              Heal with HERR
+            </Link>
+            <Link
+              href="/checkout"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 48,
+                padding: '0 36px',
+                background: 'transparent',
+                color: '#FFFFFF',
+                border: '1.5px solid #C42D8E',
+                borderRadius: 12,
+                fontSize: 14,
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                textDecoration: 'none',
+              }}
+            >
+              Start Your Free Trial Today
+            </Link>
+          </div>
           <p
             style={{
               fontSize: 12,

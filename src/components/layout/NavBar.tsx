@@ -62,7 +62,7 @@ export default function NavBar() {
               Re-Enter
             </Link>
 
-            <Link href="/signup" className="nav-cta nav-cta--solid">
+            <Link href="/checkout" className="nav-cta nav-cta--solid">
               Begin
             </Link>
           </div>
@@ -102,7 +102,7 @@ export default function NavBar() {
             </Link>
 
             <Link
-              href="/signup"
+              href="/checkout"
               className="font-display text-4xl font-light text-[var(--herr-magenta)] hover:opacity-80 transition-opacity"
               style={{ color: 'var(--herr-magenta)' }}
             >

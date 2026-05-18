@@ -4,7 +4,7 @@ import CheckoutFlow from './CheckoutFlow';
 export const metadata: Metadata = {
   title: 'Begin | Choose Your HERR Membership',
   description:
-    'Four tiers of clinical reprogramming. HERR Free to explore. Collective at $9/month in Bianca\'s voice. Personalized at $19/month in your own cloned voice. Elite at $29/month with live sessions and ECQO Sound.',
+    'Four tiers of clinical reprogramming. HERR Collective at $9/month, Personalized at $19/month with 7-day free trial, Elite at $29/month with live sessions, and Enterprise for organizations.',
 };
 
 export default function CheckoutPage() {

@@ -12,35 +12,38 @@ export const metadata: Metadata = {
 
 const CREDENTIALS = [
   {
-    title: 'Licensed Marriage & Family Therapist (LMFT)',
-    context: 'Behavioral health, existential psychology, trauma-informed care',
+    title: 'Licensed Clinical Therapist (LMFT)',
+    context:
+      'Licensed in Nevada. Specializations: Existential Psychology, Trauma-Informed Care, Emergency Mental Health, Crisis, Critical Incident Response. Populations Served: Sports Ecosystems, Media, Music & Entertainment, Corporate Wellness, Public Health and Education Systems.',
   },
   {
-    title: 'SAMHSA SPRC Advisor',
-    context: 'Federal advisory: Suicide Prevention Resource Center (HHS designated)',
+    title: 'U.S. Health and Human Services Advisor',
+    context:
+      'SPRC Lived Experience Advisor Committee. Existential Psychology. Prevention Programming, Clinical Education, Provider Standards, and Technology.',
   },
   {
-    title: 'Lived Experience Advisory Committee',
-    context: 'Federal committee: best practices reviewer and subject matter expert',
+    title: 'Nevada Systems for Higher Education',
+    context:
+      'University of Nevada, Reno CASAT. Regional Coordinator, Nevada Opioid Center of Excellence, Academic Certification & Curriculum Developer.',
   },
   {
     title: 'International Speaker',
-    context: 'TED, keynote, and clinical conference speaker: existential psychology and performance',
+    context: 'TED Speaker, Keynote Speaker, Conference Presenter. ElevateUs.ai Wellness Consultant.',
   },
   {
-    title: 'NFL & MLB Wellness Consultant',
-    context: 'Native American Athletic Foundation: wellness and performance consulting',
+    title: 'Wellness & Performance Consultant',
+    context:
+      'Intermountain Health, Valhallan eSports, NFL, MLB, NHL, NCAA, (13) Secondary School Districts, MusiCares.',
   },
   {
     title: 'Retired Professional Athlete',
-    context: 'Professional women&apos;s basketball: the bridge to elite performance psychology',
+    context: 'FIBA Women\u2019s Basketball Power Forward. Italian National Team 2004-2006.',
   },
 ];
 
 const ENTITIES = [
-  'ECQO Holdings\u2122',
   'The Wealth League',
-  "Three M\u2019s Enterprises",
+  '3ME',
   'Desert Rose Gives',
 ];
 
@@ -244,24 +247,31 @@ export default function AboutPage() {
                 marginBottom: 24,
               }}
             >
-              HERR is the flagship product of ECQO Holdings™, a clinical AI company building the
-              future of personalized behavioral wellness. The ECQO ecosystem includes The Wealth
-              League (financial wellness), Three M&apos;s Enterprises (speaking, training,
-              consulting), and Desert Rose Gives (501c3 community impact).
+              HERR is the flagship product powered by ECQO &mdash; the world&rsquo;s first safe
+              source code that supports most tech stacks with clinical-grade guardrails,
+              protocols and response logic, designed and developed by clinical experts,
+              researchers, and scientists.
             </p>
 
+            {/*
+              Brand logos not yet uploaded to /public/images/brands/.
+              Falling back to magenta-styled text buttons until logo assets land,
+              per Patch Round 3 ABOUT-3 fallback path.
+            */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
               {ENTITIES.map((e) => (
                 <span
                   key={e}
                   style={{
                     background: '#FFFFFF',
-                    border: '1px solid rgba(0,0,0,0.08)',
-                    padding: '8px 16px',
-                    borderRadius: 8,
+                    border: '1.5px solid #C42D8E',
+                    padding: '10px 18px',
+                    borderRadius: 4,
                     fontSize: 13,
-                    color: '#1A1A2E',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+                    fontWeight: 700,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: '#C42D8E',
                   }}
                 >
                   {e}

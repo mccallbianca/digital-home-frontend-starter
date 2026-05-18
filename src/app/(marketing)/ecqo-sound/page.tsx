@@ -63,7 +63,14 @@ const MODES = [
 ];
 
 const GENRES = [
-  'Ambient', 'R&B', 'Classical', 'Lo-Fi', 'Jazz', 'Electronic', 'Acoustic', 'Orchestral',
+  { name: 'Hip-Hop', image: '/images/genres/hiphop.jpg' },
+  { name: 'R&B / Soul', image: '/images/genres/rnb-soul.jpg' },
+  { name: 'Ambient', image: '/images/genres/ambient.jpg' },
+  { name: 'Classical', image: '/images/genres/classical.jpg' },
+  { name: 'Lo-Fi', image: '/images/genres/lofi.jpg' },
+  { name: 'Jazz', image: '/images/genres/jazz.jpg' },
+  { name: 'Gospel', image: '/images/genres/gospel.jpg' },
+  { name: 'Latin', image: null }, // Unsplash source URL returned 404 — magenta placeholder
 ];
 
 export default function ECQOSoundPage() {
@@ -103,8 +110,9 @@ export default function ECQOSoundPage() {
                 margin: '0 auto 20px',
               }}
             >
-              Your Life Has a Soundtrack.<br />
-              <span style={{ color: '#E8388A' }}>HERR Writes It In Your Voice.</span>
+              HERR is a <span style={{ color: '#E8388A' }}>VIBE.</span><br />
+              Life is a <span style={{ color: '#E8388A' }}>SoundTrack.</span><br />
+              For challenging times &mdash; Heal with <span style={{ color: '#E8388A' }}>HERR.</span>
             </h1>
           </AnimatedSection>
           <AnimatedSection variant="fadeIn" delay={0.3}>
@@ -147,7 +155,7 @@ export default function ECQOSoundPage() {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {[
-              { bold: 'The only app that uses your own cloned voice', rest: ' for therapeutic affirmations. Not a generic narrator. You, speaking directly to you.' },
+              { bold: 'The only app that features YOUR VOICE as the expert in the room.', rest: ' You are enough.' },
               { bold: 'Personalized to your specific existential concerns', rest: ', not recycled content from a template library. Every script is built from your ECQO assessment.' },
               { bold: 'Clinically informed by a licensed practitioner', rest: ', not a tech startup guessing at wellness. The frameworks behind HERR come from years of clinical practice.' },
               { bold: 'Eight activity modes', rest: ' so your transformation follows you through every part of your day, from the gym to the boardroom to the pillow.' },
@@ -219,13 +227,14 @@ export default function ECQOSoundPage() {
                 <div
                   className="mode-card"
                   style={{
-                    background: '#16161F',
-                    borderRadius: 16,
+                    background: '#F4F1EB',
+                    borderRadius: 12,
                     padding: 24,
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    border: '1.5px solid #C42D8E',
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
+                    transition: 'transform 220ms ease, box-shadow 220ms ease',
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
@@ -234,7 +243,7 @@ export default function ECQOSoundPage() {
                         width: 40,
                         height: 40,
                         borderRadius: 10,
-                        background: `${m.accent}18`,
+                        background: 'rgba(196, 45, 142, 0.1)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -246,7 +255,7 @@ export default function ECQOSoundPage() {
                         height="20"
                         viewBox="0 0 24 24"
                         fill="none"
-                        stroke={m.accent}
+                        stroke="#C42D8E"
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -254,36 +263,18 @@ export default function ECQOSoundPage() {
                         <path d={m.icon} />
                       </svg>
                     </div>
-                    <p style={{ fontSize: 16, fontWeight: 600, color: '#FFFFFF', margin: 0 }}>
+                    <p style={{ fontSize: 16, fontWeight: 700, color: '#1A0F1A', margin: 0 }}>
                       {m.name}
                     </p>
                   </div>
 
-                  <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, flex: 1, marginBottom: 16 }}>
+                  <p style={{ fontSize: 14, color: 'rgba(26, 15, 26, 0.72)', lineHeight: 1.6, flex: 1, marginBottom: 16 }}>
                     {m.desc}
                   </p>
 
-                  {/* TODO: Add audio sample files for each mode */}
-                  <button
-                    type="button"
-                    disabled
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 8,
-                      background: `${m.accent}15`,
-                      border: `1px solid ${m.accent}40`,
-                      borderRadius: 8,
-                      padding: '8px 14px',
-                      cursor: 'not-allowed',
-                      opacity: 0.6,
-                    }}
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill={m.accent}>
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                    <span style={{ fontSize: 12, color: m.accent, fontWeight: 600 }}>Preview</span>
-                  </button>
+                  <p style={{ fontSize: 11, color: 'rgba(26, 15, 26, 0.5)', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', margin: 0 }}>
+                    Coming this week
+                  </p>
                 </div>
               </ScrollFadeIn>
             ))}
@@ -320,108 +311,29 @@ export default function ECQOSoundPage() {
             </h2>
           </ScrollFadeIn>
 
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 12,
-              justifyContent: 'center',
-              marginBottom: 24,
-            }}
-          >
-            {GENRES.map((g) => (
-              <span
-                key={g}
-                style={{
-                  background: '#FFFFFF',
-                  border: '1px solid rgba(0,0,0,0.08)',
-                  padding: '10px 20px',
-                  borderRadius: 24,
-                  fontSize: 14,
-                  color: '#1A1A2E',
-                  fontWeight: 500,
-                  boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-                }}
-              >
-                {g}
-              </span>
+          <div className="genre-grid">
+            {GENRES.map((g, i) => (
+              <ScrollFadeIn key={g.name} delay={80 + i * 70}>
+                <div className="genre-card">
+                  {g.image ? (
+                    <div
+                      className="genre-card__image"
+                      style={{ backgroundImage: `url(${g.image})` }}
+                      aria-hidden
+                    />
+                  ) : (
+                    <div className="genre-card__placeholder" aria-hidden />
+                  )}
+                  <div className="genre-card__scrim" aria-hidden />
+                  <p className="genre-card__name">{g.name}</p>
+                </div>
+              </ScrollFadeIn>
             ))}
           </div>
 
           <p style={{ fontSize: 14, color: '#6B6B7B', fontStyle: 'italic' }}>
             Genre selection available for Personalized and Elite members.
           </p>
-        </div>
-      </section>
-
-      {/* ── Voice-Only vs Music Delivery (dark) ────────────────────── */}
-      <section style={{ background: '#0A0A0F', padding: 'clamp(64px, 10vw, 100px) 24px' }}>
-        <div className="delivery-grid" style={{ maxWidth: 960, margin: '0 auto' }}>
-          {[
-            {
-              icon: 'M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8',
-              title: 'Voice-Only Delivery',
-              body: 'Pure voice. No music. No distractions. Just you, speaking to you. Voice-Only mode delivers your personalized affirmation scripts as clean, broadcast-quality audio in your own cloned voice. Ideal for deep work, meditation, or when you want the raw power of your own words without accompaniment.',
-              tag: 'Available on all paid tiers',
-              gradient: 'linear-gradient(135deg, #16161F, #1a1228)',
-            },
-            {
-              icon: 'M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z',
-              title: 'Music Delivery',
-              body: 'Your voice layered over producer-crafted soundscapes. Music Delivery pairs your personalized affirmations with original compositions created by producers who understand what it means to heal through sound. Every track is built around your voice. The music supports you, not the other way around. Choose from ambient, electronic, lo-fi, orchestral, and more.',
-              tag: 'Available on Personalized and Elite tiers',
-              gradient: 'linear-gradient(135deg, #16161F, #1a0f1d)',
-            },
-          ].map((card, i) => (
-            <ScrollFadeIn key={card.title} delay={i * 150}>
-              <div
-                style={{
-                  background: card.gradient,
-                  borderRadius: 16,
-                  padding: 32,
-                  border: '1px solid rgba(196,45,142,0.15)',
-                  height: '100%',
-                }}
-              >
-                <svg
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#E8388A"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ marginBottom: 20 }}
-                >
-                  <path d={card.icon} />
-                </svg>
-                <p
-                  style={{
-                    fontSize: 20,
-                    fontWeight: 600,
-                    color: '#FFFFFF',
-                    marginBottom: 16,
-                  }}
-                >
-                  {card.title}
-                </p>
-                <p
-                  style={{
-                    fontSize: '1.125rem',
-                    color: 'rgba(255,255,255,0.75)',
-                    lineHeight: 1.75,
-                    marginBottom: 20,
-                  }}
-                >
-                  {card.body}
-                </p>
-                <p style={{ fontSize: 12, color: '#E8388A', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>
-                  {card.tag}
-                </p>
-              </div>
-            </ScrollFadeIn>
-          ))}
         </div>
       </section>
 
