@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import RevShareModal from './RevShareModal';
 
 /* ── Types ─────────────────────────────────────────────────────────────────── */
 
@@ -73,6 +74,7 @@ const PLANS: Plan[] = [
     price: '$29',
     period: '/month',
     taglineLines: ['Clinical-grade. The full protocol.'],
+    trialBadge: true,
     features: [
       'Everything in Personalized',
       'AI Companion — (50) Text Sessions + (8) Voice Sessions per month',
@@ -104,9 +106,6 @@ const PLANS: Plan[] = [
       'mailto:hello@h3rr.com?subject=HERR%20Enterprise%20Inquiry',
   },
 ];
-
-const ELITE_REVSHARE_HREF =
-  'mailto:hello@h3rr.com?subject=Elite%20RevShare%20Interest%20List%20Signup';
 
 /* ── Trust signal icons ─────────────────────────────────────────────────────── */
 
@@ -147,6 +146,7 @@ export default function CheckoutFlow() {
   const [loading, setLoading] = useState<Tier | null>(null);
   const [error, setError] = useState('');
   const [highlightedTier, setHighlightedTier] = useState<Tier | null>(null);
+  const [revShareOpen, setRevShareOpen] = useState(false);
 
   // Pre-select / highlight the tier requested via ?tier=collective|personalized|elite|enterprise.
   // Does NOT auto-fire checkout — user must click the tier's CTA to proceed.
@@ -260,12 +260,13 @@ export default function CheckoutFlow() {
 
                 {plan.tier === 'elite' && (
                   <p className="checkout-card__footnote">
-                    <a
-                      href={ELITE_REVSHARE_HREF}
-                      className="checkout-card__footnote-link"
+                    <button
+                      type="button"
+                      onClick={() => setRevShareOpen(true)}
+                      className="checkout-card__footnote-link checkout-card__footnote-button"
                     >
                       Contact Us to Join the RevShare Interest List &rarr;
-                    </a>
+                    </button>
                   </p>
                 )}
 
@@ -325,6 +326,8 @@ export default function CheckoutFlow() {
           <p>If you are in crisis, call or text <a href="tel:988" className="checkout-legal__link">988</a>.</p>
         </div>
       </div>
+
+      <RevShareModal open={revShareOpen} onClose={() => setRevShareOpen(false)} />
     </section>
   );
 }

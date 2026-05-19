@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import PWAInstallPrompt from '@/components/PWAInstallPrompt';
+import ScreenerSync from '@/components/screener/ScreenerSync';
 
 export default async function DashboardLayout({
   children,
@@ -29,6 +30,7 @@ export default async function DashboardLayout({
     <>
       {children}
       <PWAInstallPrompt />
+      <ScreenerSync />
     </>
   );
 }

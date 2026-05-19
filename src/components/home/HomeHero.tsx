@@ -49,7 +49,7 @@ export default function HomeHero() {
           </p>
 
           <div className="home-hero__ctas">
-            <Link href="/assessment" className="home-btn home-btn--primary">
+            <Link href="/screener" className="home-btn home-btn--primary">
               Complete the Self-Screen <span aria-hidden>&rarr;</span>
             </Link>
             <a href="#how-it-feels" className="home-btn home-btn--ghost-light">

@@ -9,7 +9,7 @@ export default function HomeInvitation() {
       <div className="home-section__inner">
         <ScrollFadeIn delay={160}>
           <div className="invitation-cta">
-            <Link href="/assessment" className="home-btn home-btn--primary home-btn--xl">
+            <Link href="/screener" className="home-btn home-btn--primary home-btn--xl">
               Complete the Self-Screen <span aria-hidden>&rarr;</span>
             </Link>
             <p className="invitation-trust">

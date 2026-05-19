@@ -243,7 +243,7 @@ export default function HowItWorksPage() {
             }}
           >
             <Link
-              href="/assessment"
+              href="/checkout"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',

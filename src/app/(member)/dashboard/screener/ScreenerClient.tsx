@@ -3,6 +3,11 @@
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/browser';
+import {
+  STORAGE_KEY_RESPONSES,
+  STORAGE_KEY_CRISIS,
+  type PendingCrisisFlag,
+} from '@/lib/screener-scoring';
 
 /* ─── Question Bank: 5 domains × 3 questions = 15 ──────────── */
 const QUESTIONS = [
@@ -37,12 +42,13 @@ const LIKERT = [
 ];
 
 interface ScreenerClientProps {
-  userId: string;
+  userId: string | null;
   plan: string | null;
   fromOnboarding: boolean;
+  publicMode?: boolean;
 }
 
-export default function ScreenerClient({ userId, fromOnboarding }: ScreenerClientProps) {
+export default function ScreenerClient({ userId, fromOnboarding, publicMode = false }: ScreenerClientProps) {
   const router = useRouter();
   const supabase = createClient();
   const [current, setCurrent] = useState(0);
@@ -62,16 +68,34 @@ export default function ScreenerClient({ userId, fromOnboarding }: ScreenerClien
     if (question.domain === 'mortality' && value === 5 && !crisisShown) {
       setShowCrisis(true);
       setCrisisShown(true);
-      // Log crisis flag (table may not exist yet — non-blocking)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (supabase as any).from('crisis_flags').insert({
-        user_id: userId,
-        question_index: current,
-        score: value,
-        domain: 'mortality',
-      }).then(() => { /* non-blocking */ });
+
+      if (publicMode) {
+        // Unauthenticated visitor — buffer the crisis flag to localStorage
+        // so it can be synced into crisis_flags on signup completion.
+        if (typeof window !== 'undefined') {
+          const flag: PendingCrisisFlag = {
+            domain: 'mortality',
+            score: 5,
+            response_id: Date.now(),
+            created_at: new Date().toISOString(),
+            severity: 'red',
+          };
+          try {
+            window.localStorage.setItem(STORAGE_KEY_CRISIS, JSON.stringify(flag));
+          } catch { /* localStorage unavailable — non-blocking */ }
+        }
+      } else if (userId) {
+        // Authenticated path — fire-and-forget insert (table may not exist yet).
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (supabase as any).from('crisis_flags').insert({
+          user_id: userId,
+          question_index: current,
+          score: value,
+          domain: 'mortality',
+        }).then(() => { /* non-blocking */ });
+      }
     }
-  }, [current, question.domain, crisisShown, userId, supabase]);
+  }, [current, question.domain, crisisShown, userId, supabase, publicMode]);
 
   const handleNext = useCallback(async () => {
     if (current < total - 1) {
@@ -82,10 +106,26 @@ export default function ScreenerClient({ userId, fromOnboarding }: ScreenerClien
     // Final question — save and redirect
     setSaving(true);
     try {
-      // Delete old responses
-      await supabase.from('existential_responses').delete().eq('user_id', userId);
+      if (publicMode) {
+        // Buffer the full response set to localStorage; the post-checkout
+        // sync (mounted into the dashboard) will pick it up and POST it to
+        // /api/screener/sync-anonymous once the user has a session.
+        if (typeof window !== 'undefined') {
+          try {
+            window.localStorage.setItem(STORAGE_KEY_RESPONSES, JSON.stringify(responses));
+          } catch { /* localStorage unavailable — non-blocking */ }
+        }
+        router.push('/screener/results');
+        return;
+      }
 
-      // Insert new responses
+      if (!userId) {
+        setSaving(false);
+        return;
+      }
+
+      // Authenticated path — delete + insert into Supabase
+      await supabase.from('existential_responses').delete().eq('user_id', userId);
       const rows = Object.entries(responses).map(([idx, val]) => ({
         user_id: userId,
         question_index: parseInt(idx),
@@ -101,7 +141,7 @@ export default function ScreenerClient({ userId, fromOnboarding }: ScreenerClien
     } catch {
       setSaving(false);
     }
-  }, [current, total, responses, userId, fromOnboarding, router, supabase]);
+  }, [current, total, responses, userId, fromOnboarding, router, supabase, publicMode]);
 
   const handleBack = useCallback(() => {
     if (current > 0) setCurrent(prev => prev - 1);

@@ -115,7 +115,10 @@ export default function HomeMembership() {
         <ScrollFadeIn delay={300}>
           <div className="addon-card">
             <div className="addon-card__head">
-              <p className="addon-card__eyebrow">VOICE CLONE PLUS</p>
+              <p className="addon-card__eyebrow">
+                VOICE CLONE PLUS
+                <span className="addon-card__coming">Coming Soon</span>
+              </p>
               <p className="addon-card__price">+$20 /month on Elite</p>
             </div>
             <p className="addon-card__title">
@@ -124,9 +127,12 @@ export default function HomeMembership() {
             <p className="addon-card__body">
               Faster results. Scientifically proven. Unlock 150 minutes of voice clone usage per month.
             </p>
-            <Link href="/portal/billing" className="home-link home-link--magenta-light">
-              Upgrade Voice Clone Plus <span aria-hidden>→</span>
-            </Link>
+            <a
+              href="mailto:hello@h3rr.com?subject=Voice%20Clone%20Plus%20Interest&body=I%27m%20interested%20in%20Voice%20Clone%20Plus%20when%20it%20becomes%20available."
+              className="home-link home-link--magenta-light"
+            >
+              Notify Me When Available <span aria-hidden>&rarr;</span>
+            </a>
           </div>
         </ScrollFadeIn>
       </div>

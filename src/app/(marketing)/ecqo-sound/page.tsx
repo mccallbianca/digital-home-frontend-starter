@@ -67,10 +67,10 @@ const GENRES = [
   { name: 'R&B / Soul', image: '/images/genres/rnb-soul.jpg' },
   { name: 'Ambient', image: '/images/genres/ambient.jpg' },
   { name: 'Classical', image: '/images/genres/classical.jpg' },
-  { name: 'Lo-Fi', image: '/images/genres/lofi.jpg' },
+  { name: 'Lo-Fi', image: null }, // PR4 replacement URL returned 404 — magenta placeholder
   { name: 'Jazz', image: '/images/genres/jazz.jpg' },
   { name: 'Gospel', image: '/images/genres/gospel.jpg' },
-  { name: 'Latin', image: null }, // Unsplash source URL returned 404 — magenta placeholder
+  { name: 'Latin', image: null }, // PR3 + PR4 source URLs returned 404 — magenta placeholder
 ];
 
 export default function ECQOSoundPage() {
@@ -111,13 +111,12 @@ export default function ECQOSoundPage() {
               }}
             >
               HERR is a <span style={{ color: '#E8388A' }}>VIBE.</span><br />
-              Life is a <span style={{ color: '#E8388A' }}>SoundTrack.</span><br />
-              For challenging times &mdash; Heal with <span style={{ color: '#E8388A' }}>HERR.</span>
+              Life is a <span style={{ color: '#E8388A' }}>SoundTrack.</span>
             </h1>
           </AnimatedSection>
           <AnimatedSection variant="fadeIn" delay={0.3}>
-            <p style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.6)', marginBottom: 32 }}>
-              Eight modes. One conductor. Your transformation.
+            <p style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.75)', marginBottom: 32, maxWidth: 760, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.45 }}>
+              For challenging times &mdash; Heal with <span style={{ color: '#E8388A', fontWeight: 600 }}>HERR</span>. Your Sound. Your Choice.
             </p>
             <Waveform barCount={7} />
           </AnimatedSection>
