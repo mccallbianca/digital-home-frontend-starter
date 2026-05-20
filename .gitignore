@@ -47,3 +47,7 @@ supabase/.temp/
 
 # content corpus (your brand IP — not part of the open-source code)
 content-corpus/
+
+# B5.1 affirmation generation — clinical content stays out of git history.
+# Canonical source is the public.affirmation_template_library table.
+scripts/.affirmations-*.jsonl
