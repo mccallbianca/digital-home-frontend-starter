@@ -37,7 +37,7 @@ const TIERS: Tier[] = [
     features: [
       { lead: true, text: 'Everything in Collective, plus:' },
       { text: 'Your own cloned voice on every affirmation' },
-      { text: 'Music Delivery — all 8 genres' },
+      { text: 'Music Delivery — all 9 genres' },
       { text: 'AI Companion (text + voice) — 20 text + 5 voice sessions/month' },
       { text: 'Personalized audio tracks tuned to your screener results' },
       { text: 'Priority HERR Nation features' },

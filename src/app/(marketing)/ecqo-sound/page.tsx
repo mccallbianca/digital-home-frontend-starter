@@ -71,6 +71,7 @@ const GENRES = [
   { name: 'Jazz', image: '/images/genres/jazz.jpg' },
   { name: 'Gospel', image: '/images/genres/gospel.jpg' },
   { name: 'Latin', image: null }, // PR3 + PR4 source URLs returned 404 — magenta placeholder
+  { name: 'Reggae', image: null }, // PR6 — branded SVG pending; magenta-island placeholder for now
 ];
 
 export default function ECQOSoundPage() {

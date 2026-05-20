@@ -25,17 +25,19 @@ const LAYERS = [
   },
 ];
 
-const GENRES = ['Hip-Hop', 'R&B / Soul', 'Ambient', 'Classical', 'Lo-Fi', 'Jazz', 'Gospel', 'Latin'];
+const GENRES = ['Hip-Hop', 'R&B / Soul', 'Ambient', 'Classical', 'Lo-Fi', 'Jazz', 'Gospel', 'Latin', 'Reggae'];
+
+const SOUND_BUCKET = 'https://uyhfdtrvlhdhrhniysvw.supabase.co/storage/v1/object/public/ecqo-sound-tracks';
 
 const MODES = [
-  { name: 'Workout', body: 'Anchor identity while your body pushes limits.' },
-  { name: 'Driving', body: 'Use the space between home and work to rewire your default thinking.' },
-  { name: 'Sleep', body: 'Low-volume, slow-cadence delivery that works while you rest.' },
-  { name: 'Morning', body: 'Set the tone before the world gets a vote.' },
-  { name: 'Deep Work', body: 'Ambient pacing that keeps your focus aligned while you create.' },
-  { name: 'Love + Family', body: 'Reprogram how you show up for the people who matter most.' },
-  { name: 'Abundance', body: 'Interrupt the scripts that limit what you believe you deserve.' },
-  { name: 'Healing', body: 'A regulated space to rewrite the stories that keep you stuck in pain.' },
+  { name: 'Workout',       body: 'Anchor identity while your body pushes limits.',                          preview: `${SOUND_BUCKET}/ambient-workout-v1-639Hz.mp3` },
+  { name: 'Driving',       body: 'Use the space between home and work to rewire your default thinking.',    preview: `${SOUND_BUCKET}/ambient-driving-v1-639Hz.mp3` },
+  { name: 'Sleep',         body: 'Low-volume, slow-cadence delivery that works while you rest.',           preview: `${SOUND_BUCKET}/ambient-sleep-v1-174Hz.mp3` },
+  { name: 'Morning',       body: 'Set the tone before the world gets a vote.',                              preview: `${SOUND_BUCKET}/ambient-morning-v1-528Hz.mp3` },
+  { name: 'Deep Work',     body: 'Ambient pacing that keeps your focus aligned while you create.',         preview: `${SOUND_BUCKET}/ambient-deepwork-v1-432Hz.mp3` },
+  { name: 'Love + Family', body: 'Reprogram how you show up for the people who matter most.',              preview: `${SOUND_BUCKET}/ambient-lovefamily-v1-528Hz.mp3` },
+  { name: 'Abundance',     body: 'Interrupt the scripts that limit what you believe you deserve.',         preview: `${SOUND_BUCKET}/ambient-abundance-v1-528Hz.mp3` },
+  { name: 'Healing',       body: 'A regulated space to rewrite the stories that keep you stuck in pain.', preview: `${SOUND_BUCKET}/ambient-healing-v1-174Hz.mp3` },
 ];
 
 const CITATIONS_VOICE = [
@@ -98,7 +100,7 @@ export default function HomeEcqoSound() {
         </div>
 
         <ScrollFadeIn delay={120}>
-          <p className="genres-eyebrow">EIGHT GENRES</p>
+          <p className="genres-eyebrow">NINE GENRES</p>
           <ul className="genres-row" aria-label="Available genres">
             {GENRES.map((g, i) => (
               <li key={g} className="genres-row__item">
@@ -119,8 +121,15 @@ export default function HomeEcqoSound() {
               <div key={m.name} className="mode-card">
                 <p className="mode-card__name">{m.name}</p>
                 <p className="mode-card__body">{m.body}</p>
-                {/* TODO: re-enable Preview buttons when ECQO Sound music tracks live in Supabase storage */}
-                <p className="mode-card__status">Coming this week</p>
+                <a
+                  href={m.preview}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mode-card__preview"
+                  aria-label={`Preview the ${m.name} sample track`}
+                >
+                  <span aria-hidden>&#9654;</span> Preview
+                </a>
               </div>
             ))}
           </div>

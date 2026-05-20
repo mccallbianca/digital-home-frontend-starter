@@ -2171,6 +2171,33 @@ body {
   margin: 0;
 }
 
+.mode-card__preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--herr-magenta-aa);
+  text-decoration: none;
+  border: 1px solid var(--herr-magenta-aa);
+  border-radius: 999px;
+  padding: 6px 14px;
+  transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+  align-self: flex-start;
+}
+
+.mode-card__preview:hover {
+  background: var(--herr-magenta);
+  color: #FFFFFF;
+  border-color: var(--herr-magenta);
+}
+
+.mode-card__preview span {
+  font-size: 0.7em;
+}
+
 .ecqo-cta-row {
   margin: clamp(40px, 5vw, 56px) 0 1.5rem;
 }
