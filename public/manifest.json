@@ -1,21 +1,24 @@
 {
-  "name": "HERR | Human Existential Regulator and Reprogramming",
+  "name": "HERR — Human Existential Regulator and Reprogramming",
   "short_name": "HERR",
-  "description": "Your inner voice, reprogrammed.",
-  "start_url": "/dashboard",
+  "description": "Clinical AI for personal regulation. Affirmations + Solfeggio frequencies + activity-mode music. Backed by science.",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
+  "theme_color": "#0A0A0F",
   "background_color": "#0A0A0F",
-  "theme_color": "#C42D8E",
+  "categories": ["health", "lifestyle", "medical", "wellness"],
+  "lang": "en-US",
   "icons": [
-    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "/icons/icon-256.png", "sizes": "256x256", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-256.png", "sizes": "256x256", "type": "image/png", "purpose": "maskable" },
-    { "src": "/icons/icon-384.png", "sizes": "384x384", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-384.png", "sizes": "384x384", "type": "image/png", "purpose": "maskable" },
-    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "/icons/icon-192.png",  "sizes": "192x192",   "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icons/icon-256.png",  "sizes": "256x256",   "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icons/icon-384.png",  "sizes": "384x384",   "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icons/icon-512.png",  "sizes": "512x512",   "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icons/icon-1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Take Your Self-Screen", "url": "/screener",  "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Today's Affirmation",   "url": "/dashboard", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }

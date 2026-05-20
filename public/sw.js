@@ -8,7 +8,11 @@
  * assets — bump CACHE_VERSION when changing this file.
  */
 
-const CACHE_VERSION = 'herr-v1';
+const CACHE_VERSION = 'herr-v2';
+// Bump this when manifest, icons, or /offline change to roll users
+// onto a fresh cache (old caches deleted in the activate handler).
+// v1 → v2: added icon-1024 + apple-touch-icon, new manifest fields,
+//          new /offline page with Reconnect button + 988.
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const OFFLINE_URL = '/offline';
@@ -20,6 +24,8 @@ const PRECACHE = [
   '/icons/icon-256.png',
   '/icons/icon-384.png',
   '/icons/icon-512.png',
+  '/icons/icon-1024.png',
+  '/icons/apple-touch-icon.png',
 ];
 
 self.addEventListener('install', (event) => {

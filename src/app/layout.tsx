@@ -52,12 +52,14 @@ export const metadata: Metadata = {
     statusBarStyle: 'black-translucent',
   },
   icons: {
-    apple: '/icons/icon-192.png',
+    apple: '/icons/apple-touch-icon.png',
   },
 };
 
 export const viewport = {
-  themeColor: '#C42D8E',
+  // HERR Ink so the iOS / Android status-bar matches the app's dark hero
+  // when launched in standalone PWA mode.
+  themeColor: '#0A0A0F',
 };
 
 // Catches Supabase implicit-flow tokens that land on any page (e.g. homepage)

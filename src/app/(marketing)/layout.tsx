@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import NavBar from '@/components/layout/NavBar';
+import PWAInstallPrompt from '@/components/PWAInstallPrompt';
 
 export default function MarketingLayout({
   children,
@@ -12,6 +13,7 @@ export default function MarketingLayout({
       <NavBar />
       {children}
       <SiteFooter />
+      <PWAInstallPrompt />
     </>
   );
 }
