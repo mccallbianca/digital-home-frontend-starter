@@ -21,6 +21,7 @@ const SECTIONS: Section[] = [
       { href: '/admin/members',      label: 'Members' },
       { href: '/admin/sessions',     label: 'Sessions' },
       { href: '/admin/testers',      label: 'Testers' },
+      { href: '/admin/wave-1',       label: 'Tester Wave 1' },
       { href: '/admin/beta-testers', label: 'Beta Reports' },
       { href: '/admin/briefings',    label: 'Briefings' },
     ],
@@ -45,8 +46,9 @@ const SECTIONS: Section[] = [
   {
     title: 'Reports',
     items: [
-      { href: '/admin/analytics', label: 'Analytics' },
-      { href: '/admin/billing',   label: 'Billing' },
+      { href: '/admin/analytics',                label: 'Analytics' },
+      { href: '/admin/billing',                  label: 'Billing' },
+      { href: '/admin/audit/daily-delivery',     label: 'Daily Delivery Audit' },
     ],
   },
 ];

@@ -1,0 +1,95 @@
+name: Daily Delivery Cron
+
+# 04:00 ET = 08:00 UTC (per the B5.3 cron route docstring).
+# Two jobs:
+#   1. enqueue-daily-deliveries
+#        Hits the Worker /api/cron/daily-delivery route. Worker builds
+#        a `recipe` per active member and writes status='queued' rows
+#        to user_daily_deliveries.
+#   2. process-mix-queue
+#        Runs on ubuntu-latest with ffmpeg + Node 20. Polls queued
+#        rows via scripts/process-daily-mixes.mjs, mixes the 3 layers,
+#        uploads to affirmations-daily-mixes, flips to 'ready' →
+#        'delivered' after Resend email fires.
+#
+# Required repo secrets (Settings → Secrets and variables → Actions):
+#   - CRON_SECRET                — matches Worker's Bearer-token check
+#   - SUPABASE_URL                — Supabase project URL
+#   - SUPABASE_SERVICE_ROLE_KEY   — service-role key (RLS bypass)
+#   - RESEND_API_KEY              — Resend API key for delivery emails
+# Optional:
+#   - NEXT_PUBLIC_SITE_URL        — defaults to https://www.h3rr.com
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # 08:00 UTC daily
+  workflow_dispatch:
+
+jobs:
+  enqueue-daily-deliveries:
+    name: Enqueue (Worker)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: POST /api/cron/daily-delivery
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::CRON_SECRET is not set in repo secrets."
+            exit 1
+          fi
+
+          RESPONSE=$(curl -sS -w "\nHTTP_STATUS:%{http_code}" \
+            -X POST https://www.h3rr.com/api/cron/daily-delivery \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            -H "Content-Type: application/json" \
+            -d "{\"source\":\"gha_cron\",\"date\":\"$(date -u +%Y-%m-%d)\"}")
+
+          HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS:" | cut -d: -f2)
+          BODY=$(echo "$RESPONSE" | sed '/HTTP_STATUS:/d')
+
+          echo "HTTP status: $HTTP_STATUS"
+          echo "$BODY"
+
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "::error::daily-delivery enqueue returned non-200"
+            exit 1
+          fi
+
+          echo "::notice::Enqueue OK at $(date -u +%FT%TZ)"
+
+  process-mix-queue:
+    name: Process mix queue (ffmpeg + upload + email)
+    runs-on: ubuntu-latest
+    needs: enqueue-daily-deliveries
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Process queued daily mixes
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || 'https://www.h3rr.com' }}
+          RESEND_FROM_EMAIL: ${{ vars.RESEND_FROM_EMAIL || 'HERR <noreply@h3rr.com>' }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            echo "::error::SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY missing in repo secrets."
+            exit 1
+          fi
+          node scripts/process-daily-mixes.mjs --limit=500
