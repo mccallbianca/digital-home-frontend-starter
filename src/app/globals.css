@@ -701,6 +701,168 @@ body {
   .checkout-card--featured { transform: none; }
 }
 
+/* ── PR5 admin: crisis-flag review stub ── */
+.crisis-review {
+  background: var(--herr-black);
+  color: var(--herr-cream);
+  min-height: 100vh;
+  padding: clamp(40px, 6vw, 80px) clamp(20px, 4vw, 48px);
+  font-family: var(--font-sans-display), system-ui, -apple-system, sans-serif;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.crisis-review__back {
+  font-size: 0.85rem;
+  margin: 0 0 1.5rem;
+}
+
+.crisis-review__back a {
+  color: var(--herr-magenta-aa);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(232, 56, 138, 0.25);
+}
+
+.crisis-review__back a:hover {
+  color: var(--herr-cream);
+}
+
+.crisis-review__eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--herr-magenta-aa);
+  margin: 0 0 0.6rem;
+}
+
+.crisis-review__title {
+  font-family: var(--font-sans-display), system-ui, sans-serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--herr-cream);
+  margin: 0 0 1.8rem;
+  line-height: 1.15;
+}
+
+.crisis-review__muted {
+  color: rgba(244, 241, 235, 0.55);
+}
+
+.crisis-review__card {
+  background: rgba(196, 45, 142, 0.04);
+  border: 1.5px solid var(--herr-magenta);
+  border-radius: 6px;
+  padding: clamp(20px, 3vw, 32px);
+}
+
+.crisis-review__row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(244, 241, 235, 0.08);
+  font-size: 0.96rem;
+  align-items: baseline;
+}
+
+.crisis-review__row:last-of-type,
+.crisis-review__row--status {
+  border-bottom: none;
+}
+
+@media (max-width: 540px) {
+  .crisis-review__row { grid-template-columns: 1fr; gap: 4px; }
+}
+
+.crisis-review__label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(244, 241, 235, 0.55);
+}
+
+.crisis-review__value {
+  color: var(--herr-cream);
+  word-break: break-word;
+}
+
+.crisis-review__value a {
+  color: var(--herr-magenta-aa);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.crisis-review__sev {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.crisis-review__sev--red {
+  background: var(--herr-magenta);
+  color: var(--herr-cream);
+}
+
+.crisis-review__sev--yellow {
+  background: rgba(255, 192, 0, 0.18);
+  color: #ffc000;
+  border: 1px solid #ffc000;
+}
+
+.crisis-review__status--pending {
+  color: var(--herr-magenta-aa);
+  font-weight: 700;
+}
+
+.crisis-review__status--done {
+  color: rgba(244, 241, 235, 0.75);
+}
+
+.crisis-review__action {
+  margin-top: 1.6rem;
+}
+
+.crisis-review__cta {
+  display: inline-flex;
+  align-items: center;
+  background: var(--herr-magenta);
+  color: #FFFFFF;
+  border: 1.5px solid var(--herr-magenta);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 220ms ease, box-shadow 220ms ease;
+}
+
+.crisis-review__cta:hover {
+  background: #DC3CA0;
+  border-color: #DC3CA0;
+  box-shadow: 0 0 24px rgba(196, 45, 142, 0.35);
+}
+
+.crisis-review__footnote {
+  margin-top: 1.8rem;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: rgba(244, 241, 235, 0.55);
+}
+
+.crisis-review__footnote strong {
+  color: var(--herr-magenta-aa);
+}
+
 /* ── Patch Round 4C: Public screener results — shell + Save Your Results CTA ── */
 .screener-results-shell {
   min-height: 100vh;
