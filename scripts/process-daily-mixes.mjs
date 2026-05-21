@@ -45,7 +45,13 @@ const SEND_EMAIL = args['no-send'] !== true;
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.h3rr.com';
+// Defense-in-depth: even if NEXT_PUBLIC_SITE_URL is set to a dev URL
+// (e.g. http://localhost:3001) in .env.local, never use it in outbound
+// emails — those land in real Resend deliveries that ship to members.
+const RAW_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || '';
+const SITE_URL = (RAW_SITE_URL && /^https:\/\//i.test(RAW_SITE_URL) && !/localhost|127\.0\.0\.1/i.test(RAW_SITE_URL))
+  ? RAW_SITE_URL
+  : 'https://h3rr.com';
 const RESEND_FROM = process.env.RESEND_FROM_EMAIL || 'HERR <noreply@h3rr.com>';
 const BUCKET = 'affirmations-daily-mixes';
 const SIGNED_URL_EXPIRY_SECONDS = 60 * 60 * 24 * 2; // 48h: gives the daily push 24h + buffer

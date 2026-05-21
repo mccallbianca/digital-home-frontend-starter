@@ -36,6 +36,8 @@
     "NEXT_PUBLIC_STRIPE_PRICE_ELITE": "price_1TI1t8HZB88bXQVDJPOX9vzb",
     "STRIPE_PRICE_FREE": "none",
     "STRIPE_PORTAL_URL": "https://billing.stripe.com/p/login/9B628rgXfca98nX8Uc1VK00",
+    "NEXT_PUBLIC_SITE_URL": "https://h3rr.com",
+    "SITE_URL": "https://h3rr.com",
     "RESEND_FROM_EMAIL": "noreply@h3rr.com",
     "NEXT_PUBLIC_PRODUCT_NAME": "HERR",
     "NEXT_PUBLIC_PRODUCT_LONG_NAME": "Human Existential Regulator and Reprogramming",
