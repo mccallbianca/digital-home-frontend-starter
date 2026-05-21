@@ -102,8 +102,7 @@ const PLANS: Plan[] = [
     ],
     cta: 'Contact for Pricing',
     featured: false,
-    enterpriseHref:
-      'mailto:hello@h3rr.com?subject=HERR%20Enterprise%20Inquiry',
+    enterpriseHref: '/enterprise',
   },
 ];
 
