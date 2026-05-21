@@ -179,25 +179,58 @@ async function main() {
   let failed = 0;
   const results = [];
 
-  for (let i = 0; i < pending.length; i++) {
-    const tpl = pending[i];
-    const tag = `[${i + 1}/${pending.length}] ${tpl.activity_mode}/${tpl.existential_domain}/${tpl.risk_tier}/week-${tpl.week_of_month}`;
-    process.stdout.write(`${tag} ... `);
+  // Concurrency = 3 chunked worker pool. Within each chunk we await
+  // Promise.all; the next chunk only starts once all 3 settle. Simpler
+  // than a rolling pool and respects ElevenLabs throughput on Creator
+  // tier (which throttles at ~5 concurrent for cloned voices).
+  const CONCURRENCY = parseInt(args.concurrency ?? '3', 10);
+  let stopOnAuth = false;
+
+  async function renderWithRetry(tpl, idx) {
+    const tag = `[${idx + 1}/${pending.length}] ${tpl.activity_mode}/${tpl.existential_domain}/${tpl.risk_tier}/week-${tpl.week_of_month}`;
     try {
       const r = await renderOne(tpl);
       if (r.skipped) {
-        console.log(`SKIP (${r.reason})`);
-      } else {
-        console.log(`OK ${(r.bytes / 1024).toFixed(0)}KB`);
-        console.log(`     ${r.url}`);
-        console.log(`     "${r.text.slice(0, 90)}${r.text.length > 90 ? '…' : ''}"`);
-        rendered += 1;
-        results.push({ tpl: tpl.id, ...r });
+        console.log(`${tag} SKIP (${r.reason})`);
+        return;
       }
+      console.log(`${tag} OK ${(r.bytes / 1024).toFixed(0)}KB · ${r.url}`);
+      rendered += 1;
+      results.push({ tpl: tpl.id, ...r });
     } catch (err) {
-      console.log(`FAIL ${err.message}`);
+      const status = err.status ?? 0;
+      // Retry once on 5xx / 429 with 2s backoff.
+      if (status === 429 || (status >= 500 && status < 600)) {
+        await new Promise((r) => setTimeout(r, 2000));
+        try {
+          const r = await renderOne(tpl);
+          if (!r.skipped) {
+            console.log(`${tag} OK (retry) ${(r.bytes / 1024).toFixed(0)}KB · ${r.url}`);
+            rendered += 1;
+            results.push({ tpl: tpl.id, ...r });
+            return;
+          }
+        } catch (err2) {
+          console.log(`${tag} FAIL after retry: ${err2.message}`);
+          failed += 1;
+          return;
+        }
+      }
+      // Hard stop on auth / 4xx (config issue — pointless to keep burning).
+      if (status >= 400 && status < 500 && status !== 429) {
+        stopOnAuth = true;
+        console.log(`${tag} HARD STOP (${status}): ${err.message}`);
+      } else {
+        console.log(`${tag} FAIL ${err.message}`);
+      }
       failed += 1;
     }
+  }
+
+  for (let i = 0; i < pending.length; i += CONCURRENCY) {
+    if (stopOnAuth) break;
+    const chunk = pending.slice(i, i + CONCURRENCY);
+    await Promise.all(chunk.map((tpl, j) => renderWithRetry(tpl, i + j)));
   }
 
   console.log(`\n── done ──`);
