@@ -6,15 +6,18 @@ import { createClient } from '@/lib/supabase/browser';
 import Link from 'next/link';
 
 // Genre IDs match the CHECK enum on public.member_genre_preferences.
+// IDs must match ecqo_sound_tracks.genre and the CHECK constraint in
+// member_genre_preferences (joined form, no hyphens).
 const GENRES = [
-  { id: 'hip-hop',   name: 'Hip-Hop',     desc: 'Rhythmic, grounded, lyrical power',     gradient: 'linear-gradient(135deg, #2d1b3d, #8E1A66)' },
-  { id: 'rnb',       name: 'R&B / Soul',  desc: 'Warm, rhythmic, emotionally rich',      gradient: 'linear-gradient(135deg, #2d1b3d, #4a1942)' },
-  { id: 'ambient',   name: 'Ambient',     desc: 'Atmospheric, expansive, spacious',      gradient: 'linear-gradient(135deg, #1a1a2e, #16213e)' },
-  { id: 'classical', name: 'Classical',   desc: 'Structured, timeless, cerebral',        gradient: 'linear-gradient(135deg, #1b2838, #0d1b2a)' },
-  { id: 'lo-fi',     name: 'Lo-Fi',       desc: 'Textured, nostalgic, grounded',         gradient: 'linear-gradient(135deg, #2b2d42, #3d405b)' },
-  { id: 'jazz',      name: 'Jazz',        desc: 'Improvisational, fluid, sophisticated', gradient: 'linear-gradient(135deg, #3c2415, #5c3d2e)' },
-  { id: 'gospel',    name: 'Gospel',      desc: 'Spiritual, anchored, soulful',          gradient: 'linear-gradient(135deg, #1a1a2e, #4a1942)' },
-  { id: 'latin',     name: 'Latin',       desc: 'Rhythmic, embodied, vibrant',           gradient: 'linear-gradient(135deg, #3c2415, #e94560)' },
+  { id: 'hiphop',    name: 'Hip-Hop',       desc: 'Rhythmic, grounded, lyrical power',     gradient: 'linear-gradient(135deg, #2d1b3d, #8E1A66)' },
+  { id: 'rnb',       name: 'R&B / Soul',    desc: 'Warm, rhythmic, emotionally rich',      gradient: 'linear-gradient(135deg, #2d1b3d, #4a1942)' },
+  { id: 'ambient',   name: 'Ambient',       desc: 'Atmospheric, expansive, spacious',      gradient: 'linear-gradient(135deg, #1a1a2e, #16213e)' },
+  { id: 'classical', name: 'Classical',     desc: 'Structured, timeless, cerebral',        gradient: 'linear-gradient(135deg, #1b2838, #0d1b2a)' },
+  { id: 'lofi',      name: 'Lo-Fi',         desc: 'Textured, nostalgic, grounded',         gradient: 'linear-gradient(135deg, #2b2d42, #3d405b)' },
+  { id: 'jazz',      name: 'Jazz',          desc: 'Improvisational, fluid, sophisticated', gradient: 'linear-gradient(135deg, #3c2415, #5c3d2e)' },
+  { id: 'gospel',    name: 'Gospel',        desc: 'Spiritual, anchored, soulful',          gradient: 'linear-gradient(135deg, #1a1a2e, #4a1942)' },
+  { id: 'latin',     name: 'Latin',         desc: 'Rhythmic, embodied, vibrant',           gradient: 'linear-gradient(135deg, #3c2415, #e94560)' },
+  { id: 'reggae',    name: 'Reggae / Island', desc: 'Easy, rooted, sun-warmed',            gradient: 'linear-gradient(135deg, #1b3a1f, #d4a017)' },
 ];
 
 type Plan = 'free' | 'collective' | 'personalized' | 'elite';

@@ -4,6 +4,7 @@ import AnimatedSection from '@/components/ui/AnimatedSection';
 import ScrollFadeIn from '@/components/home/ScrollFadeIn';
 import Waveform from '@/components/ui/Waveform';
 import CrisisResource from '@/components/ui/CrisisResource';
+import GenreSVGCard from '@/components/marketing/GenreSVGCard';
 
 export const metadata: Metadata = {
   title: 'ECQO Sound\u2122 | Sonic Architecture for the Inner Voice',
@@ -316,16 +317,22 @@ export default function ECQOSoundPage() {
               <ScrollFadeIn key={g.name} delay={80 + i * 70}>
                 <div className="genre-card">
                   {g.image ? (
-                    <div
-                      className="genre-card__image"
-                      style={{ backgroundImage: `url(${g.image})` }}
-                      aria-hidden
-                    />
+                    <>
+                      <div
+                        className="genre-card__image"
+                        style={{ backgroundImage: `url(${g.image})` }}
+                        aria-hidden
+                      />
+                      <div className="genre-card__scrim" aria-hidden />
+                      <p className="genre-card__name">{g.name}</p>
+                    </>
                   ) : (
-                    <div className="genre-card__placeholder" aria-hidden />
+                    // SVG fallback: self-contained card with gradient + motif +
+                    // label, replaces the old magenta placeholder + name overlay.
+                    <div style={{ position: 'absolute', inset: 0 }} aria-hidden>
+                      <GenreSVGCard name={g.name} />
+                    </div>
                   )}
-                  <div className="genre-card__scrim" aria-hidden />
-                  <p className="genre-card__name">{g.name}</p>
                 </div>
               </ScrollFadeIn>
             ))}

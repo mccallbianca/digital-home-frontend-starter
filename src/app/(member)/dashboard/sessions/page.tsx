@@ -75,7 +75,7 @@ export default async function SessionsPage() {
 
   const { data: sessions } = await db
     .from('live_sessions')
-    .select('id, scheduled_at, duration_min, title, description, max_seats')
+    .select('id, scheduled_at, duration_min, title, description, max_seats, zoom_join_url')
     .gte('scheduled_at', new Date().toISOString())
     .order('scheduled_at', { ascending: true })
     .limit(12);
@@ -87,6 +87,7 @@ export default async function SessionsPage() {
     title: string;
     description: string | null;
     max_seats: number;
+    zoom_join_url: string | null;
   }>;
 
   let myRegisteredIds: string[] = [];
@@ -233,6 +234,11 @@ export default async function SessionsPage() {
                   <p style={{ fontSize: 14, color: 'var(--herr-ink-soft)', lineHeight: 1.6, margin: 0 }}>
                     {s.description}
                   </p>
+                )}
+                {(!s.zoom_join_url || s.zoom_join_url.includes('PLACEHOLDER')) && (
+                  <div style={{ background: 'var(--herr-magenta-soft, #fce7f3)', border: '1px solid var(--herr-magenta, #C42D8E)', borderRadius: 8, padding: '10px 14px', fontSize: 13, color: 'var(--herr-magenta-deep, #6b1849)' }}>
+                    Zoom link coming soon — you&apos;ll receive an email 24 hours before this session.
+                  </div>
                 )}
                 <div>
                   <SessionRegisterButton sessionId={s.id} alreadyRegistered={isRegistered} />

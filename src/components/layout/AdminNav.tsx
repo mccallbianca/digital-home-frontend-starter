@@ -24,6 +24,7 @@ const SECTIONS: Section[] = [
       { href: '/admin/wave-1',       label: 'Tester Wave 1' },
       { href: '/admin/beta-testers', label: 'Beta Reports' },
       { href: '/admin/briefings',    label: 'Briefings' },
+      { href: '/admin/live-sessions', label: 'Live Sessions' },
     ],
   },
   {

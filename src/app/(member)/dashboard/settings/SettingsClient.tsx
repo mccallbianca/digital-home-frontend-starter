@@ -9,7 +9,10 @@ import PushNotificationToggle from '@/components/PushNotificationToggle';
 interface SettingsClientProps {
   userId: string;
   email: string;
+  /** The warm/relational "what should we call you" value (profiles.preferred_name). */
   displayName: string;
+  /** The unique handle (profiles.display_name). Optional — backfilled by migration. */
+  uniqueHandle: string;
   plan: string;
   hasVoice: boolean;
   voiceActive: boolean;
@@ -88,13 +91,18 @@ const secondaryBtnStyle: React.CSSProperties = {
 };
 
 export default function SettingsClient({
-  userId, email, displayName: initialName, plan, hasVoice, voiceActive, modes, genres,
+  userId, email, displayName: initialName, uniqueHandle, plan, hasVoice, voiceActive, modes, genres,
 }: SettingsClientProps) {
   const router = useRouter();
   const supabase = createClient();
   const [name, setName] = useState(initialName);
   const [savingName, setSavingName] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  // FIX-1 A8 — unique handle (display_name) with API-side uniqueness check
+  const [handle, setHandle] = useState(uniqueHandle);
+  const [savingHandle, setSavingHandle] = useState(false);
+  const [handleStatus, setHandleStatus] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
 
   // Phase 1 v2 EPIC B7: change email
   const [showEmailForm, setShowEmailForm] = useState(false);
@@ -114,6 +122,33 @@ export default function SettingsClient({
     setSavingName(true);
     await supabase.from('profiles').update({ preferred_name: name }).eq('id', userId);
     setSavingName(false);
+  };
+
+  const handleSaveHandle = async () => {
+    setHandleStatus(null);
+    const trimmed = handle.trim();
+    if (trimmed && !/^[a-zA-Z0-9_]{3,30}$/.test(trimmed)) {
+      setHandleStatus({ type: 'error', msg: '3–30 characters, letters/numbers/underscore only.' });
+      return;
+    }
+    setSavingHandle(true);
+    try {
+      const res = await fetch('/api/profile/display-name', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ display_name: trimmed || null }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setHandleStatus({ type: 'error', msg: data?.error ?? `Save failed (HTTP ${res.status})` });
+      } else {
+        setHandleStatus({ type: 'success', msg: 'Saved' });
+      }
+    } catch (err) {
+      setHandleStatus({ type: 'error', msg: err instanceof Error ? err.message : String(err) });
+    } finally {
+      setSavingHandle(false);
+    }
   };
 
   const handleChangeEmail = async () => {
@@ -191,13 +226,43 @@ export default function SettingsClient({
         {/* 1. Profile */}
         <div style={cardStyle}>
           <p style={labelStyle}>PROFILE</p>
+
           <div style={{ marginBottom: 16 }}>
-            <label style={{ fontSize: 13, color: 'var(--herr-ink-soft)', display: 'block', marginBottom: 6 }}>Display Name</label>
+            <label style={{ fontSize: 13, color: 'var(--herr-ink-soft)', display: 'block', marginBottom: 6 }}>Preferred Name</label>
+            <p style={{ fontSize: 12, color: 'var(--herr-ink-soft)', margin: '0 0 8px' }}>What we call you (e.g. &ldquo;Boss&rdquo;). Not shared publicly.</p>
             <input value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
           </div>
-          <button onClick={handleSaveProfile} disabled={savingName} style={{ ...primaryBtnStyle, opacity: savingName ? 0.6 : 1 }}>
-            {savingName ? 'Saving…' : 'Update Profile'}
-          </button>
+
+          <div style={{ marginBottom: 16, paddingTop: 16, borderTop: '1px solid var(--herr-line)' }}>
+            <label style={{ fontSize: 13, color: 'var(--herr-ink-soft)', display: 'block', marginBottom: 6 }}>Display Name</label>
+            <p style={{ fontSize: 12, color: 'var(--herr-ink-soft)', margin: '0 0 8px' }}>Your public handle. 3–30 chars, letters/numbers/underscore. Must be unique.</p>
+            <input
+              value={handle}
+              onChange={(e) => { setHandle(e.target.value); if (handleStatus) setHandleStatus(null); }}
+              placeholder="e.g. biancalmft"
+              style={inputStyle}
+              autoCapitalize="off"
+              autoCorrect="off"
+            />
+            {handleStatus && (
+              <p style={{ fontSize: 13, marginTop: 8, color: handleStatus.type === 'error' ? '#b91c1c' : 'var(--herr-magenta-deep,#1b6b2c)' }}>
+                {handleStatus.msg}
+              </p>
+            )}
+          </div>
+
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button onClick={handleSaveProfile} disabled={savingName} style={{ ...primaryBtnStyle, opacity: savingName ? 0.6 : 1 }}>
+              {savingName ? 'Saving…' : 'Update Profile'}
+            </button>
+            <button
+              onClick={handleSaveHandle}
+              disabled={savingHandle || handle === uniqueHandle}
+              style={{ ...secondaryBtnStyle, opacity: (savingHandle || handle === uniqueHandle) ? 0.6 : 1 }}
+            >
+              {savingHandle ? 'Saving…' : 'Save Display Name'}
+            </button>
+          </div>
         </div>
 
         {/* 2. Email — Phase 1 v2 EPIC B7 */}

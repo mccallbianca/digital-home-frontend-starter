@@ -16,9 +16,12 @@ export default async function SettingsPage() {
 
   if (!user) redirect('/login?redirect=/dashboard/settings');
 
-  const { data: profile } = await supabase
+  // display_name added in migration 20260526_add_display_name; not yet in
+  // generated Database types, so cast through any for the select projection.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: profile } = await (supabase as any)
     .from('profiles')
-    .select('plan, first_name, preferred_name, email')
+    .select('plan, first_name, preferred_name, email, display_name')
     .eq('id', user.id)
     .single();
 
@@ -49,6 +52,7 @@ export default async function SettingsPage() {
       userId={user.id}
       email={profile?.email ?? user.email ?? ''}
       displayName={profile?.preferred_name || profile?.first_name || ''}
+      uniqueHandle={(profile as { display_name?: string } | null)?.display_name ?? ''}
       plan={plan}
       hasVoice={hasVoice}
       voiceActive={!!voiceConsent?.file_path}
