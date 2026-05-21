@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Stripe from 'stripe';
+import VCPUpsellModal from './VCPUpsellModal';
 
 export const metadata: Metadata = {
   title: 'Welcome | Your Reprogramming Begins Now',
@@ -88,6 +89,10 @@ export default async function WelcomePage({
                 Didn&apos;t get the email? Login here
               </Link>
             </div>
+
+            {/* FIX-3 — VCP post-purchase upsell modal. Self-dismisses for
+                30 days if the user picks "Maybe later". */}
+            <VCPUpsellModal source="welcome" />
           </>
         ) : (
           <>

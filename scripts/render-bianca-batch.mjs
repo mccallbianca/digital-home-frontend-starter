@@ -33,6 +33,15 @@ const args = Object.fromEntries(
   }),
 );
 const LIMIT = parseInt(args.limit ?? '5', 10);
+const PRIORITY = args.priority ?? null;
+
+// FIX-3 A1 — core priority order (only used when --priority=core):
+//   risk_tier='low_concern', cultural_routing='default', and domain
+//   priority below (lower = first to render).
+const DOMAIN_RANK = {
+  meaning: 1, identity: 2, connection: 3, freedom: 4,
+  guilt: 5, spiritual: 6, mortality: 7,
+};
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -101,17 +110,63 @@ async function renderOne(tpl) {
   return { skipped: false, url: pub.publicUrl, bytes: audio.byteLength, path, text: rendered };
 }
 
-async function main() {
-  console.log(`Pipeline A spot-check — limit=${LIMIT}`);
+async function checkElevenLabsBalance(requireRemaining) {
+  const res = await fetch('https://api.elevenlabs.io/v1/user/subscription', {
+    headers: { 'xi-api-key': ELEVENLABS_KEY },
+  });
+  if (!res.ok) {
+    throw new Error(`ElevenLabs balance check failed: ${res.status}`);
+  }
+  const data = await res.json();
+  const remaining = (data.character_limit ?? 0) - (data.character_count ?? 0);
+  console.log(`ElevenLabs balance: ${remaining.toLocaleString()} / ${(data.character_limit ?? 0).toLocaleString()} chars remaining (tier: ${data.tier})`);
+  if (requireRemaining && remaining < requireRemaining) {
+    throw new Error(
+      `Pre-flight failed: ${remaining.toLocaleString()} chars remaining is below required ${requireRemaining.toLocaleString()}. Refill ElevenLabs credits or lower the gate.`,
+    );
+  }
+  return remaining;
+}
 
-  const { data: pending, error } = await supabase
+async function main() {
+  console.log(`Pipeline A — limit=${LIMIT}${PRIORITY ? ` priority=${PRIORITY}` : ''}`);
+
+  // FIX-3 A1 — explicit balance gate for partial-render execution.
+  // The user-specified gate (270,000 chars) blocks accidental rip of
+  // the full library when the monthly allotment is low.
+  const minRequired = args['min-credits'] ? parseInt(args['min-credits'], 10) : 0;
+  if (minRequired > 0) {
+    await checkElevenLabsBalance(minRequired);
+  } else if (PRIORITY === 'core') {
+    // Soft display only — caller didn't gate explicitly.
+    await checkElevenLabsBalance(0);
+  }
+
+  let q = supabase
     .from('affirmation_template_library')
     .select('id, activity_mode, existential_domain, risk_tier, week_of_month, full_template_text, fallback_slot_values, placeholder_slots, status, bianca_audio_url')
     .is('bianca_audio_url', null)
-    .eq('status', 'pending_voice')
-    .order('created_at', { ascending: true })
-    .limit(LIMIT);
+    .eq('status', 'pending_voice');
+
+  if (PRIORITY === 'core') {
+    q = q.eq('risk_tier', 'low_concern').eq('cultural_routing', 'default');
+  }
+
+  // Fetch a wide window when priority sort is on so we can apply domain
+  // ranking in JS before slicing to LIMIT.
+  const fetchWindow = PRIORITY === 'core' ? Math.max(LIMIT * 4, 200) : LIMIT;
+  q = q.order('created_at', { ascending: true }).limit(fetchWindow);
+  let { data: pending, error } = await q;
   if (error) throw error;
+
+  if (PRIORITY === 'core' && pending) {
+    pending = pending
+      .slice()
+      .sort((a, b) => (DOMAIN_RANK[a.existential_domain] ?? 99) - (DOMAIN_RANK[b.existential_domain] ?? 99))
+      .slice(0, LIMIT);
+  } else if (pending) {
+    pending = pending.slice(0, LIMIT);
+  }
 
   if (!pending || pending.length === 0) {
     console.log('no pending_voice templates');

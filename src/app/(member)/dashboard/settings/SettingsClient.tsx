@@ -16,6 +16,8 @@ interface SettingsClientProps {
   plan: string;
   hasVoice: boolean;
   voiceActive: boolean;
+  /** True when user_identity_anchors.voice_clone_plus_subscriber=true. */
+  vcpActive: boolean;
   modes: string[];
   genres: string[];
 }
@@ -91,7 +93,7 @@ const secondaryBtnStyle: React.CSSProperties = {
 };
 
 export default function SettingsClient({
-  userId, email, displayName: initialName, uniqueHandle, plan, hasVoice, voiceActive, modes, genres,
+  userId, email, displayName: initialName, uniqueHandle, plan, hasVoice, voiceActive, vcpActive, modes, genres,
 }: SettingsClientProps) {
   const router = useRouter();
   const supabase = createClient();
@@ -123,6 +125,27 @@ export default function SettingsClient({
     await supabase.from('profiles').update({ preferred_name: name }).eq('id', userId);
     setSavingName(false);
   };
+
+  // FIX-3 — Voice Clone Plus checkout trigger from Settings.
+  const [vcpLoading, setVcpLoading] = useState(false);
+  const [vcpError, setVcpError] = useState<string | null>(null);
+  async function handleStartVCPCheckout() {
+    setVcpLoading(true);
+    setVcpError(null);
+    try {
+      const res = await fetch('/api/stripe/vcp-checkout?source=settings', { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok || !data.url) {
+        setVcpError(data?.error ?? `Couldn't start checkout (HTTP ${res.status})`);
+        setVcpLoading(false);
+        return;
+      }
+      window.location.href = data.url;
+    } catch (err) {
+      setVcpError(err instanceof Error ? err.message : String(err));
+      setVcpLoading(false);
+    }
+  }
 
   const handleSaveHandle = async () => {
     setHandleStatus(null);
@@ -411,6 +434,58 @@ export default function SettingsClient({
             </div>
           </div>
         )}
+
+        {/* 5b. Voice Clone Plus — $20/mo add-on (FIX-3) */}
+        <div style={cardStyle}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, marginBottom: 12 }}>
+            <div>
+              <p style={labelStyle}>VOICE CLONE PLUS</p>
+              <p style={{ fontSize: 14, color: 'var(--herr-ink)', margin: 0, lineHeight: 1.55 }}>
+                Hear your daily affirmations in <em>your own</em> voice. Independent of your base plan.
+              </p>
+            </div>
+            <span style={{
+              fontSize: 11,
+              padding: '4px 10px',
+              borderRadius: 999,
+              fontWeight: 600,
+              letterSpacing: 0.4,
+              textTransform: 'uppercase',
+              background: vcpActive ? '#dff2e1' : 'var(--herr-cream)',
+              color:      vcpActive ? '#1b6b2c' : 'var(--herr-ink-soft)',
+              border:     vcpActive ? '1px solid #1b6b2c' : '1px solid var(--herr-line)',
+              whiteSpace: 'nowrap',
+            }}>
+              {vcpActive ? 'Active' : '$20 / mo'}
+            </span>
+          </div>
+
+          {vcpActive ? (
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <Link href="/dashboard/billing" style={{ ...secondaryBtnStyle, textDecoration: 'none' }}>
+                Manage in Billing Portal
+              </Link>
+              <Link href="/dashboard/voice-clone-setup" style={{ ...secondaryBtnStyle, textDecoration: 'none' }}>
+                Voice Setup
+              </Link>
+            </div>
+          ) : (
+            <>
+              <button
+                onClick={handleStartVCPCheckout}
+                disabled={vcpLoading}
+                style={{ ...primaryBtnStyle, opacity: vcpLoading ? 0.6 : 1 }}
+              >
+                {vcpLoading ? 'Opening checkout…' : 'Add Voice Clone Plus — $20/mo'}
+              </button>
+              {vcpError && (
+                <p style={{ fontSize: 13, color: '#b91c1c', marginTop: 10 }} role="alert">
+                  {vcpError}
+                </p>
+              )}
+            </>
+          )}
+        </div>
 
         {/* 6. Activity Modes — canonical source: member_activity_modes */}
         <div style={cardStyle}>

@@ -46,6 +46,71 @@ function tierForPriceId(priceId: string): TierSlug | null {
   return map[priceId] ?? null;
 }
 
+/**
+ * FIX-3 — Voice Clone Plus add-on detection.
+ *
+ * VCP is a separate $20/mo subscription independent of the base tier.
+ * We detect it via two signals (either is sufficient):
+ *   1. Subscription/session metadata.product === 'voice_clone_plus'
+ *   2. The first line item's price ID matches STRIPE_PRICE_VCP_MONTHLY
+ */
+function isVCPPriceId(priceId: string): boolean {
+  const vcp = process.env.STRIPE_PRICE_VCP_MONTHLY ?? '';
+  return vcp !== '' && vcp !== 'price_pending_vcp_setup' && priceId === vcp;
+}
+function metadataMarksVCP(metadata: Stripe.Metadata | null | undefined): boolean {
+  if (!metadata) return false;
+  return metadata.product === 'voice_clone_plus' || metadata.vcp === '1';
+}
+
+/**
+ * Resolve the auth.users id for a VCP event from whichever signal is
+ * available: metadata.user_id (set by /api/stripe/vcp-checkout) first,
+ * then customer email → profiles lookup, last-resort null.
+ */
+async function resolveVCPUserId(
+  supabase: ReturnType<typeof getSupabaseAdmin>,
+  stripe: Stripe,
+  metadata: Stripe.Metadata | null | undefined,
+  customerId: string,
+): Promise<string | null> {
+  if (metadata?.user_id) return metadata.user_id;
+  try {
+    const customer = await stripe.customers.retrieve(customerId);
+    if (customer && !customer.deleted && customer.email) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: profile } = await (supabase as any)
+        .from('profiles')
+        .select('id')
+        .eq('email', customer.email)
+        .maybeSingle();
+      if (profile?.id) return profile.id;
+    }
+  } catch (err) {
+    console.error('[webhook] resolveVCPUserId customer lookup:', err);
+  }
+  return null;
+}
+
+async function setVCPState(
+  supabase: ReturnType<typeof getSupabaseAdmin>,
+  userId: string,
+  active: boolean,
+) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase as any)
+    .from('user_identity_anchors')
+    .upsert(
+      {
+        user_id: userId,
+        voice_clone_plus_subscriber: active,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'user_id' },
+    );
+  if (error) console.error('[webhook] setVCPState error:', error.message);
+}
+
 const TIER_LABELS: Record<TierSlug, string> = {
   collective: 'HERR Collective',
   personalized: 'HERR Personalized',
@@ -126,6 +191,20 @@ export async function POST(req: NextRequest) {
         const session = event.data.object as Stripe.Checkout.Session;
         if (session.mode !== 'subscription') break;
 
+        // FIX-3 — Voice Clone Plus checkout completion. Detect via
+        // metadata.product=voice_clone_plus; flip the user's anchor row.
+        if (metadataMarksVCP(session.metadata)) {
+          const customerId = session.customer as string;
+          const userId = await resolveVCPUserId(supabase, stripe, session.metadata, customerId);
+          if (userId) {
+            await setVCPState(supabase, userId, true);
+            console.log(`[webhook] VCP activated for ${userId}`);
+          } else {
+            console.warn(`[webhook] VCP checkout.session.completed but couldn't resolve user_id (customer ${customerId})`);
+          }
+          break;
+        }
+
         const tier = (session.metadata?.tier as TierSlug | undefined) ?? 'personalized';
         const customerId = session.customer as string;
         const subscriptionId = session.subscription as string;
@@ -196,6 +275,19 @@ export async function POST(req: NextRequest) {
         const sub = event.data.object as Stripe.Subscription;
         const customerId = sub.customer as string;
         const priceId = sub.items.data[0]?.price?.id ?? '';
+
+        // FIX-3 — VCP subscription created → flip anchor flag on.
+        if (isVCPPriceId(priceId) || metadataMarksVCP(sub.metadata)) {
+          const userId = await resolveVCPUserId(supabase, stripe, sub.metadata, customerId);
+          if (userId) {
+            await setVCPState(supabase, userId, true);
+            console.log(`[webhook] VCP subscription.created for ${userId}`);
+          } else {
+            console.warn(`[webhook] VCP subscription.created but couldn't resolve user_id (customer ${customerId})`);
+          }
+          break;
+        }
+
         const tier = tierForPriceId(priceId);
         if (!tier) {
           console.warn(`[webhook] unknown price ${priceId} on sub ${sub.id}`);
@@ -262,6 +354,17 @@ export async function POST(req: NextRequest) {
       case 'customer.subscription.deleted': {
         const sub = event.data.object as Stripe.Subscription;
         const customerId = sub.customer as string;
+        const priceIdCancelled = sub.items.data[0]?.price?.id ?? '';
+
+        // FIX-3 — VCP subscription cancelled → flip anchor flag off.
+        if (isVCPPriceId(priceIdCancelled) || metadataMarksVCP(sub.metadata)) {
+          const userId = await resolveVCPUserId(supabase, stripe, sub.metadata, customerId);
+          if (userId) {
+            await setVCPState(supabase, userId, false);
+            console.log(`[webhook] VCP subscription.deleted for ${userId}`);
+          }
+          break;
+        }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const periodEnd = new Date((((sub as any).current_period_end as number) ?? 0) * 1000).toISOString();
 

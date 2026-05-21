@@ -12,6 +12,7 @@ interface Track {
   audio_url: string | null;
   generated_at: string;
   delivered: boolean;
+  source?: 'daily' | 'sample' | 'legacy';
 }
 
 interface SoundTrack {
@@ -38,6 +39,14 @@ interface AffirmationsClientProps {
   plan: Plan;
   selectedModes: string[];
   tracks: Track[];
+  /**
+   * Origin of the `tracks` array (resolved server-side):
+   *   - 'daily'  : user_daily_deliveries (B5.3 mixes)
+   *   - 'sample' : affirmation_template_library samples (Bianca master)
+   *   - 'legacy' : pre-B5.x affirmation_scripts rows
+   *   - 'empty'  : nothing returned
+   */
+  trackSource?: 'daily' | 'sample' | 'legacy' | 'empty';
   genre: string;
   latestAffirmation: LatestAffirmation | null;
   soundTracks: SoundTrack[];
@@ -56,6 +65,7 @@ export default function AffirmationsClient({
   plan,
   selectedModes,
   tracks,
+  trackSource = 'legacy',
   genre,
   latestAffirmation,
   soundTracks,
@@ -336,6 +346,37 @@ export default function AffirmationsClient({
           Today&apos;s Reprogramming
         </h1>
         <p style={{ fontSize: 14, color: 'var(--herr-ink-soft)', marginBottom: 32 }}>{dateStr}</p>
+
+        {trackSource === 'sample' && (
+          <div style={{
+            background: 'var(--herr-magenta-soft, #fce7f3)',
+            border: '1px solid var(--herr-magenta, #C42D8E)',
+            borderRadius: 12,
+            padding: '14px 16px',
+            marginBottom: 20,
+            fontSize: 13,
+            color: 'var(--herr-magenta-deep, #6b1849)',
+            lineHeight: 1.55,
+          }}>
+            <strong style={{ display: 'block', marginBottom: 4 }}>Sample affirmations</strong>
+            Your personalized daily delivery begins tomorrow morning. Until then, listen to a few samples from the library.
+          </div>
+        )}
+
+        {trackSource === 'legacy' && tracks.length > 0 && (
+          <div style={{
+            background: '#faf8f3',
+            border: '1px solid var(--herr-line)',
+            borderRadius: 12,
+            padding: '14px 16px',
+            marginBottom: 20,
+            fontSize: 13,
+            color: 'var(--herr-ink-soft)',
+            lineHeight: 1.55,
+          }}>
+            Showing your earlier affirmation history. Your next daily delivery will appear here once the system processes tonight&apos;s queue.
+          </div>
+        )}
 
         {todayTracks.length > 0 ? todayTracks.map(renderVoiceOnlyCard) : renderTodayEmpty()}
 

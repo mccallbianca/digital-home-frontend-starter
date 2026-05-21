@@ -56,6 +56,15 @@ export default async function SettingsPage() {
   const plan = profile?.plan ?? 'free';
   const hasVoice = plan === 'personalized' || plan === 'elite';
 
+  // FIX-3 — Voice Clone Plus subscription state.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: anchors } = await (supabase as any)
+    .from('user_identity_anchors')
+    .select('voice_clone_plus_subscriber')
+    .eq('user_id', user.id)
+    .maybeSingle();
+  const vcpActive = anchors?.voice_clone_plus_subscriber === true;
+
   return (
     <SettingsClient
       userId={user.id}
@@ -65,6 +74,7 @@ export default async function SettingsPage() {
       plan={plan}
       hasVoice={hasVoice}
       voiceActive={!!voiceConsent?.file_path}
+      vcpActive={vcpActive}
       modes={activeModes}
       genres={activeGenres}
     />

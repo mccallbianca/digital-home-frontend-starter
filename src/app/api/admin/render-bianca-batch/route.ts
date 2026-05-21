@@ -56,24 +56,53 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Admin only' }, { status: 401 });
   }
 
-  // 2. Parse limit
+  // 2. Parse limit + priority strategy
   const urlObj = new URL(req.url);
   const rawLimit = parseInt(urlObj.searchParams.get('limit') ?? '', 10);
   const limit = Number.isFinite(rawLimit) && rawLimit > 0
     ? Math.min(rawLimit, MAX_LIMIT)
     : DEFAULT_LIMIT;
+  // `priority=core` narrows to the most clinically useful templates for
+  // the partial-render execution path (FIX-3 A1):
+  //   - risk_tier = 'low_concern' (most-common tester tier)
+  //   - cultural_routing = 'default' (broadest applicability)
+  //   - domain ordering: meaning → identity → connection → freedom →
+  //     guilt → spiritual → mortality
+  const priority = urlObj.searchParams.get('priority');
+  const useCorePriority = priority === 'core';
 
   // 3. Pull pending templates
   const admin = createAdminClient();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const db = admin as any;
-  const { data: pending, error: queryErr } = await db
+
+  let pendingQuery = db
     .from('affirmation_template_library')
-    .select('id')
+    .select('id, existential_domain')
     .is('bianca_audio_url', null)
-    .eq('status', 'pending_voice')
+    .eq('status', 'pending_voice');
+  if (useCorePriority) {
+    pendingQuery = pendingQuery
+      .eq('risk_tier', 'low_concern')
+      .eq('cultural_routing', 'default');
+  }
+  // Fetch a generous window then sort in JS so we can apply the
+  // domain priority ranking that Supabase doesn't expose as a CASE.
+  const fetchWindow = useCorePriority ? Math.max(limit * 4, 200) : limit;
+  pendingQuery = pendingQuery
     .order('created_at', { ascending: true })
-    .limit(limit);
+    .limit(fetchWindow);
+  const { data: rawPending, error: queryErr } = await pendingQuery;
+
+  const DOMAIN_RANK: Record<string, number> = {
+    meaning: 1, identity: 2, connection: 3, freedom: 4,
+    guilt: 5, spiritual: 6, mortality: 7,
+  };
+  type RawRow = { id: string; existential_domain: string };
+  const sorted = ((rawPending ?? []) as RawRow[])
+    .slice()
+    .sort((a, b) => (DOMAIN_RANK[a.existential_domain] ?? 99) - (DOMAIN_RANK[b.existential_domain] ?? 99));
+  const pending = useCorePriority ? sorted.slice(0, limit) : sorted.slice(0, limit);
 
   if (queryErr) {
     return NextResponse.json(
