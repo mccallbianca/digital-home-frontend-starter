@@ -31,18 +31,27 @@ export default async function SettingsPage() {
     .eq('user_id', user.id)
     .single();
 
-  const { data: prefs } = await supabase
-    .from('user_preferences')
-    .select('activity_modes')
-    .eq('user_id', user.id)
-    .single();
+  // FIX-2 A6 — canonical preference tables. `user_preferences` is empty in
+  // production; My Activities / My Music save to `member_activity_modes`
+  // and `member_genre_preferences`. Settings now reads from there.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: modeRows } = await (supabase as any)
+    .from('member_activity_modes')
+    .select('mode, updated_at')
+    .eq('member_id', user.id)
+    .eq('active', true)
+    .order('updated_at', { ascending: false });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: genrePrefs } = await (supabase as any)
-    .from('user_preferences')
-    .select('genres')
-    .eq('user_id', user.id)
-    .single();
+  const { data: genreRows } = await (supabase as any)
+    .from('member_genre_preferences')
+    .select('genre, updated_at')
+    .eq('member_id', user.id)
+    .eq('active', true)
+    .order('updated_at', { ascending: false });
+
+  const activeModes  = (modeRows  ?? []).map((r: { mode:  string }) => r.mode);
+  const activeGenres = (genreRows ?? []).map((r: { genre: string }) => r.genre);
 
   const plan = profile?.plan ?? 'free';
   const hasVoice = plan === 'personalized' || plan === 'elite';
@@ -56,8 +65,8 @@ export default async function SettingsPage() {
       plan={plan}
       hasVoice={hasVoice}
       voiceActive={!!voiceConsent?.file_path}
-      modes={prefs?.activity_modes ?? []}
-      genres={genrePrefs?.genres ?? []}
+      modes={activeModes}
+      genres={activeGenres}
     />
   );
 }

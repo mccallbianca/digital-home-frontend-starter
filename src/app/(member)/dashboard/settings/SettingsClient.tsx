@@ -412,31 +412,47 @@ export default function SettingsClient({
           </div>
         )}
 
-        {/* 6. Activity Modes */}
+        {/* 6. Activity Modes — canonical source: member_activity_modes */}
         <div style={cardStyle}>
           <p style={labelStyle}>ACTIVITY MODES</p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
-            {modes.length > 0 ? modes.map((m: string) => (
-              <span key={m} style={{ fontSize: 12, color: 'var(--herr-magenta)', border: '1px solid var(--herr-magenta)', padding: '4px 12px', borderRadius: 12, fontWeight: 600 }}>
-                {m.replace('-', ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
-              </span>
-            )) : <span style={{ fontSize: 13, color: 'var(--herr-ink-soft)' }}>None selected</span>}
-          </div>
-          <Link href="/dashboard/modes" style={{ fontSize: 13, color: 'var(--herr-magenta)', textDecoration: 'underline', fontWeight: 600 }}>Change Modes</Link>
+          {modes.length > 0 ? (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+              {modes.map((m: string) => (
+                <span key={m} style={{ fontSize: 12, color: 'var(--herr-magenta)', border: '1px solid var(--herr-magenta)', padding: '4px 12px', borderRadius: 12, fontWeight: 600 }}>
+                  {m.replace('-', ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p style={{ fontSize: 13, color: 'var(--herr-ink-soft)', lineHeight: 1.55, marginBottom: 16 }}>
+              You haven&apos;t set your activity modes yet. Visit My Activities to begin.
+            </p>
+          )}
+          <Link href="/dashboard/modes" style={{ fontSize: 13, color: 'var(--herr-magenta)', textDecoration: 'underline', fontWeight: 600 }}>
+            {modes.length > 0 ? 'Change Modes' : 'Pick Modes →'}
+          </Link>
         </div>
 
-        {/* 7. Genre Preferences */}
+        {/* 7. Genre Preferences — canonical source: member_genre_preferences */}
         {hasVoice && (
           <div style={cardStyle}>
             <p style={labelStyle}>GENRE PREFERENCES</p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
-              {genres.length > 0 ? genres.map((g: string) => (
-                <span key={g} style={{ fontSize: 12, color: 'var(--herr-magenta)', border: '1px solid var(--herr-magenta)', padding: '4px 12px', borderRadius: 12, fontWeight: 600 }}>
-                  {g.replace('-', ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
-                </span>
-              )) : <span style={{ fontSize: 13, color: 'var(--herr-ink-soft)' }}>None selected</span>}
-            </div>
-            <Link href="/dashboard/genres" style={{ fontSize: 13, color: 'var(--herr-magenta)', textDecoration: 'underline', fontWeight: 600 }}>Change Genres</Link>
+            {genres.length > 0 ? (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+                {genres.map((g: string) => (
+                  <span key={g} style={{ fontSize: 12, color: 'var(--herr-magenta)', border: '1px solid var(--herr-magenta)', padding: '4px 12px', borderRadius: 12, fontWeight: 600 }}>
+                    {g.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p style={{ fontSize: 13, color: 'var(--herr-ink-soft)', lineHeight: 1.55, marginBottom: 16 }}>
+                You haven&apos;t picked your music yet. Visit My Music to begin.
+              </p>
+            )}
+            <Link href="/dashboard/genres" style={{ fontSize: 13, color: 'var(--herr-magenta)', textDecoration: 'underline', fontWeight: 600 }}>
+              {genres.length > 0 ? 'Change Genres' : 'Pick Genres →'}
+            </Link>
           </div>
         )}
 

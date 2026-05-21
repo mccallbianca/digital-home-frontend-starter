@@ -83,6 +83,7 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
   const [newPostBody, setNewPostBody] = useState('');
   const [showNewThread, setShowNewThread] = useState(false);
   const [composerError, setComposerError] = useState<string | null>(null);
+  const [composerUpgradeHint, setComposerUpgradeHint] = useState(false);
   const [posting, setPosting] = useState(false);
 
   // DMs
@@ -150,6 +151,7 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
   async function handleCreateThread() {
     if (!newThreadTitle.trim() || !activeSpace) return;
     setComposerError(null);
+    setComposerUpgradeHint(false);
     setPosting(true);
     try {
       const result = await post({
@@ -166,7 +168,8 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
         const d = await api('threads', { space: activeSpace });
         setThreads(d.threads || []);
       } else {
-        setComposerError(result.error || 'Your thread could not be saved. Please try again.');
+        setComposerError(result.error || "Couldn't post your thread. Try again or contact support.");
+        setComposerUpgradeHint(result.upgrade_required === true);
       }
     } catch {
       setComposerError('Connection issue. Please try again.');
@@ -580,9 +583,19 @@ export default function HERRNation({ userId, displayName: _displayName, userTier
                       </button>
                     </div>
                     {composerError && (
-                      <p className="mt-2 text-[0.78rem] text-[var(--herr-pink)]" role="alert">
-                        {composerError}
-                      </p>
+                      <div className="mt-2" role="alert">
+                        <p className="text-[0.78rem] text-[var(--herr-pink)]">
+                          {composerError}
+                        </p>
+                        {composerUpgradeHint && (
+                          <a
+                            href="/dashboard/billing"
+                            className="inline-block mt-1 text-[0.78rem] underline text-[var(--herr-magenta)] font-semibold"
+                          >
+                            Upgrade your tier →
+                          </a>
+                        )}
+                      </div>
                     )}
                   </div>
                 )}

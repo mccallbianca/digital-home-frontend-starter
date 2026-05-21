@@ -33,6 +33,12 @@ interface DashboardClientProps {
   currentModeLabel: string | null;
   todaysAffirmationScript: string | null;
   todaysAffirmationMode: string | null;
+  /**
+   * Server-rendered slot for content the dashboard owns but should be
+   * fetched on the server (e.g. RecentReflectionsCard, which queries
+   * journey_posts via service-role and shouldn't ship the data inline).
+   */
+  reflectionsSlot?: React.ReactNode;
 }
 
 function getGreeting(): string {
@@ -54,6 +60,7 @@ export default function DashboardClient({
   currentModeLabel,
   todaysAffirmationScript,
   todaysAffirmationMode,
+  reflectionsSlot,
 }: DashboardClientProps) {
   const [showTutorial, setShowTutorial] = useState(false);
 
@@ -303,6 +310,9 @@ export default function DashboardClient({
               )}
             </div>
           </div>
+
+          {/* Recent reflections (server-rendered slot) */}
+          {reflectionsSlot}
 
           {/* Feature Cards Grid */}
           <div className="cards-grid">

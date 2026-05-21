@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import DashboardClient from './DashboardClient';
+import RecentReflectionsCard from '@/components/dashboard/RecentReflectionsCard';
 
 export const dynamic = 'force-dynamic';
 
@@ -254,6 +255,7 @@ export default async function DashboardPage({
       currentModeLabel={currentModeLabel}
       todaysAffirmationScript={todaysAffirmation?.script ?? null}
       todaysAffirmationMode={todaysAffirmation?.activity_mode ?? null}
+      reflectionsSlot={<RecentReflectionsCard userId={user!.id} />}
     />
   );
 }

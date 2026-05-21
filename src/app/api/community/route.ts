@@ -156,11 +156,78 @@ export async function POST(req: NextRequest) {
       case 'create-thread': {
         const { space, title, content, authorId } = body;
 
+        if (!space || !title || !authorId) {
+          return NextResponse.json({ error: 'space, title, and authorId are required' }, { status: 400 });
+        }
+
         // Rate limit: 10 posts per hour
         const threadRlKey = getRateLimitKey('community-post', authorId);
         const threadRl = checkRateLimit(threadRlKey, RATE_LIMITS['community-post']);
         if (!threadRl.allowed) {
           return NextResponse.json({ error: TRAUMA_MESSAGES.rateLimitedPost }, { status: 429 });
+        }
+
+        // FIX-2 A4 — catalog lookup + tier/admin gating.
+        // The frontend hands us a slug like 'beta-lab'; resolve it against
+        // community_spaces.slug so we can enforce admin_only_posting + min_tier
+        // server-side instead of relying on UI hiding alone.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { data: spaceRow } = await (db as any)
+          .from('community_spaces')
+          .select('slug, name, min_tier, admin_only_posting')
+          .eq('slug', space)
+          .maybeSingle();
+        if (!spaceRow) {
+          return NextResponse.json({ error: `Space "${space}" not found.` }, { status: 404 });
+        }
+
+        // Look up the poster's email + tier in one shot to evaluate the
+        // admin allowlist and min_tier check.
+        const ADMIN_EMAILS = ['bianca@h3rr.com', 'bdmccall@gmail.com', 'mccall.bianca@gmail.com'];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { data: prof } = await (db as any)
+          .from('profiles')
+          .select('email')
+          .eq('id', authorId)
+          .maybeSingle();
+        const posterEmail: string = prof?.email ?? '';
+        const posterIsAdmin = posterEmail !== '' && ADMIN_EMAILS.includes(posterEmail);
+
+        // members.tier holds 'collective' | 'personalized' | 'elite' (set by
+        // Stripe webhook). Beta testers without a stripe row fall back to
+        // 'collective' since they're explicitly invited into the product.
+        let posterTier = 'collective';
+        if (posterEmail) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { data: member } = await (db as any)
+            .from('members')
+            .select('tier')
+            .eq('email', posterEmail)
+            .maybeSingle();
+          if (member?.tier) posterTier = member.tier as string;
+        }
+
+        if (spaceRow.admin_only_posting === true && !posterIsAdmin) {
+          return NextResponse.json(
+            {
+              error: `Only admins can post in ${spaceRow.name}. Reach out if you have something to share.`,
+              space_name: spaceRow.name,
+              admin_only: true,
+            },
+            { status: 403 },
+          );
+        }
+
+        if (spaceRow.min_tier === 'elite' && posterTier !== 'elite') {
+          return NextResponse.json(
+            {
+              error: `${spaceRow.name} is exclusive to Elite members. Upgrade your tier to participate.`,
+              space_name: spaceRow.name,
+              min_tier: 'elite',
+              upgrade_required: true,
+            },
+            { status: 403 },
+          );
         }
 
         // Sanitize + content policy (Layers 1-2)
@@ -179,13 +246,27 @@ export async function POST(req: NextRequest) {
           });
         }
 
-        const { data, error } = await db
-          .from('community_threads')
-          .insert({ space, title: titleSan.clean, body: contentSan.clean, author_id: authorId })
-          .select('id')
-          .single();
-        if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-        return NextResponse.json({ threadId: data.id, crisisResources: policy.crisisResources });
+        try {
+          const { data, error } = await db
+            .from('community_threads')
+            .insert({ space, title: titleSan.clean, body: contentSan.clean, author_id: authorId })
+            .select('id')
+            .single();
+          if (error) {
+            console.error('[community create-thread] insert error:', error);
+            return NextResponse.json(
+              { error: "Couldn't post your thread. Try again or contact support." },
+              { status: 500 },
+            );
+          }
+          return NextResponse.json({ threadId: data.id, crisisResources: policy.crisisResources });
+        } catch (insertErr) {
+          console.error('[community create-thread] exception:', insertErr);
+          return NextResponse.json(
+            { error: "Couldn't post your thread. Try again or contact support." },
+            { status: 500 },
+          );
+        }
       }
 
       case 'create-post': {
