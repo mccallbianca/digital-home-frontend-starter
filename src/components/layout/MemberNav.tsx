@@ -31,6 +31,7 @@ type NavItem = {
 // All hrefs are internal /dashboard/* routes only.
 // Verified against Phase 1 v2 spec EPIC A2.
 const NAV_ITEMS: NavItem[] = [
+  { href: '/dashboard/companion',    label: 'Talk to HERR',    requires: 'free' },
   { href: '/dashboard',              label: 'Today',           requires: 'free' },
   { href: '/dashboard/affirmations', label: 'My Affirmations', requires: 'collective' },
   { href: '/dashboard/modes',        label: 'My Activities',   requires: 'collective' },
@@ -139,6 +140,21 @@ export default function MemberNav({
               }}
             >
               <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                {item.href === '/dashboard/companion' && (
+                  <span
+                    aria-hidden
+                    title="Primary surface"
+                    style={{
+                      display: 'inline-block',
+                      width: 8,
+                      height: 8,
+                      borderRadius: '50%',
+                      background: 'var(--herr-magenta, #C42D8E)',
+                      boxShadow: '0 0 0 3px rgba(196,45,142,0.18)',
+                      flexShrink: 0,
+                    }}
+                  />
+                )}
                 {item.label}
                 {locked && (
                   <svg
