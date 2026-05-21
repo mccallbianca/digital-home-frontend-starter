@@ -44,21 +44,26 @@ export default async function SoundPage() {
     );
   }
 
-  const { data: prefs } = await supabase
-    .from('user_preferences')
-    .select('activity_modes')
-    .eq('user_id', user.id)
-    .single();
-
+  // Canonical preference tables (user_preferences is empty in prod; My
+  // Activities / My Music write to member_activity_modes and
+  // member_genre_preferences). Matches FIX-2 A6 Settings refactor.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: genrePrefs } = await (supabase as any)
-    .from('user_preferences')
-    .select('genres')
-    .eq('user_id', user.id)
-    .single();
+  const { data: modeRows } = await (supabase as any)
+    .from('member_activity_modes')
+    .select('mode, updated_at')
+    .eq('member_id', user.id)
+    .eq('active', true)
+    .order('updated_at', { ascending: false });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: genreRows } = await (supabase as any)
+    .from('member_genre_preferences')
+    .select('genre, updated_at')
+    .eq('member_id', user.id)
+    .eq('active', true)
+    .order('updated_at', { ascending: false });
 
-  const modes = prefs?.activity_modes ?? [];
-  const genres = genrePrefs?.genres ?? [];
+  const modes  = (modeRows  ?? []).map((r: { mode:  string }) => r.mode);
+  const genres = (genreRows ?? []).map((r: { genre: string }) => r.genre);
 
   return (
     <div style={{ minHeight: '100vh', background: '#FAF8F5', padding: '80px 24px 60px' }}>

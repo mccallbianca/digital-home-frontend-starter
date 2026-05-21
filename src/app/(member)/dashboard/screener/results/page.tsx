@@ -56,14 +56,15 @@ export default async function ResultsPage() {
 
   const overallAvg = overallCount > 0 ? overallTotal / overallCount : 0;
 
-  // Get user preferences to check if modes are set
-  const { data: prefs } = await supabase
-    .from('user_preferences')
-    .select('activity_modes')
-    .eq('user_id', user.id)
-    .single();
-
-  const hasModes = prefs?.activity_modes && prefs.activity_modes.length > 0;
+  // Canonical preference table (user_preferences is empty in prod;
+  // My Activities writes to member_activity_modes).
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { count: activeModeCount } = await (supabase as any)
+    .from('member_activity_modes')
+    .select('id', { count: 'exact', head: true })
+    .eq('member_id', user.id)
+    .eq('active', true);
+  const hasModes = (activeModeCount ?? 0) > 0;
 
   // Get historical assessments
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

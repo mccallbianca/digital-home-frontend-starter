@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import MemberNav, { type MemberPlan } from '@/components/layout/MemberNav';
 
+const ADMIN_EMAILS = ['bianca@h3rr.com', 'bdmccall@gmail.com', 'mccall.bianca@gmail.com'];
+
 export default async function MemberLayout({
   children,
 }: {
@@ -25,10 +27,11 @@ export default async function MemberLayout({
   const plan = ((profile?.plan ?? 'free') as MemberPlan);
   const displayName = profile?.preferred_name || profile?.first_name || 'Member';
   const isTester = profile?.is_tester === true;
+  const isAdmin  = ADMIN_EMAILS.includes(user.email ?? '');
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--herr-cream)', color: 'var(--herr-ink)' }}>
-      <MemberNav plan={plan} displayName={displayName} isTester={isTester} />
+      <MemberNav plan={plan} displayName={displayName} isTester={isTester} isAdmin={isAdmin} />
       <main className="md:ml-60" style={{ minHeight: '100vh' }}>
         {children}
       </main>

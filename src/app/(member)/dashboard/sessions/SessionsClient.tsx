@@ -51,7 +51,7 @@ export default function SessionsClient({ userId, userEmail, sessions, userRegist
           LIVE SESSIONS
         </p>
         <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 28, fontWeight: 600, color: '#FFFFFF', textAlign: 'center', marginBottom: 4 }}>
-          Live with Bianca
+          Live w/ Founder
         </h1>
         <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.6)', textAlign: 'center', marginBottom: 40 }}>
           Monthly group sessions. 25 seats. Clinical depth.

@@ -36,7 +36,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard/modes',        label: 'My Activities',   requires: 'collective' },
   { href: '/dashboard/genres',       label: 'My Music',        requires: 'personalized' },
   { href: '/dashboard/assessment',   label: 'My Progress',     requires: 'collective' },
-  { href: '/dashboard/sessions',     label: 'Live w/ Bianca',  requires: 'collective' },
+  { href: '/dashboard/sessions',     label: 'Live w/ Founder', requires: 'collective' },
   { href: '/dashboard/community',    label: 'HERR Nation',     requires: 'collective' },
   { href: '/dashboard/journey',      label: 'HERR Journey',    requires: 'collective' },
   { href: '/dashboard/peer-review',  label: 'Peer Review',     requires: 'collective' },
@@ -45,14 +45,27 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard/settings',     label: 'Settings',        requires: 'free' },
 ];
 
+// Admin shortcut rail — only renders when the layout determines the user
+// is on the admin allowlist. Members never see these; admins jump from
+// the member dashboard into operator tooling without having to visit /admin.
+const ADMIN_NAV_ITEMS: { href: string; label: string }[] = [
+  { href: '/admin',                       label: 'Admin Home' },
+  { href: '/admin/audit/daily-delivery',  label: 'Delivery Audit' },
+  { href: '/admin/wave-1',                label: 'Tester Wave 1' },
+  { href: '/admin/live-sessions',         label: 'Live Sessions' },
+  { href: '/admin/crisis-flags',          label: 'Crisis Flags' },
+];
+
 export default function MemberNav({
   plan,
   displayName,
   isTester = false,
+  isAdmin = false,
 }: {
   plan: MemberPlan;
   displayName: string;
   isTester?: boolean;
+  isAdmin?: boolean;
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -167,6 +180,71 @@ export default function MemberNav({
     </ul>
   );
 
+  const AdminList = () => {
+    if (!isAdmin) return null;
+    return (
+      <div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            margin: '4px 14px 8px',
+            fontSize: 10,
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            fontWeight: 700,
+            color: 'var(--herr-cobalt, #1A4789)',
+          }}
+        >
+          <span>Admin</span>
+          <span style={{ flex: 1, height: 1, background: 'rgba(26,71,137,0.18)' }} />
+        </div>
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
+          {ADMIN_NAV_ITEMS.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '8px 14px',
+                    paddingLeft: active ? 12 : 14,
+                    borderRadius: 8,
+                    fontSize: 13,
+                    fontWeight: active ? 600 : 500,
+                    color: 'var(--herr-cobalt, #1A4789)',
+                    background: active ? 'rgba(26,71,137,0.10)' : 'transparent',
+                    borderLeft: active ? '2px solid var(--herr-cobalt, #1A4789)' : '2px solid transparent',
+                    textDecoration: 'none',
+                    transition: 'background 150ms, color 150ms',
+                  }}
+                >
+                  <span>{item.label}</span>
+                  <span style={{
+                    fontSize: 9,
+                    letterSpacing: '0.08em',
+                    fontWeight: 700,
+                    padding: '2px 6px',
+                    borderRadius: 4,
+                    background: 'rgba(26,71,137,0.12)',
+                    color: 'var(--herr-cobalt, #1A4789)',
+                    textTransform: 'uppercase',
+                  }}>
+                    Admin
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  };
+
   const Footer = () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       {plan === 'free' && !isTester && (
@@ -275,6 +353,7 @@ export default function MemberNav({
           }}
         >
           <NavList />
+          <AdminList />
           <div style={{ marginTop: 'auto' }}>
             <Footer />
           </div>
@@ -301,6 +380,7 @@ export default function MemberNav({
       >
         <Brand />
         <NavList />
+        <AdminList />
         <div style={{ marginTop: 'auto' }}>
           <Footer />
         </div>

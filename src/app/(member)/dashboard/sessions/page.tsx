@@ -7,7 +7,7 @@ import SessionRegisterButton from './SessionRegisterButton';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Live with Bianca | HERR',
+  title: 'Live w/ Founder | HERR',
   description: 'Monthly live group sessions with Bianca D. McCall, M.A., LMFT.',
 };
 
@@ -56,7 +56,7 @@ export default async function SessionsPage() {
             <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
           <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 26, color: 'var(--herr-ink)', marginBottom: 8 }}>
-            Live with Bianca
+            Live w/ Founder
           </h1>
           <p style={{ fontSize: 15, color: 'var(--herr-ink-soft)', lineHeight: 1.6, marginBottom: 24 }}>
             Monthly live group sessions are available to all paid members. Upgrade to join.
@@ -144,7 +144,7 @@ export default async function SessionsPage() {
         >
           <div style={{ maxWidth: 560 }}>
             <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--herr-magenta-soft)', fontWeight: 600, marginBottom: 12 }}>
-              LIVE WITH BIANCA
+              LIVE W/ FOUNDER
             </p>
             <h1
               style={{
@@ -187,7 +187,7 @@ export default async function SessionsPage() {
         </Link>
 
         <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--herr-magenta)', fontWeight: 600, marginBottom: 8 }}>
-          LIVE WITH BIANCA
+          LIVE W/ FOUNDER
         </p>
         <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 34, fontWeight: 500, color: 'var(--herr-ink)', marginBottom: 8 }}>
           Upcoming Sessions
